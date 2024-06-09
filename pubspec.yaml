@@ -57,6 +57,9 @@ dependencies:
   flutter_animate:
   slider_button:
   flutter_cool_card_swiper:
+  fl_chart:
+  firebase_core:
+  cloud_firestore:
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +91,7 @@ flutter:
     - assets/trip/
     - assets/car_details/
     - assets/card/
+    - assets/onboarding/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

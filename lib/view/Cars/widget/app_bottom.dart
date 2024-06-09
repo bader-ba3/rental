@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../Utils/app_style.dart';
+import '../../../utils/const.dart';
 
 class AppBottom extends StatelessWidget {
   const AppBottom({super.key, required this.text, required this.onTap});
@@ -16,13 +17,13 @@ class AppBottom extends StatelessWidget {
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color:Styles.mainColor ,width: 1),
+          border: Border.all(color:Const.mainColor ,width: 1),
           // color: Styles.mainColor,
         ),
         child: Center(
           child: Text(
             text,
-            style: Styles.headLineStyle2.copyWith(color: Styles.mainColor),
+            style: Styles.headLineStyle2.copyWith(color: Const.mainColor),
           ),
         ),
       ),

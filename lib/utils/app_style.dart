@@ -2,17 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-Color primary=const Color(0xff3d0312);
-Color secondary=const Color(0xffFF7F74);
+
 
 class Styles {
-  static Color primaryColor = primary;
-
-  static const mainColor = Color(0xff3d0312);
-  static const secColor = Color(0xff7e0303);
-  static const paigeColor = Color(0xffc89665);
-  static const paigeToBrownColor = Color(0xff956744);
-  static const brownColor = Color(0xff644127);
 
   static Color bgColor = const Color(0xffF5F5F5);
   static Color headerColor = const Color(0xff2B2B2B);

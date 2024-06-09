@@ -9,6 +9,10 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../utils/const.dart';
 import '../history/history_view.dart';
+import '../onboarding/onboarding.dart';
+import '../provider/home/provider_home.dart';
+import '../provider/logs/logs_view.dart';
+import '../provider/profile/profile_view.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
@@ -21,6 +25,7 @@ class _HomePageViewState extends State<HomePageView> {
   int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    bool isUser = false;
     return Scaffold(
       backgroundColor: Color(0xff3d0312),
       appBar: AppBar(toolbarHeight: 0,),
@@ -31,11 +36,18 @@ class _HomePageViewState extends State<HomePageView> {
               Expanded(
                 child: IndexedStack(
                   index: _currentIndex,
-                  children: [
+                  children:
+                  isUser
+                  ?[
                     HomeView(),
                     TripView(),
                     HistoryView(),
-                    ProfileView()
+                   ProfileView()
+                  ]:[
+                    ProviderHomeView(),
+                    ProviderLogsView(),
+                    ProviderProfileView(),
+                    OnboardingView(),
                   ],
                 ),
               ),
@@ -53,7 +65,26 @@ class _HomePageViewState extends State<HomePageView> {
                       currentIndex: _currentIndex,
                       backgroundColor: Colors.transparent,
                       onTap: (i) => setState(() => _currentIndex = i),
-                      items: [
+                      items:isUser
+                      ?[
+                        SalomonBottomBarItem(
+                          icon: Icon(Icons.home_outlined),
+                          title: Text("Home"),
+                        ),
+                        SalomonBottomBarItem(
+                          icon: Icon(Icons.card_travel),
+                          title: Text("Trip"),
+                        ),
+                        SalomonBottomBarItem(
+                          icon: Icon(Icons.emoji_transportation),
+                          title: Text("History"),
+                        ),
+                        SalomonBottomBarItem(
+                          icon: Icon(Icons.person),
+                          title: Text("Profile"),
+                        ),
+                      ]
+                      :[
                         SalomonBottomBarItem(
                           icon: Icon(Icons.home_outlined),
                           title: Text("Home"),

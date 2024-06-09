@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rental/view/Cars/widget/app_bottom.dart';
 import '../../../../Utils/app_style.dart';
-import 'Car_Model.dart';
+import '../../utils/const.dart';
+import '../../model/Car_Model.dart';
 import 'Car_view.dart';
 
 class CarViewWidget extends StatefulWidget {
@@ -64,7 +65,7 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                   Text(
                     widget.carModel.carName!,
                     maxLines: 2,
-                    style: Styles.headLineStyle3.copyWith(color: Styles.mainColor),
+                    style: Styles.headLineStyle3.copyWith(color: Const.mainColor),
                   ),
                   Text(
                     widget.carModel.carModule!,
@@ -86,7 +87,7 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                       const Spacer(),
                       Text(
                         "5 seats",
-                        style: Styles.headLineStyle4.copyWith(color: Styles.mainColor, fontWeight: FontWeight.bold),
+                        style: Styles.headLineStyle4.copyWith(color: Const.mainColor, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                       Container(
@@ -97,7 +98,7 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                       const Spacer(),
                       Text(
                         "Automatic",
-                        style: Styles.headLineStyle4.copyWith(color: Styles.mainColor, fontWeight: FontWeight.bold),
+                        style: Styles.headLineStyle4.copyWith(color: Const.mainColor, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                       Container(
@@ -108,7 +109,7 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                       const Spacer(),
                       Text(
                         "Fuel",
-                        style: Styles.headLineStyle4.copyWith(color: Styles.mainColor, fontWeight: FontWeight.bold),
+                        style: Styles.headLineStyle4.copyWith(color: Const.mainColor, fontWeight: FontWeight.bold),
                       ),
                       const Spacer(),
                     ],
@@ -133,7 +134,7 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: Styles.mainColor,
+                            color: Const.mainColor,
 
                             // color: Styles.mainColor,
                           ),

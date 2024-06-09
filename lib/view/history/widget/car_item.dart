@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:get/get.dart';
 import '../../../../Utils/app_style.dart';
 import '../../../utils/const.dart';
-import '../../Cars/Car_Model.dart';
+import '../../../model/Car_Model.dart';
 import '../../Cars/Car_view.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
@@ -151,7 +151,7 @@ class _CarItemWidgetState extends State<CarItemWidget> {
                               padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: Styles.mainColor,
+                                color: Const.mainColor,
 
                                 // color: Styles.mainColor,
                               ),

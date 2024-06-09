@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ import 'package:rental/view/sign_in/sign_in_view.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await Permission.location.request();
   await Permission.storage.request();
   await Permission.photos.request();
@@ -29,7 +31,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData.light().copyWith(
-        appBarTheme: AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light,backgroundColor: Const.mainColor)
+        appBarTheme: AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light,backgroundColor: Const.mainColor),
+        primaryColor: Const.paigeColor,
+        colorScheme: ColorScheme.dark(primary: Const.paigeColor)
       ),
       initialBinding: GetBinding(),
       home: SignInView()

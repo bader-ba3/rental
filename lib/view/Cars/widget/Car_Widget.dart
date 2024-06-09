@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Utils/app_style.dart';
-import '../Car_Model.dart';
+import '../../../model/Car_Model.dart';
 
 class CarStackWidget extends StatefulWidget {
   const CarStackWidget({super.key, required this.carModel});

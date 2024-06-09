@@ -24,6 +24,7 @@ class HomePageViewModel extends GetxController{
       });
     });
   }
+
   void setMarker(LatLng location, String path, String uID,String bearing,{int? size}) {
     getBytesFromAsset(path: 'assets/$path.png', width: size??100)
         .then((value) {
@@ -49,5 +50,9 @@ class HomePageViewModel extends GetxController{
       zoom: 17.00,
     );
     controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
+
+  Future<void> addReservation() async{
+
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../Utils/app_style.dart';
+import '../../utils/const.dart';
 import '../../utils/data.dart';
 import '../home_page/widget/button.dart';
 import 'Car_list.dart';
@@ -25,7 +26,7 @@ bool isDateFilterd = false;
 @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Styles.mainColor,
+        backgroundColor: Const.mainColor,
         body: SafeArea(
           child: Column(
             children: [

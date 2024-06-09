@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "236408407506",
+    "project_id": "rak-rent",
+    "storage_bucket": "rak-rent.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236408407506:android:89bfae88fec18721f5f40b",
+        "android_client_info": {
+          "package_name": "com.ba3.rental"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxryjik9xw9Mre256iGIw-dmI03UWF1zs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

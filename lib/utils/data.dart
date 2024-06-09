@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import '../view/Cars/Car_Model.dart';
+import '../model/Car_Model.dart';
 
 
 const String baseURl = "https://mazda-uae.com";
@@ -47,7 +47,6 @@ List<CarModel> carList = [
     carName: "MAZDA3",
     carModule: "HATCHBACK",
     carColor: [
-
       CarColor(images: [
         "$baseURl/media/o41bpx5h/mazda3_bpl1_bekalab_46v_by9_ext_360_24_transparentpng_0001.png",
         "$baseURl/media/5w1jdhdb/mazda3_bpl1_bekalab_46v_by9_ext_360_24_transparentpng_0002.png",
@@ -74,8 +73,6 @@ List<CarModel> carList = [
         '$baseURl/media/nk2dl5qq/mazda3_bpl1_bekalab_46v_by9_ext_360_24_transparentpng_0023.png',
         '$baseURl/media/5xggmqap/mazda3_bpl1_bekalab_46v_by9_ext_360_24_transparentpng_0024.png',
       ], color: const Color(0xff890000)),
-
-
     ],
     carDetails:
     "A confident drive is a better drive. That’s why our available i-Activsense safety innovative use sophisticated technologies to help alert you to hazards before they happen. It’s another way Mazda lets you focus on what matters: driving. Book a Mazda3 hatchback test drive today to experience unrivaled safety.",
@@ -111,7 +108,6 @@ List<CarModel> carList = [
         '$baseURl/media/uqjdfhzs/mazda3_bpl1_bekalab_41w_by9_ext_360_24_transparentpng_0023.png',
         '$baseURl/media/md0lkgnt/mazda3_bpl1_bekalab_41w_by9_ext_360_24_transparentpng_0024.png',
       ], color: const Color(0xff101312)),
-
     ],
     carDetails:
     "A confident drive is a better drive. That’s why our available i-Activsense safety innovative use sophisticated technologies to help alert you to hazards before they happen. It’s another way Mazda lets you focus on what matters: driving. Book a Mazda3 hatchback test drive today to experience unrivaled safety.",
@@ -150,7 +146,6 @@ List<CarModel> carList = [
         ],
         color: const Color(0xff676A71),
       ),
-
     ],
     carDetails:
         "A confident drive is a better drive. That’s why our available i-Activsense safety innovative use sophisticated technologies to help alert you to hazards before they happen. It’s another way Mazda lets you focus on what matters: driving. Book a Mazda3 hatchback test drive today to experience unrivaled safety.",
@@ -160,7 +155,6 @@ List<CarModel> carList = [
     carName: "Mazda MX-5",
     carModule: "Hardtop Convertible",
     carColor: [
-
       CarColor(
         images: [
           '$baseURl/media/x45l51fw/mx-5_ndl7_nf7plaa_46v_nk5_ext_360_24_transparentpng_0001.png',
@@ -190,8 +184,6 @@ List<CarModel> carList = [
         ],
         color: const Color(0xff890000),
       ),
-
-
     ],
     carDetails:
     "A confident drive is a better drive. That’s why our available i-Activsense safety innovative use sophisticated technologies to help alert you to hazards before they happen. It’s another way Mazda lets you focus on what matters: driving. Book a Mazda3 hatchback test drive today to experience unrivaled safety.",
@@ -201,7 +193,6 @@ List<CarModel> carList = [
     carName: "Mazda MX-5",
     carModule: "Hardtop Convertible",
     carColor: [
-
       CarColor(
         images: [
           '$baseURl/media/4fvnzor4/mx-5_ndl7_nf7plaa_41w_nj2_ext_360_24_transparentpng_0001.png',

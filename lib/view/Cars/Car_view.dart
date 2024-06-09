@@ -10,7 +10,7 @@ import 'package:slider_button/slider_button.dart';
 
 import '../../Utils/app_style.dart';
 import '../../utils/const.dart';
-import 'Car_Model.dart';
+import '../../model/Car_Model.dart';
 
 class CarPage extends StatefulWidget {
   const CarPage({super.key, required this.carModel});
@@ -21,8 +21,7 @@ class CarPage extends StatefulWidget {
 }
 
 class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
-  late TabController tabController =
-      TabController(length: 5, vsync: this, initialIndex: 0);
+  late TabController tabController = TabController(length: 5, vsync: this, initialIndex: 0);
   ScrollController controller = ScrollController();
   int i = 0;
 
@@ -35,7 +34,9 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
 
   bool carIsBig = false, isLoad = false, detailsView = true;
 
-  bool extendable=true;
+  bool extendable = false;
+  bool insurance = true;
+  bool address = true;
 
   @override
   void initState() {
@@ -61,158 +62,199 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor:Const.mainColor,
-      appBar: AppBar(toolbarHeight: 0,),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            GestureDetector(
-              onVerticalDragUpdate: (details) {
-                if (details.delta.dy < 0) {
-                  if (i != 1&&isLoad) {
-                    startAnimate(details);
-                    i++;
-                  }
-                } else {
-                  if (i != 1&&isLoad) {
-                    backAnimate(details);
-                    i++;
-                  }
-                }
-              },
-              child: Scaffold(
-                backgroundColor: Styles.bgColor,
-                body: InteractiveViewer(
-                  trackpadScrollCausesScale: false,
-                  panEnabled: false,
-                  onInteractionStart: (details) {
-                    if (details.pointerCount == 2) {
-                      enableRotation = false;
-                      setState(() {});
+    return WillPopScope(
+      onWillPop: () async{
+        if(carIsBig){
+          carIsBig=false;
+          setState(() {});
+          return false;
+        }else{
+          return true;
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Const.mainColor,
+        appBar: AppBar(
+          toolbarHeight: 0,
+        ),
+        body: SafeArea(
+          child: Stack(
+            children: [
+              GestureDetector(
+                onVerticalDragUpdate: (details) {
+                  if (details.delta.dy < 0) {
+                    if (i != 1 && isLoad) {
+                      startAnimate(details);
+                      i++;
                     }
-                  },
-                  onInteractionEnd: (_) {
-                    enableRotation = true;
-                    setState(() {});
-                  },
-                  child: SizedBox(
-                    height: Get.height,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      alignment: Alignment.center,
-                      clipBehavior: Clip.none,
-                      children: [
-                        _buildCarInfo(),
-                        _buildCarImage(),
-                        _buildBottomInfo(),
-                        _buildLeftInfo(),
-                        _buildRightInfo(),
-                        if (carIsBig)
-                          Positioned(
-                            bottom: 10,
-                            left: 20,
-                            right: 20,
-                            child: SliderButton(
-                              buttonColor: Styles.mainColor,
-                              radius: 10,
-                              action: () async {
-                                ///Do something here OnSlide
-        
-                                Get.defaultDialog(
-                                    title: "Rent Confirm",
-                                      middleText: "",
-        
-                                content: Column(
+                  } else {
+                    if (i != 1 && isLoad) {
+                      backAnimate(details);
+                      i++;
+                    }
+                  }
+                },
+                child: Scaffold(
+                  backgroundColor: Styles.bgColor,
+                  body: InteractiveViewer(
+                    trackpadScrollCausesScale: false,
+                    panEnabled: false,
+                    onInteractionStart: (details) {
+                      if (details.pointerCount == 2) {
+                        enableRotation = false;
+                        setState(() {});
+                      }
+                    },
+                    onInteractionEnd: (_) {
+                      enableRotation = true;
+                      setState(() {});
+                    },
+                    child: SizedBox(
+                      height: Get.height,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        alignment: Alignment.center,
+                        clipBehavior: Clip.none,
+                        children: [
+                          _buildCarInfo(),
+                          _buildCarImage(),
+                          _buildBottomInfo(),
+                          _buildLeftInfo(),
+                          _buildRightInfo(),
+                          if (carIsBig)
+                            Positioned(
+                              bottom: 95,
+                              left: 20,
+                              right: 20,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Const.brownColor),
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Const.paigeColor.withOpacity(0.6),
+                                ),
+                                height: 175,
+                                width: 100,
+                                child:  Column(
                                   children: [
+                                    Spacer(),
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          fillColor: MaterialStateProperty.all(Const.paigeColor),
+                                          value: insurance,
+                                          onChanged: (value) {
+                                            insurance =value!;
+                                            Get.appUpdate();
+                                            setState(() {});
+                                          },
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Insurance included",
+                                              style: Styles.headLineStyle3.copyWith(color: Colors.black),
+                                            ),
+                                            Text(
+                                              "Do you want to issue car insurance?",
+                                              style: Styles.headLineStyle4.copyWith(color: Colors.black.withOpacity(0.8),fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          fillColor: MaterialStateProperty.all(Const.paigeColor),
+                                          value: address,
+                                          onChanged: (value) {
+                                            address =value!;
+                                            Get.appUpdate();
+                                            setState(() {});
+                                          },
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Same Default Address",
+                                              style: Styles.headLineStyle3.copyWith(color: Colors.black),
+                                            ),
+                                            Text(
+                                              "UAE, Dubai, 16 Street",
+                                              style: Styles.headLineStyle4.copyWith(color: Colors.black.withOpacity(0.8),fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Spacer(),
                                     Row(
                                       children: [
                                         Checkbox(
                                           // activeColor: Styles.paigeColor,
-        
-                                          fillColor: MaterialStateProperty.all(Styles.paigeColor),
-                                          value: extendable, onChanged: (value) {
-                                          extendable=value!;
-        
-                                          Get.appUpdate();
-                                          setState(() {
-        
-                                          });
-                                        },),
-                                        Text("Extendable",style: Styles.headLineStyle3,),
-        
-                                      ],
-        
-                                    ),
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                          fillColor: MaterialStateProperty.all(Styles.paigeColor),
-        
-                                          value: true, onChanged: (value) {
-        
-                                        },
+                                          fillColor: MaterialStateProperty.all(Const.paigeColor),
+                                          value: extendable,
+                                          onChanged: (value) {
+                                            extendable = value!;
+                                            Get.appUpdate();
+                                            setState(() {});
+                                          },
                                         ),
-                                        Text("Insurance included",style: Styles.headLineStyle3,),
-        
-                                      ],
-        
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Styles.mainColor,
-        
-                                        // color: Styles.mainColor,
-                                      ),
-                                      child: Center(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "${Random().nextInt(500)} AED ",
-                                              style: Styles.headLineStyle3.copyWith(color: Colors.white),
+                                              "Extendable",
+                                              style: Styles.headLineStyle3.copyWith(color: Colors.black),
                                             ),
                                             Text(
-                                              " per day",
-                                              style: Styles.headLineStyle4.copyWith(fontSize: 12),
+                                              "Can you request an extension of the rental?",
+                                              style: Styles.headLineStyle4.copyWith(color: Colors.black.withOpacity(0.8),fontSize: 14),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    )
+                                      ],
+                                    ),
+                                    Spacer(),
                                   ],
                                 ),
-                                actions: [
-        
-                                ]
-                                );
-                                return true;
-                              },
-                              label: Text(
-                                "Slide to rent this car",
-                                style: Styles.headLineStyle1.copyWith(
-                                    color: Styles.paigeToBrownColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 17),
-                              ),
-                              icon: const Icon(
-                                CupertinoIcons.square_on_circle,
-                                color: Styles.paigeToBrownColor,
                               ),
                             ),
-                          )
-                      ],
+                          if (carIsBig)
+                            Positioned(
+                              bottom: 10,
+                              left: 20,
+                              right: 20,
+                              child: SliderButton(
+                                buttonColor: Const.mainColor,
+                                radius: 10,
+                                action: () async {
+                                  return false;
+                                },
+                                label: Text(
+                                  "Slide to rent this car",
+                                  style: Styles.headLineStyle1.copyWith(color: Const.paigeToBrownColor, fontWeight: FontWeight.w500, fontSize: 17),
+                                ),
+                                icon: Image.asset("assets/hand_icon.png",color: Colors.white,)
+                              ),
+                            )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: BackButton(color: Const.mainColor,),)
-          ],
+              Align(
+                alignment: Alignment.topLeft,
+                child: BackButton(
+                  color: Const.mainColor,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -253,17 +295,9 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
   Widget _buildInfoCard(String iconPath, String title, String subtitle) {
     return Container(
       decoration: BoxDecoration(
-border: Border.all(color: Styles.mainColor.withOpacity(0.2)),
+        border: Border.all(color: Const.brownColor),
         borderRadius: BorderRadius.circular(20),
-        boxShadow:  [
-          BoxShadow(
-            color: Styles.paigeColor.withOpacity(0.5),
-            blurRadius: 10,
-            spreadRadius: 0,
-
-            // offset: Offset(0, 5),
-          ),
-        ],
+        color: Const.paigeColor.withOpacity(0.6),
       ),
       width: 180,
       height: 110,
@@ -271,7 +305,7 @@ border: Border.all(color: Styles.mainColor.withOpacity(0.2)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(iconPath, height: 30, width: 30),
+          Image.asset(iconPath, height: 30, width: 30,color: Colors.black,),
           const SizedBox(width: 20),
           Expanded(
             child: Column(
@@ -279,14 +313,40 @@ border: Border.all(color: Styles.mainColor.withOpacity(0.2)),
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Spacer(),
-                Text(title,
-                    style: Styles.headLineStyle3.copyWith(color: Colors.black)),
-                Text(subtitle,
-                    maxLines: 2,
-                    style: Styles.headLineStyle4
-                        .copyWith(color: Styles.mainColor)),
-                const Spacer()
-              ],
+                Text(title, style: Styles.headLineStyle3.copyWith(color: Colors.black)),
+                Text(subtitle, maxLines: 2, style: Styles.headLineStyle4.copyWith(color: Const.mainColor)),
+                const Spacer()],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoCard2(String iconPath, String title, String subtitle) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: BorderRadius.circular(20),
+        color: Const.mainColor.withOpacity(0.5),
+      ),
+      width: 180,
+      height: 110,
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(iconPath, height: 30, width: 30,color: Colors.white,),
+          const SizedBox(width: 20),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                Text(title, style: Styles.headLineStyle3.copyWith(color: Colors.white)),
+                Text(subtitle, maxLines: 2, style: Styles.headLineStyle4.copyWith(color:  Colors.white)),
+                const Spacer()],
             ),
           ),
         ],
@@ -297,18 +357,15 @@ border: Border.all(color: Styles.mainColor.withOpacity(0.2)),
   Widget _buildLeftInfo() {
     return AnimatedPositioned(
       duration: Durations.medium2,
-      top: 100,
+      top: 50,
       left: carIsBig ? 20 : -200,
       child: Column(
         children: [
-          _buildInfoCard(
-              "assets/car_details/fuel.png", "Diesel", "Common Rail Fuel Injection"),
+          _buildInfoCard("assets/car_details/fuel.png", "Diesel", "Common Rail Fuel Injection"),
           const SizedBox(height: 20),
-          _buildInfoCard(
-              "assets/car_details/Acceleration.png", "Acceleration", "0 - 100km / 11s"),
+          _buildInfoCard("assets/car_details/Acceleration.png", "Acceleration", "0 - 100km / 11s"),
           const SizedBox(height: 20),
-          _buildInfoCard(
-              "assets/car_details/sets.png", "Cool Seat", "Temp Control on 5 seat"),
+          _buildInfoCard("assets/car_details/sets.png", "Cool Seat", "Temp Control on 5 seat"),
           const SizedBox(height: 20),
           _buildInfoCard("assets/car_details/careng.png", "SKYACTIV-G", "6 SPEED SKYACTIV"),
         ],
@@ -319,7 +376,7 @@ border: Border.all(color: Styles.mainColor.withOpacity(0.2)),
   Widget _buildImageFooter() {
     return Row(
       children: [
-        const Icon(Icons.location_on_outlined, color: Styles.paigeColor),
+        const Icon(Icons.location_on_outlined, color: Const.paigeColor),
         const SizedBox(width: 5),
         Text("Delivery, on Demand", style: Styles.headLineStyle4),
         const Spacer(),
@@ -344,55 +401,53 @@ border: Border.all(color: Styles.mainColor.withOpacity(0.2)),
   }
 
   Widget _buildCarImage() {
-    return  AnimatedPositioned(
-            duration: Durations.long4,
-            curve: Curves.easeInOut,
-            left: 0,
-            right: 0,
-            child: Listener(
-              onPointerDown: (_) => fingersCount++,
-              onPointerUp: (_) => fingersCount--,
-              onPointerMove: (event) {
-                if (enableRotation && fingersCount == 1 && !carIsBig&&isLoad) {
-                  setState(() {
-                    if (event.delta.dx > 0) {
-                      indexOf360Image = (indexOf360Image + 1) % 24;
-                    } else {
-                      indexOf360Image = (indexOf360Image - 1 + 24) % 24;
-                    }
-                    rotationRate = (rotationRate + 1) % 3;
-                  });
-                }
-              },
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Hero(
-                    tag: widget.carModel.carColor![0].images![1],
-                    child: Image.network(
-                      widget.carModel.carColor![0].images![indexOf360Image],
-                      height: carHeight,
-                      width: carWidth,
-                      fit: BoxFit.cover,
-                    ),
-
-                  ),
-              if(!isLoad)
+    return AnimatedPositioned(
+      duration: Durations.long4,
+      curve: Curves.easeInOut,
+      left: 0,
+      right: 0,
+      child: Listener(
+        onPointerDown: (_) => fingersCount++,
+        onPointerUp: (_) => fingersCount--,
+        onPointerMove: (event) {
+          if (enableRotation && fingersCount == 1 && !carIsBig && isLoad) {
+            setState(() {
+              if (event.delta.dx > 0) {
+                indexOf360Image = (indexOf360Image + 1) % 24;
+              } else {
+                indexOf360Image = (indexOf360Image - 1 + 24) % 24;
+              }
+              rotationRate = (rotationRate + 1) % 3;
+            });
+          }
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Hero(
+              tag: widget.carModel.carColor![0].images![1],
+              child: Image.network(
+                widget.carModel.carColor![0].images![indexOf360Image],
+                height: carHeight,
+                width: carWidth,
+                fit: BoxFit.cover,
+              ),
+            ),
+            if (!isLoad)
               const Center(
                 child: CircularProgressIndicator(color: Colors.greenAccent),
               ),
-                  Positioned(
-                    right: 20,
-                    left: 20,
-                    bottom: 10,
-                    child: _buildImageFooter(),
-                  ),
-                  if (carIsBig) _buildBlurOverlay(),
-                ],
-              ),
+            Positioned(
+              right: 20,
+              left: 20,
+              bottom: 10,
+              child: _buildImageFooter(),
             ),
-          );
-
+            if (carIsBig) _buildBlurOverlay(),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildCarInfo() {
@@ -431,20 +486,20 @@ border: Border.all(color: Styles.mainColor.withOpacity(0.2)),
             Image.asset(
               "assets/car_details/arrowUp.png",
               height: 40,
-              color: Styles.mainColor,
-            )/*.animate(onPlay: (controller) => controller.repeat()).shakeY(
+              color: Const.mainColor,
+            ) /*.animate(onPlay: (controller) => controller.repeat()).shakeY(
                   hz: 0.5,
                   duration: const Duration(seconds: 2),
                   // end:  -0.5,
-                )*/,
+                )*/
+            ,
             const SizedBox(
               height: 10,
             ),
             Text(
               "Swipe up to view details",
-              style: Styles.headLineStyle2.copyWith(
-                  color: Styles.mainColor, fontWeight: FontWeight.w400),
-            )/*.animate(onPlay: (controller) => controller.repeat()).shimmer(
+              style: Styles.headLineStyle2.copyWith(color: Const.mainColor, fontWeight: FontWeight.w400),
+            ) /*.animate(onPlay: (controller) => controller.repeat()).shimmer(
                 color: Colors.red, duration: const Duration(seconds: 2)),*/
           ],
         ),
@@ -455,18 +510,17 @@ border: Border.all(color: Styles.mainColor.withOpacity(0.2)),
   Widget _buildRightInfo() {
     return AnimatedPositioned(
       duration: Durations.medium2,
-      top: 100,
+      top: 50,
       right: carIsBig ? 20 : -200,
       child: Column(
         children: [
-          _buildInfoCard(
-              "assets/car_details/cargear.png", "Automatic", "Common Rail Fuel Injection"),
+          _buildInfoCard("assets/car_details/cargear.png", "Automatic", "Common Rail Fuel Injection"),
           const SizedBox(height: 20),
           _buildInfoCard("assets/car_details/24hours.png", "1 day rental", "1500 AE"),
           const SizedBox(height: 20),
-          _buildInfoCard("assets/car_details/addOns.png", "AddOns", "might want to use"),
-          const SizedBox(height: 20),
           _buildInfoCard("assets/car_details/travel.png", "Travel Bags", "More than 5 bag"),
+          const SizedBox(height: 20),
+          _buildInfoCard2("assets/car_details/addOns.png", "AddOns", "might want to use"),
         ],
       ),
     );
@@ -501,8 +555,6 @@ border: Border.all(color: Styles.mainColor.withOpacity(0.2)),
     if (carHeight > 250) {
       carHeight -= 100;
     }
-
-
   }
 
   void resetHeightAndFadeDetails(Timer timer) {

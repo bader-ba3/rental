@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/app_style.dart';
-import '../Car_Model.dart';
+import '../../../model/Car_Model.dart';
 
 buildCarAppBar(bool isPend,CarModel carModel) => AppBar(
   surfaceTintColor: Styles.bgColor,
