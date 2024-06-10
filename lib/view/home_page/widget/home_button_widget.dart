@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rental/controller/home_page_view_model.dart';
 import 'package:rental/view/Cars/car_home.dart';
 
 import '../../../utils/const.dart';
@@ -24,7 +25,9 @@ class _GlowingButtonState extends State<GlowingButton> {
 
     return InkWell(
       onTap: (){
-        Get.to(CarHome());
+        if(Get.find<HomePageViewModel>().carIsLoading) {
+          Get.to(const CarHome());
+        }
       },
       child: AnimatedContainer(
         transform: Matrix4.identity()..scale(scale),

@@ -2,15 +2,16 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:rental/view/home_page/home_page_view.dart';
 import 'package:slider_button/slider_button.dart';
 
 import '../../Utils/app_style.dart';
 import '../../utils/const.dart';
 import '../../model/Car_Model.dart';
+import '../../utils/services.dart';
 
 class CarPage extends StatefulWidget {
   const CarPage({super.key, required this.carModel});
@@ -21,18 +22,16 @@ class CarPage extends StatefulWidget {
 }
 
 class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
-  late TabController tabController = TabController(length: 5, vsync: this, initialIndex: 0);
-  ScrollController controller = ScrollController();
   int i = 0;
-
   bool isPend = false;
   int indexOf360Image = 3;
   bool enableRotation = true;
   int fingersCount = 0;
   int rotationRate = 0;
-  double carWidth = Get.width, carHeight = 300;
+  double carWidth = Get.width, carHeight = 300,carLeft=0,carRight=0;
 
-  bool carIsBig = false, isLoad = false, detailsView = true;
+
+  bool carIsBig = false, carOrdered = false, detailsView = true;
 
   bool extendable = false;
   bool insurance = true;
@@ -41,22 +40,13 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      getImage().then(
-        (value) {
-          fadeDetails();
-          isLoad = true;
-          setState(() {});
-        },
-      );
-    });
+    getImage();
+    fadeDetails();
   }
 
   fadeDetails() {
-    Timer(const Duration(seconds: 5), () {
-      setState(() {
-        detailsView = false;
-      });
+    setState(() {
+      detailsView = false;
     });
   }
 
@@ -66,7 +56,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
       onWillPop: () async{
         if(carIsBig){
           carIsBig=false;
-          setState(() {});
+          // setState(() {});
           return false;
         }else{
           return true;
@@ -83,13 +73,13 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
               GestureDetector(
                 onVerticalDragUpdate: (details) {
                   if (details.delta.dy < 0) {
-                    if (i != 1 && isLoad) {
+                    if (i != 1 ) {
                       startAnimate(details);
                       i++;
                     }
                   } else {
-                    if (i != 1 && isLoad) {
-                      backAnimate(details);
+                    if (i != 1 ) {
+                      backAnimate();
                       i++;
                     }
                   }
@@ -136,7 +126,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                 width: 100,
                                 child:  Column(
                                   children: [
-                                    Spacer(),
+                                    const Spacer(),
                                     Row(
                                       children: [
                                         Checkbox(
@@ -163,7 +153,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Row(
                                       children: [
                                         Checkbox(
@@ -190,7 +180,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     Row(
                                       children: [
                                         Checkbox(
@@ -218,7 +208,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                   ],
                                 ),
                               ),
@@ -232,7 +222,17 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                 buttonColor: Const.mainColor,
                                 radius: 10,
                                 action: () async {
-                                  return false;
+                                  backAnimate();
+                                  carOrdered=true;
+                                  carLeft=-400;
+                                  carRight=400;
+                                  setState(() {
+
+                                  });
+                                  Timer(const Duration(seconds: 10), () {
+                                    Get.offAll(const HomePageView());
+                                  },);
+                                  return true;
                                 },
                                 label: Text(
                                   "Slide to rent this car",
@@ -247,7 +247,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              Align(
+              const Align(
                 alignment: Alignment.topLeft,
                 child: BackButton(
                   color: Const.mainColor,
@@ -402,15 +402,15 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
 
   Widget _buildCarImage() {
     return AnimatedPositioned(
-      duration: Durations.long4,
+      duration:carOrdered?const Duration(seconds: 2): Durations.extralong4,
       curve: Curves.easeInOut,
-      left: 0,
-      right: 0,
+      left: carLeft,
+      right: carRight,
       child: Listener(
         onPointerDown: (_) => fingersCount++,
         onPointerUp: (_) => fingersCount--,
         onPointerMove: (event) {
-          if (enableRotation && fingersCount == 1 && !carIsBig && isLoad) {
+          if (enableRotation && fingersCount == 1 && !carIsBig ) {
             setState(() {
               if (event.delta.dx > 0) {
                 indexOf360Image = (indexOf360Image + 1) % 24;
@@ -426,17 +426,39 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
           children: [
             Hero(
               tag: widget.carModel.carColor![0].images![1],
-              child: Image.network(
+
+              child: Image.file(
+                height: carHeight,
+                width: carWidth,
+                fit: BoxFit.cover,
+
+                ( widget.carModel.carColor![0].imagesFile![indexOf360Image]),
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.network(
+                    height: carHeight,
+                    width: carWidth,
+                    fit: BoxFit.cover,
+
+                    widget.carModel.carColor![0].images![indexOf360Image],
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                          "assets/px/mazda3Hatchback_1.png");
+                    },
+                  );
+                },
+              ),
+             /* child: Image.network(
                 widget.carModel.carColor![0].images![indexOf360Image],
                 height: carHeight,
                 width: carWidth,
                 fit: BoxFit.cover,
-              ),
+              ),*/
             ),
-            if (!isLoad)
+          /*  if (!isLoad)
               const Center(
                 child: CircularProgressIndicator(color: Colors.greenAccent),
-              ),
+              ),*/
+            if (!carOrdered)
             Positioned(
               right: 20,
               left: 20,
@@ -452,22 +474,23 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
 
   Widget _buildCarInfo() {
     return AnimatedPositioned(
-      top: 270,
+      top: 200,
       duration: Durations.extralong4,
       child: Container(
         height: 270,
         width: Get.width,
-        alignment: Alignment.center,
+        // alignment: Alignment.center,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               widget.carModel.carName.toString(),
               style: Styles.headLineStyle1.copyWith(fontSize: 40),
             ),
             Text(
-              widget.carModel.carModule.toString(),
-              style: Styles.headLineStyle4.copyWith(fontSize: 70),
+              carOrdered?"Car in way to you":  widget.carModel.carModule.toString(),
+              style: Styles.headLineStyle4.copyWith(fontSize: carOrdered?30: 60),
             ),
           ],
         ),
@@ -480,18 +503,18 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
       bottom: 10,
       child: AnimatedOpacity(
         duration: Durations.medium2,
-        opacity: carIsBig ? 0 : 1.0,
+        opacity: carIsBig||carLeft==-400 ? 0 : 1.0,
         child: Column(
           children: [
             Image.asset(
               "assets/car_details/arrowUp.png",
               height: 40,
               color: Const.mainColor,
-            ) /*.animate(onPlay: (controller) => controller.repeat()).shakeY(
+            ) .animate(onPlay: (controller) => controller.repeat()).shakeY(
                   hz: 0.5,
                   duration: const Duration(seconds: 2),
                   // end:  -0.5,
-                )*/
+                )
             ,
             const SizedBox(
               height: 10,
@@ -499,8 +522,8 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
             Text(
               "Swipe up to view details",
               style: Styles.headLineStyle2.copyWith(color: Const.mainColor, fontWeight: FontWeight.w400),
-            ) /*.animate(onPlay: (controller) => controller.repeat()).shimmer(
-                color: Colors.red, duration: const Duration(seconds: 2)),*/
+            ) .animate(onPlay: (controller) => controller.repeat()).shimmer(
+                color: Colors.red, duration: const Duration(seconds: 2)),
           ],
         ),
       ),
@@ -526,17 +549,21 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
     );
   }
 
+
   Future<void> getImage() async {
-    for (var element in widget.carModel.carColor![0].images!) {
+    for (var element in widget.carModel.carColor![0].imagesFile!) {
+      await Utils().loadFileImage(element, context);
+    }
+/*    for (var element in widget.carModel.carColor![0].images!) {
       try {
         await precacheImage(NetworkImage(element), context);
       } catch (e) {
         print('Failed to load and cache the image: $e');
       }
-    }
+    }*/
   }
 
-  void backAnimate(DragUpdateDetails details) {
+  void backAnimate() {
     Timer.periodic(Durations.short1, (timer) {
       detailsView = true;
 

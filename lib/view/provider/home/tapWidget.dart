@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../utils/app_style.dart';
 import '../../../utils/const.dart';
 import '../../../utils/data.dart';
+import '../../../utils/services.dart';
 
 class TapWidget extends StatefulWidget {
   TapWidget({super.key, required this.tapIndex});
@@ -15,16 +16,31 @@ class TapWidget extends StatefulWidget {
 }
 
 class _TapWidgetState extends State<TapWidget> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getInit();
+    super.initState();
+  }
   List<bool> expand = List.generate(
     6,
     (index) => false,
   );
-
+  getInit() async {
+    for (var element in carList) {
+      for(var imageFile in element.carColor![0].imagesFile!) {
+        await Utils().loadFileImage(imageFile, context);
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: carList.length,
       itemBuilder: (BuildContext context, int index) {
+
+
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 25),
           child: GestureDetector(
@@ -110,9 +126,24 @@ class _TapWidgetState extends State<TapWidget> {
                           right: -50,
                           child: SizedBox(
                             height: 135,
-                            child: Image.network(
-                              carList[index].carColor![0].images![3],
+
+                            child:Image.file(
+                              (carList[index].carColor![0]
+                                  .imagesFile![3]),
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.network(
+                                  carList[index].carColor![0]
+                                      .images![3],
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Image.asset(
+                                        "assets/px/mazda3Hatchback_1.png");
+                                  },
+                                );
+                              },
                             ),
+                        /*    child: Image.network(
+                              carList[index].carColor![0].images![3],
+                            ),*/
                           ),
                         )
                       ],

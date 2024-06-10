@@ -41,6 +41,7 @@ class CarColor {
   CarColor({
     this.color,
     this.images,
+    this.imagesFile
   });
 
   Map<String, dynamic> toJson() {

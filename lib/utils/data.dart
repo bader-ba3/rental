@@ -36,6 +36,7 @@ List<CarModel> carList = [
           "$baseURl/media/smvnw4ra/mazda3_bpl1_bekalab_47c_by9_ext_360_24_transparentpng_0023.png",
           "$baseURl/media/wg5dmslt/mazda3_bpl1_bekalab_47c_by9_ext_360_24_transparentpng_0024.png",
         ],
+imagesFile:[],
         color: const Color(0xff676A71),
       ),
     ],
@@ -72,7 +73,8 @@ List<CarModel> carList = [
         '$baseURl/media/sq0m2aoi/mazda3_bpl1_bekalab_46v_by9_ext_360_24_transparentpng_0022.png',
         '$baseURl/media/nk2dl5qq/mazda3_bpl1_bekalab_46v_by9_ext_360_24_transparentpng_0023.png',
         '$baseURl/media/5xggmqap/mazda3_bpl1_bekalab_46v_by9_ext_360_24_transparentpng_0024.png',
-      ], color: const Color(0xff890000)),
+      ],imagesFile:[],
+          color: const Color(0xff890000)),
     ],
     carDetails:
     "A confident drive is a better drive. That’s why our available i-Activsense safety innovative use sophisticated technologies to help alert you to hazards before they happen. It’s another way Mazda lets you focus on what matters: driving. Book a Mazda3 hatchback test drive today to experience unrivaled safety.",
@@ -107,7 +109,8 @@ List<CarModel> carList = [
         '$baseURl/media/3maen3cf/mazda3_bpl1_bekalab_41w_by9_ext_360_24_transparentpng_0022.png',
         '$baseURl/media/uqjdfhzs/mazda3_bpl1_bekalab_41w_by9_ext_360_24_transparentpng_0023.png',
         '$baseURl/media/md0lkgnt/mazda3_bpl1_bekalab_41w_by9_ext_360_24_transparentpng_0024.png',
-      ], color: const Color(0xff101312)),
+      ],imagesFile:[],
+          color: const Color(0xff101312)),
     ],
     carDetails:
     "A confident drive is a better drive. That’s why our available i-Activsense safety innovative use sophisticated technologies to help alert you to hazards before they happen. It’s another way Mazda lets you focus on what matters: driving. Book a Mazda3 hatchback test drive today to experience unrivaled safety.",
@@ -118,6 +121,8 @@ List<CarModel> carList = [
     carModule: "Hardtop Convertible",
     carColor: [
       CarColor(
+        imagesFile:[],
+
         images: [
           '$baseURl/media/dwhnjpvh/mx-5_ndl7_nf7plaa_47c_nl0_ext_360_24_transparentpng_0002.png',
           '$baseURl/media/bf5cjxqs/mx-5_ndl7_nf7plaa_47c_nl0_ext_360_24_transparentpng_0001.png',
@@ -156,6 +161,8 @@ List<CarModel> carList = [
     carModule: "Hardtop Convertible",
     carColor: [
       CarColor(
+        imagesFile:[],
+
         images: [
           '$baseURl/media/x45l51fw/mx-5_ndl7_nf7plaa_46v_nk5_ext_360_24_transparentpng_0001.png',
           '$baseURl/media/1lafwzok/mx-5_ndl7_nf7plaa_46v_nk5_ext_360_24_transparentpng_0002.png',
@@ -194,6 +201,7 @@ List<CarModel> carList = [
     carModule: "Hardtop Convertible",
     carColor: [
       CarColor(
+        imagesFile:[],
         images: [
           '$baseURl/media/4fvnzor4/mx-5_ndl7_nf7plaa_41w_nj2_ext_360_24_transparentpng_0001.png',
           '$baseURl/media/olaojbmb/mx-5_ndl7_nf7plaa_41w_nj2_ext_360_24_transparentpng_0002.png',

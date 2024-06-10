@@ -17,7 +17,10 @@ class HomePageViewModel extends GetxController{
   Completer<GoogleMapController> mapController = Completer();
   Position? userPosition ;
 
+  bool carIsLoading=false;
+
   HomePageViewModel(){
+    getImages();
     Future.sync(() async {
       await Geolocator.requestPermission();
       Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((value) {
@@ -29,6 +32,7 @@ class HomePageViewModel extends GetxController{
         // });
       });
     });
+
   }
 
   void setMarker(LatLng location, String path, String uID,String bearing,{int? size}) {
@@ -78,11 +82,11 @@ class HomePageViewModel extends GetxController{
   Future<void> getImages() async {
 
     for (CarModel element in carList) {
-      for (var colorElement in element.carColor!) {
-        for (var imagesElement in colorElement.images!) {
+        for (var imagesElement in element.carColor![0].images!) {
+          print(imagesElement);
           await Utils().saveImage(imagesElement).then((value) {
             carList[carList.indexOf(element)]
-                .carColor![element.carColor!.indexOf(colorElement)]
+                .carColor![0]
                 .imagesFile!
                 .add(value);
             // print(value.path);
@@ -90,7 +94,9 @@ class HomePageViewModel extends GetxController{
             // print(imagesElement);
           });
         }
-      }
+
     }
+carIsLoading=true;
+    print("--------------done");
   }
 }

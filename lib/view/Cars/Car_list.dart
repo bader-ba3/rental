@@ -46,9 +46,22 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                   height: 190,
                   child: Hero(
                     tag: widget.carModel.carColor![widget.index].images![1],
+                    child:Image.file(
+                      ( widget.carModel.carColor![widget.index].imagesFile![3]),
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.network(
+                          widget.carModel.carColor![widget.index].images![3],
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                                "assets/px/mazda3Hatchback_1.png");
+                          },
+                        );
+                      },)
+/*
                     child: Image.network(
                       widget.carModel.carColor![widget.index].images![3],
                     ),
+*/
                   ),
                 ),
               ],
@@ -131,7 +144,7 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                       ),
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             color: Const.mainColor,

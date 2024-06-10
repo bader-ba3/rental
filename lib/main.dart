@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rental/core/binding.dart';
+import 'package:rental/firebase_options.dart';
 import 'package:rental/utils/const.dart';
 import 'package:rental/utils/hive.dart';
 import 'package:rental/view/home_page/home_page_view.dart';
@@ -13,7 +14,7 @@ import 'package:rental/view/sign_in/sign_in_view.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Permission.location.request();
   await Permission.storage.request();
   await Permission.photos.request();
