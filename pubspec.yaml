@@ -60,6 +60,7 @@ dependencies:
   fl_chart:
   firebase_core:
   cloud_firestore:
+  flutter_cache_manager: ^3.3.1
 
 dev_dependencies:
   flutter_test:

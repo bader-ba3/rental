@@ -25,7 +25,7 @@ class _HomePageViewState extends State<HomePageView> {
   int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    bool isUser = false;
+    bool isUser = true;
     return Scaffold(
       backgroundColor: Color(0xff3d0312),
       appBar: AppBar(toolbarHeight: 0,),
