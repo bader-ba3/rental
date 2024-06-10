@@ -224,12 +224,20 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                 action: () async {
                                   backAnimate();
                                   carOrdered=true;
-                                  carLeft=-400;
-                                  carRight=400;
+                                  Timer(const Duration(seconds: 1), () {
+                                    carLeft=-400;
+                                    carRight=400;
+                                    setState(() {
+
+                                    });
+                                  },);
+
+                                  carLeft=100;
+                                  carRight=-100;
                                   setState(() {
 
                                   });
-                                  Timer(const Duration(seconds: 10), () {
+                                  Timer(const Duration(seconds: 3), () {
                                     Get.offAll(const HomePageView());
                                   },);
                                   return true;
@@ -402,7 +410,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
 
   Widget _buildCarImage() {
     return AnimatedPositioned(
-      duration:carOrdered?const Duration(seconds: 2): Durations.extralong4,
+      duration:carOrdered?const Duration(seconds: 1): Durations.extralong4,
       curve: Curves.easeInOut,
       left: carLeft,
       right: carRight,
@@ -488,9 +496,17 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
               widget.carModel.carName.toString(),
               style: Styles.headLineStyle1.copyWith(fontSize: 40),
             ),
-            Text(
-              carOrdered?"Car in way to you":  widget.carModel.carModule.toString(),
-              style: Styles.headLineStyle4.copyWith(fontSize: carOrdered?30: 60),
+            AnimatedCrossFade(
+              firstChild: Text(
+                carOrdered?"Car in way to you":  widget.carModel.carModule.toString(),
+                style: Styles.headLineStyle4.copyWith(fontSize: carOrdered?30: 60),
+              ),
+              secondChild: Text(
+                "Car in way to you",
+                style: Styles.headLineStyle4.copyWith(fontSize: 40,color: Const.paigeToBrownColor),
+              ),
+              duration: Durations.extralong4,
+              crossFadeState:carOrdered?CrossFadeState.showSecond:CrossFadeState.showFirst ,
             ),
           ],
         ),
