@@ -24,11 +24,11 @@ class CarPage extends StatefulWidget {
 class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
   int i = 0;
   bool isPend = false;
-  int indexOf360Image = 3;
+  int indexOf360Image = 0;
   bool enableRotation = true;
-  int fingersCount = 0;
-  int rotationRate = 0;
-  double carWidth = Get.width, carHeight = 300,carLeft=0,carRight=0;
+  double fingersCount = 0;
+  // int rotationRate = 0;
+  double carWidth = Get.width, carHeight = 270,carLeft=0,carRight=0;
 
 
   bool carIsBig = false, carOrdered = false, detailsView = true;
@@ -73,12 +73,12 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
               GestureDetector(
                 onVerticalDragUpdate: (details) {
                   if (details.delta.dy < 0) {
-                    if (i != 1 ) {
+                    if (i != 1&&fingersCount <2 ) {
                       startAnimate(details);
                       i++;
                     }
                   } else {
-                    if (i != 1 ) {
+                    if (i != 1&&carIsBig ) {
                       backAnimate();
                       i++;
                     }
@@ -271,6 +271,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
   void startAnimate(DragUpdateDetails details) {
     Timer.periodic(Durations.short1, (timer) {
       detailsView = true;
+      carIsBig = true;
       if (indexOf360Image != 6) {
         updateIndexAndHeight();
         setState(() {});
@@ -278,6 +279,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
         carHeight += 50;
         setState(() {});
       } else {
+        updateIndexAndHeight();
         fadeDetails();
         timer.cancel();
         setState(() {});
@@ -289,7 +291,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
   void updateIndexAndHeight() {
     if (indexOf360Image < 6) {
       indexOf360Image++;
-    } else {
+    } else if(indexOf360Image > 6) {
       indexOf360Image--;
     }
 
@@ -297,7 +299,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
       carHeight += 50;
     }
 
-    carIsBig = true;
+
   }
 
   Widget _buildInfoCard(String iconPath, String title, String subtitle) {
@@ -307,7 +309,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
         borderRadius: BorderRadius.circular(20),
         color: Const.paigeColor.withOpacity(0.6),
       ),
-      width: 180,
+      width: Get.width/2-30,
       height: 110,
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -338,7 +340,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
         borderRadius: BorderRadius.circular(20),
         color: Const.mainColor.withOpacity(0.5),
       ),
-      width: 180,
+      width: Get.width/2-30,
       height: 110,
       padding: const EdgeInsets.all(10),
       child: Row(
@@ -416,16 +418,19 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
       right: carRight,
       child: Listener(
         onPointerDown: (_) => fingersCount++,
-        onPointerUp: (_) => fingersCount--,
+        onPointerUp: (_) => fingersCount-=2,
+        // onPointerCancel: (_)=>fingersCount--,
         onPointerMove: (event) {
-          if (enableRotation && fingersCount == 1 && !carIsBig ) {
+          print(fingersCount);
+          if (enableRotation && fingersCount < 2 && !carIsBig ) {
+            fingersCount+=0.25;
             setState(() {
               if (event.delta.dx > 0) {
                 indexOf360Image = (indexOf360Image + 1) % 24;
               } else {
                 indexOf360Image = (indexOf360Image - 1 + 24) % 24;
               }
-              rotationRate = (rotationRate + 1) % 3;
+              // rotationRate = (rotationRate + 1) % 3;
             });
           }
         },
@@ -601,7 +606,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
   }
 
   void resetHeightAndFadeDetails(Timer timer) {
-    carHeight = 250;
+    carHeight = 270;
 
     fadeDetails();
     timer.cancel();
