@@ -156,7 +156,7 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "${Random().nextInt(500)} AED ",
+                                  widget.carModel.carPrice.toString()+" AED ",
                                   style: Styles.headLineStyle3.copyWith(color: Colors.white),
                                 ),
                                 Text(

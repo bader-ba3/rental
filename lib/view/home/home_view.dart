@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rental/view/home/widget/home_app_bar_widget.dart';
+import 'package:rental/view/home/widget/home_button_widget.dart';
+import 'package:rental/view/home/widget/map_widget.dart';
 
-import '../home_page/widget/home_app_bar_widget.dart';
-import '../home_page/widget/home_button_widget.dart';
-import '../home_page/widget/map_widget.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -17,7 +17,7 @@ class _HomeViewState extends State<HomeView> {
     return const Stack(
       children: [
         MapWidget(),
-        ExamplePage(),
+        AppBarWidget(),
         Align(
             alignment: Alignment.bottomCenter,
             child: Padding(

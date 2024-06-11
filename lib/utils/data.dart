@@ -8,6 +8,7 @@ List<CarModel> carList = [
   CarModel(
     carName: "MAZDA3",
     carModule: "HATCHBACK",
+    carPrice: "200",
     carColor: [
       CarColor(
         images: [
@@ -47,6 +48,7 @@ imagesFile:[],
   CarModel(
     carName: "MAZDA3",
     carModule: "HATCHBACK",
+    carPrice: "500",
     carColor: [
       CarColor(images: [
         "$baseURl/media/o41bpx5h/mazda3_bpl1_bekalab_46v_by9_ext_360_24_transparentpng_0001.png",
@@ -83,6 +85,7 @@ imagesFile:[],
   CarModel(
     carName: "MAZDA3",
     carModule: "HATCHBACK",
+    carPrice: "250",
     carColor: [
       CarColor(images: [
         '$baseURl/media/evvka2z2/mazda3_bpl1_bekalab_41w_by9_ext_360_24_transparentpng_0001.png',
@@ -119,6 +122,7 @@ imagesFile:[],
   CarModel(
     carName: "Mazda MX-5",
     carModule: "Hardtop Convertible",
+    carPrice: "100",
     carColor: [
       CarColor(
         imagesFile:[],
@@ -159,6 +163,7 @@ imagesFile:[],
   CarModel(
     carName: "Mazda MX-5",
     carModule: "Hardtop Convertible",
+    carPrice: "300",
     carColor: [
       CarColor(
         imagesFile:[],
@@ -199,6 +204,7 @@ imagesFile:[],
   CarModel(
     carName: "Mazda MX-5",
     carModule: "Hardtop Convertible",
+    carPrice: "450",
     carColor: [
       CarColor(
         imagesFile:[],

@@ -2,11 +2,12 @@ import 'dart:io';
 import 'dart:ui';
 
 class CarModel {
-  String? carName, carEngine, carDetails,carModule;
+  String? carName, carEngine, carDetails,carModule,carPrice;
   List<CarColor>?carColor=[];
 
   CarModel({
     this.carName,
+    this.carPrice,
     this.carEngine,
     this.carColor,
     this.carDetails,
@@ -19,6 +20,7 @@ class CarModel {
     carColor = json['carColor']?? [];
     carDetails = json['carDetails']?? '';
     carModule=json['carModule']?? '';
+    carPrice=json['carPrice']?? '';
 
   }
 
@@ -29,6 +31,7 @@ class CarModel {
       'carColor': carColor?.map((e) => e.toJson()).toList(),
       'carDetails': carDetails,
       'carModule':carModule,
+      'carPrice':carPrice,
     };
   }
 }

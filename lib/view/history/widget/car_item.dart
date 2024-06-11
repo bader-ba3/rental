@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:get/get.dart';
+import 'package:rental/model/reservation_model.dart';
 import '../../../../Utils/app_style.dart';
 import '../../../utils/const.dart';
 import '../../../model/Car_Model.dart';
@@ -12,7 +13,7 @@ class CarItemWidget extends StatefulWidget {
 
   @override
   State<CarItemWidget> createState() => _CarItemWidgetState();
-  final CarModel carModel;
+  final ReservationModel carModel;
 }
 
 class _CarItemWidgetState extends State<CarItemWidget> {
@@ -51,9 +52,9 @@ class _CarItemWidgetState extends State<CarItemWidget> {
                 SizedBox(
                   height: 150,
                   child: Hero(
-                    tag: widget.carModel.carColor![0].images![10],
+                    tag: widget.carModel.carImage.toString(),
                     child: Image.network(
-                      widget.carModel.carColor![0].images![10],
+                      widget.carModel.carImage.toString(),
                     ),
                   ),
                 ),
@@ -66,7 +67,7 @@ class _CarItemWidgetState extends State<CarItemWidget> {
                       style: Styles.headLineStyle4.copyWith(color: Colors.white,fontSize: 22),
                     ),
                     Text(
-                      widget.carModel.carModule!,
+                      widget.carModel.carName!,
                       maxLines: 2,
                       style: Styles.headLineStyle4.copyWith(),
                     ),
@@ -88,7 +89,7 @@ class _CarItemWidgetState extends State<CarItemWidget> {
                         children: [
                           const Spacer(),
                           Text(
-                            "rental Date: "+DateTime.now().toString().split(" ")[0],
+                            "rental Date: "+ widget.carModel.pickupDate.toString(),
                             style: Styles.headLineStyle4.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
                           ),
                           Container(
@@ -105,7 +106,7 @@ class _CarItemWidgetState extends State<CarItemWidget> {
                             width: 5,
                           ),
                           Text(
-                            "return Date: "+DateTime.now().toString().split(" ")[0],
+                            "return Date: "+widget.carModel.returnDate.toString(),
                             style: Styles.headLineStyle4.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
@@ -119,7 +120,7 @@ class _CarItemWidgetState extends State<CarItemWidget> {
                           Expanded(
                             child: InkWell(
                               onTap: (){
-                                Get.to(()=>CarPage(carModel: widget.carModel));
+                              //  Get.to(()=>CarPage(carModel: widget.carModel));
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(5),

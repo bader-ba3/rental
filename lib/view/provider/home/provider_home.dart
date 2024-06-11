@@ -31,6 +31,12 @@ class ProviderHomeView extends StatelessWidget {
             tabs: <Widget>[
               Tab(
                 icon: Text(
+                  "pending",
+                  style: Styles.headLineStyle3.copyWith(color: Colors.white),
+                ),
+              ),
+              Tab(
+                icon: Text(
                   "Active",
                   style: Styles.headLineStyle3.copyWith(color: Colors.white),
                 ),
@@ -60,6 +66,9 @@ class ProviderHomeView extends StatelessWidget {
             ),
             Center(
               child: TapWidget(tapIndex: 2),
+            ),
+            Center(
+              child: TapWidget(tapIndex: 3),
             ),
           ],
         ),

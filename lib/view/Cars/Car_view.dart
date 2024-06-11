@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:rental/controller/home_page_view_model.dart';
 import 'package:rental/view/home_page/home_page_view.dart';
 import 'package:slider_button/slider_button.dart';
 
@@ -222,21 +223,18 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                 buttonColor: Const.mainColor,
                                 radius: 10,
                                 action: () async {
+                                  HomePageViewModel homePageViewModel = Get.find<HomePageViewModel>();
+                                  homePageViewModel.addReservation(price: widget.carModel.carPrice.toString(), carName: widget.carModel.carName.toString(), carImage: widget.carModel.carColor!.first.images![0]);
                                   backAnimate();
                                   carOrdered=true;
                                   Timer(const Duration(seconds: 1), () {
                                     carLeft=-400;
                                     carRight=400;
-                                    setState(() {
-
-                                    });
+                                    setState(() {});
                                   },);
-
                                   carLeft=100;
                                   carRight=-100;
-                                  setState(() {
-
-                                  });
+                                  setState(() {});
                                   Timer(const Duration(seconds: 3), () {
                                     Get.offAll(const HomePageView());
                                   },);

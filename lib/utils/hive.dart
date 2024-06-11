@@ -6,19 +6,21 @@ class HiveDataBase {
     await Hive.initFlutter();
     accountBox=await Hive.openBox<String>("Account");
   }
-  static ({String name,String gender,String email,String mobile}) getUserData(){
+  static ({String name,String gender,String email,String mobile,String licenseImage}) getUserData(){
      String mobile = accountBox.get("mobile").toString();
      String name = accountBox.get("name").toString();
      String gender =accountBox.get("gender").toString();
      String email =accountBox.get("email").toString();
-     return (name: name,gender: gender,email: email,mobile:mobile);
+     String licenseImage =accountBox.get("licenseImage").toString();
+     return (name: name,gender: gender,email: email,mobile:mobile,licenseImage:licenseImage);
   }
 
-  static  setUserData(({String name,String gender,String email,String mobile}) data)async{
+  static  setUserData(({String name,String gender,String email,String mobile,String licenseImage}) data)async{
     await accountBox.put("mobile",data.mobile);
     await accountBox.put("name",data.name);
     await accountBox.put("gender",data.gender);
     await accountBox.put("email",data.email);
+    await accountBox.put("licenseImage",data.licenseImage);
      return true;
   }
 
@@ -27,6 +29,7 @@ class HiveDataBase {
     accountBox.delete("name");
     accountBox.delete("gender");
     accountBox.delete("email");
+    accountBox.delete("licenseImage");
   }
 
 

@@ -1,4 +1,6 @@
 
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rental/controller/home_page_view_model.dart';
@@ -18,6 +20,7 @@ class GlowingButton extends StatefulWidget {
 class _GlowingButtonState extends State<GlowingButton> {
   Color color1 =  Const.paigeToBrownColor;
   Color color2 = Const.paigeColor;
+  HomePageViewModel homePageViewModel =Get.find<HomePageViewModel>();
   var glowing = true;
   var scale = 1.0;
   @override
@@ -25,8 +28,17 @@ class _GlowingButtonState extends State<GlowingButton> {
 
     return InkWell(
       onTap: (){
-        if(Get.find<HomePageViewModel>().carIsLoading) {
-          Get.to(const CarHome());
+        String? _ = homePageViewModel.checkFilter();
+        if(_!=null){
+          CherryToast.error(
+            title: Text(_.toString()),
+            animationType: AnimationType.fromTop,
+            animationDuration: Duration(milliseconds: 300),
+          ).show(context);
+        }else {
+          if (Get.find<HomePageViewModel>().carIsLoading) {
+            Get.to(const CarHome());
+          }
         }
       },
       child: AnimatedContainer(
