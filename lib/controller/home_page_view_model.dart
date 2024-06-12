@@ -56,6 +56,7 @@ class HomePageViewModel extends GetxController{
         WidgetsFlutterBinding.ensureInitialized().waitUntilFirstFrameRasterized.then((value) => update());
       });
     });
+
     Future.sync(() async {
       await Geolocator.requestPermission();
       Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((value) {

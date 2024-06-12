@@ -23,7 +23,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateMixin {
   String? data;
-  String redirectLink = "rak://com.ba3.rak";
+  String redirectLink = "rental://com.ba3.rental";
   StreamSubscription? _sub;
   late UaePass uaePassPlugin = UaePass();
 
@@ -33,7 +33,7 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
     _handleIncomingLinks();
     _handleInitialUri();
     uaePassPlugin = UaePass();
-    uaePassPlugin.setUpEnvironment("sandbox_stage", "sandbox_stage", "rak","a",redirectUri: redirectLink);
+    uaePassPlugin.setUpEnvironment("sandbox_stage", "sandbox_stage", "rental","a",redirectUri: redirectLink);
 
   }
 
