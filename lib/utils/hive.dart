@@ -12,6 +12,7 @@ class HiveDataBase {
      String gender =accountBox.get("gender").toString();
      String email =accountBox.get("email").toString();
      String licenseImage =accountBox.get("licenseImage").toString();
+     // String paspoartImage =accountBox.get("licenseImage").toString();
      return (name: name,gender: gender,email: email,mobile:mobile,licenseImage:licenseImage);
   }
 

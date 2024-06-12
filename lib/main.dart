@@ -9,6 +9,7 @@ import 'package:rental/firebase_options.dart';
 import 'package:rental/utils/const.dart';
 import 'package:rental/utils/hive.dart';
 import 'package:rental/view/home_page/home_page_view.dart';
+import 'package:rental/view/onboarding/onboarding.dart';
 import 'package:rental/view/profile/profile_view.dart';
 import 'package:rental/view/sign_in/sign_in_view.dart';
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.dark(primary: Const.paigeColor)
       ),
       initialBinding: GetBinding(),
-      home: SignInView()
+      home: OnboardingView()
     );
   }
 }

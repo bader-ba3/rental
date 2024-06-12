@@ -62,6 +62,7 @@ dependencies:
   cloud_firestore: ^5.0.0
   flutter_cache_manager: ^3.3.1
   cherry_toast:
+  video_player:
 
 
 dev_dependencies:
