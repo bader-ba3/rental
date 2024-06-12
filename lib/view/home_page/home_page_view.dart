@@ -47,7 +47,6 @@ class _HomePageViewState extends State<HomePageView> {
                     ProviderHomeView(),
                     ProviderLogsView(),
                     ProviderProfileView(),
-                    OnboardingView(),
                   ],
                 ),
               ),
@@ -90,12 +89,8 @@ class _HomePageViewState extends State<HomePageView> {
                           title: Text("Home"),
                         ),
                         SalomonBottomBarItem(
-                          icon: Icon(Icons.card_travel),
-                          title: Text("Likes"),
-                        ),
-                        SalomonBottomBarItem(
                           icon: Icon(Icons.emoji_transportation),
-                          title: Text("History"),
+                          title: Text("analytics"),
                         ),
                         SalomonBottomBarItem(
                           icon: Icon(Icons.person),

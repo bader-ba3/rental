@@ -2,20 +2,22 @@ import 'dart:io';
 import 'dart:ui';
 
 class CarModel {
-  String? carName, carEngine, carDetails,carModule,carPrice;
+  String? carName, carEngine, carDetails,carModule,carPrice,carId;
   List<CarColor>?carColor=[];
 
   CarModel({
-    this.carName,
-    this.carPrice,
-    this.carEngine,
-    this.carColor,
-    this.carDetails,
-    this.carModule,
+    required  this.carName,
+    required this.carId,
+    required this.carPrice,
+    required this.carEngine,
+    required this.carColor,
+    required this.carDetails,
+    required this.carModule,
   });
 
   CarModel.fromJson(Map<String, dynamic> json) {
     carName = json['carName']?? '';
+    carId = json['carId']?? '';
     carEngine = json['carEngine']?? '';
     carColor = json['carColor']?? [];
     carDetails = json['carDetails']?? '';
@@ -27,6 +29,7 @@ class CarModel {
   Map<String, dynamic> toJson() {
     return {
       'carName': carName,
+      'carId': carId,
       'carEngine': carEngine,
       'carColor': carColor?.map((e) => e.toJson()).toList(),
       'carDetails': carDetails,

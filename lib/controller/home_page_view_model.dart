@@ -7,9 +7,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rental/model/reservation_model.dart';
+import 'package:rental/model/small_car_model.dart';
 import 'package:rental/utils/hive.dart';
 
 import '../model/Car_Model.dart';
+import '../utils/const.dart';
 import '../utils/data.dart';
 import '../utils/get_bytes_from_asset.dart';
 import '../utils/services.dart';
@@ -18,6 +20,7 @@ class HomePageViewModel extends GetxController{
   Map<MarkerId, Marker> markers = {};
   Completer<GoogleMapController> mapController = Completer();
   List<ReservationModel> allReservation = [];
+  List<SmallCarModel> allCars = [];
   Position? userPosition ;
 
   bool carIsLoading=false;
@@ -36,6 +39,14 @@ class HomePageViewModel extends GetxController{
       }
       WidgetsFlutterBinding.ensureInitialized().waitUntilFirstFrameRasterized.then((value) => update());
     });
+    FirebaseFirestore.instance.collection("Cars").snapshots().listen((event) {
+      print("carListen");
+      allCars.clear();
+      for(var i in event.docs){
+        allCars.add(SmallCarModel.fromJson(i.data()));
+      }
+      WidgetsFlutterBinding.ensureInitialized().waitUntilFirstFrameRasterized.then((value) => update());
+    });
     Future.sync(() async {
       await Geolocator.requestPermission();
       Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((value) {
@@ -47,7 +58,6 @@ class HomePageViewModel extends GetxController{
         // });
       });
     });
-
   }
 
   void setMarker(LatLng location, String path, String uID,String bearing,{int? size}) {
@@ -80,21 +90,31 @@ class HomePageViewModel extends GetxController{
   Future<void> addReservation({
     required String price,
     required String carName,
-    required String carImage,
+    required String carDes,
+    required String carId,
+    required String carImage0,
+    required String carImage3,
+    required String carImage13,
+    required String addOns,
   }) async{
     ReservationModel model = ReservationModel(
         id: "R${Random().nextInt(9999999)}",
         userName: HiveDataBase.getUserData().name,
         carName: carName,
+      carDes: carDes,
+      carId: carId,
         licenseImage:HiveDataBase.getUserData().licenseImage,
-        addOns: "addOns",
-        carImage: carImage,
+        addOns: addOns,
+        carImage0: carImage0,
+        carImage13: carImage13,
+        carImage3: carImage3,
         time: startAndEndDate!.end.difference(startAndEndDate!.start).inDays.toString(),
         price: price,
         pickupDate: startAndEndDate!.start.toString().split(" ")[0],
         returnDate: startAndEndDate!.end.toString().split(" ")[0],
         address: address,
-        reservationStatus: "reservationStarted"
+        reservationStatus: Const.reservationPending,
+        carStatus: Const.carStatusIdle,
     );
     FirebaseFirestore.instance.collection("Reservation").doc(model.id).set(model.toJson());
   }
@@ -102,20 +122,12 @@ class HomePageViewModel extends GetxController{
   Future<void> getImages() async {
     for (CarModel element in carList) {
         for (var imagesElement in element.carColor![0].images!) {
-          print(imagesElement);
           await Utils().saveImage(imagesElement).then((value) {
-            carList[carList.indexOf(element)]
-                .carColor![0]
-                .imagesFile!
-                .add(value);
-            // print(value.path);
-            // imagesElement =value;
-            // print(imagesElement);
+            carList[carList.indexOf(element)].carColor![0].imagesFile!.add(value);
           });
         }
-
     }
-carIsLoading=true;
+    carIsLoading=true;
     print("--------------done");
   }
 
@@ -128,4 +140,16 @@ carIsLoading=true;
     }
     return null;
   }
+
+  void changeReservationStatus({required String id, required String status}) {
+    FirebaseFirestore.instance.collection("Reservation").doc(id).update({
+      "reservationStatus":status
+    });
+  }
+  void changeCarStatus({required String id, required String status}) {
+    FirebaseFirestore.instance.collection("Cars").doc(id).update({
+      "status":status
+    });
+  }
+
 }

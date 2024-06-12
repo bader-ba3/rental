@@ -6,6 +6,7 @@ import '../model/Car_Model.dart';
 const String baseURl = "https://mazda-uae.com";
 List<CarModel> carList = [
   CarModel(
+    carId: '00000',
     carName: "MAZDA3",
     carModule: "HATCHBACK",
     carPrice: "200",
@@ -46,6 +47,7 @@ imagesFile:[],
     carEngine: "153 HP @ 6000 RPM",
   ),
   CarModel(
+    carId: '00001',
     carName: "MAZDA3",
     carModule: "HATCHBACK",
     carPrice: "500",
@@ -83,6 +85,7 @@ imagesFile:[],
     carEngine: "153 HP @ 6000 RPM",
   ),
   CarModel(
+    carId: '00002',
     carName: "MAZDA3",
     carModule: "HATCHBACK",
     carPrice: "250",
@@ -120,6 +123,7 @@ imagesFile:[],
     carEngine: "153 HP @ 6000 RPM",
   ),
   CarModel(
+    carId: '00003',
     carName: "Mazda MX-5",
     carModule: "Hardtop Convertible",
     carPrice: "100",
@@ -161,6 +165,7 @@ imagesFile:[],
     carEngine: "",
   ),
   CarModel(
+    carId: '00004',
     carName: "Mazda MX-5",
     carModule: "Hardtop Convertible",
     carPrice: "300",
@@ -202,6 +207,7 @@ imagesFile:[],
     carEngine: "",
   ),
   CarModel(
+    carId: '00005',
     carName: "Mazda MX-5",
     carModule: "Hardtop Convertible",
     carPrice: "450",

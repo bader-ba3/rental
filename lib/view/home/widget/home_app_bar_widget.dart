@@ -32,10 +32,11 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     }
     super.initState();
   }
-TextEditingController searchTextController =TextEditingController();
+
+  TextEditingController searchTextController = TextEditingController();
   bool isSettingOpened = false;
   bool isSearchOpened = false;
-List placeSearchList = [];
+  List placeSearchList = [];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,72 +54,78 @@ List placeSearchList = [];
                   child: Container(
                     height: 65,
                     child: isSearchOpened
-                    ?Container(
-                      decoration: BoxDecoration(color: Const.mainColor, borderRadius: isSearchOpened ? BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
-                      child: Row(
-                        children: [
-                          SizedBox(width: 10,),
-                          Expanded(
-                            child: TextFormField(
-                              autofocus: true,
-                              style: TextStyle(color: Colors.white),
-                              controller: searchTextController,
-                              onChanged: (_) async {
-                                PlaceViewModel placeViewModel = Get.find();
-                                placeSearchList  = await placeViewModel.getPlace(_)??[];
-                                print(placeSearchList);
-                                setState(() {
-
-                                });
-                               // print(placeViewModel)
-                              },
+                        ? Container(
+                            decoration: BoxDecoration(color: Const.mainColor, borderRadius: isSearchOpened ? BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    autofocus: true,
+                                    style: TextStyle(color: Colors.white),
+                                    controller: searchTextController,
+                                    onChanged: (_) async {
+                                      PlaceViewModel placeViewModel = Get.find();
+                                      placeSearchList = await placeViewModel.getPlace(_) ?? [];
+                                      print(placeSearchList);
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                InkWell(
+                                    onTap: () {
+                                      isSearchOpened = false;
+                                      searchTextController.clear();
+                                      setState(() {});
+                                    },
+                                    child: Icon(Icons.close, color: Colors.white)),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                              ],
+                            ),
+                          )
+                        : InkWell(
+                            onTap: () {
+                              isSearchOpened = !isSearchOpened;
+                              if (isSettingOpened) {
+                                isSettingOpened = false;
+                              }
+                              setState(() {});
+                            },
+                            child: Container(
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(color: Const.mainColor, borderRadius: isSearchOpened ? BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
+                              // borderRadius: BorderRadius.circular(15)),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(
+                                    Icons.search,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      controller.address ?? "search Location",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          SizedBox(width: 10,),
-                          InkWell(
-                              onTap: (){
-                                isSearchOpened = false;
-                                searchTextController.clear();
-                                setState(() {
-
-                                });
-                              },
-                              child: Icon(Icons.close,color:Colors.white)),
-                          SizedBox(width: 10,),
-                        ],
-                      ),
-                    )
-                    :InkWell(
-                      onTap: () {
-                        isSearchOpened = !isSearchOpened;
-                        if (isSettingOpened) {
-                          isSettingOpened = false;
-                        }
-                        setState(() {});
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(color: Const.mainColor, borderRadius: isSearchOpened ? BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
-                        // borderRadius: BorderRadius.circular(15)),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.search,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              controller.address??"search Location",
-                              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   ),
                 ),
                 SizedBox(
@@ -247,28 +254,40 @@ List placeSearchList = [];
                   child: ListView.builder(
                     itemCount: placeSearchList.length,
                     itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap: (){
-                          isSearchOpened = false;
-                          controller.address = placeSearchList[index];
-                          setState((){});
-                        },
-                        child: Container(
-                            height: 50,
-                            color: Colors.white12,
-                            child: Row(
-                              children: [
-                                SizedBox(width: 10,),
-                                SizedBox(
-                                    width: MediaQuery.sizeOf(context).width-50,
-                                    child: Text(placeSearchList[index],style: TextStyle(color: Colors.white,fontSize: 18,),overflow: TextOverflow.ellipsis,)),
-                              ],
-                            )),
-                      ),
-                    );
-                  },),
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            isSearchOpened = false;
+                            controller.address = placeSearchList[index];
+                            controller.markers.removeWhere((key, value) => value.markerId.value == 'marker_from');
+                            controller.update();
+                            setState(() {});
+                          },
+                          child: Container(
+                              height: 50,
+                              color: Colors.white12,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                      width: MediaQuery.sizeOf(context).width - 50,
+                                      child: Text(
+                                        placeSearchList[index],
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      )),
+                                ],
+                              )),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               )
             else

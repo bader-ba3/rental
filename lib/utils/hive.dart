@@ -1,10 +1,14 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:rental/model/bank_card_model.dart';
 
 class HiveDataBase {
   static late Box<String> accountBox;
+  static late Box<BankCardModel> bankCardModelBox;
   static Future<void> init() async {
     await Hive.initFlutter();
     accountBox=await Hive.openBox<String>("Account");
+    bankCardModelBox=await Hive.openBox<BankCardModel>("AllBankCard");
+
   }
   static ({String name,String gender,String email,String mobile,String licenseImage}) getUserData(){
      String mobile = accountBox.get("mobile").toString();

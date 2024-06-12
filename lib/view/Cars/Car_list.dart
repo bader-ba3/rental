@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rental/controller/home_page_view_model.dart';
+import 'package:rental/utils/data.dart';
 import 'package:rental/view/Cars/widget/app_bottom.dart';
 import '../../../../Utils/app_style.dart';
 import '../../utils/const.dart';
@@ -8,15 +10,17 @@ import '../../model/Car_Model.dart';
 import 'Car_view.dart';
 
 class CarViewWidget extends StatefulWidget {
-  const CarViewWidget({super.key, required this.carModel, required this.index});
+  const CarViewWidget({super.key, required this.carId, required this.index});
 
   @override
   State<CarViewWidget> createState() => _CarViewWidgetState();
-  final CarModel carModel;
+  final String carId;
   final int index;
 }
 
 class _CarViewWidgetState extends State<CarViewWidget> {
+  HomePageViewModel homePageViewModel = Get.find<HomePageViewModel>();
+  late CarModel carModel ;
   @override
   void initState() {
     super.initState();
@@ -24,6 +28,7 @@ class _CarViewWidgetState extends State<CarViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    carModel = carList.firstWhere((element) => element.carId == widget.carId);
     return Container(
       height: 200,
       width: Get.width,
@@ -45,12 +50,12 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                 SizedBox(
                   height: 190,
                   child: Hero(
-                    tag: widget.carModel.carColor![widget.index].images![1],
+                    tag: carModel.carColor![widget.index].images![1],
                     child:Image.file(
-                      ( widget.carModel.carColor![widget.index].imagesFile![3]),
+                      ( carModel.carColor![widget.index].imagesFile![3]),
                       errorBuilder: (context, error, stackTrace) {
                         return Image.network(
-                          widget.carModel.carColor![widget.index].images![3],
+                          carModel.carColor![widget.index].images![3],
                           errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
                                 "assets/px/mazda3Hatchback_1.png");
@@ -76,12 +81,12 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.carModel.carName!,
+                    carModel.carName!,
                     maxLines: 2,
                     style: Styles.headLineStyle3.copyWith(color: Const.mainColor),
                   ),
                   Text(
-                    widget.carModel.carModule!,
+                    carModel.carModule!,
                     maxLines: 2,
                     style: Styles.headLineStyle4.copyWith(),
                   ),
@@ -136,7 +141,7 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                         child: AppBottom(
                             text: "Detail",
                             onTap: () {
-                              Get.to(CarPage(carModel: widget.carModel));
+                              Get.to(()=>CarPage(carId: widget.carId,));
                             }),
                       ),
                       const SizedBox(
@@ -156,7 +161,7 @@ class _CarViewWidgetState extends State<CarViewWidget> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  widget.carModel.carPrice.toString()+" AED ",
+                                  carModel.carPrice.toString()+" AED ",
                                   style: Styles.headLineStyle3.copyWith(color: Colors.white),
                                 ),
                                 Text(

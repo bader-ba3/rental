@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rental/controller/home_page_view_model.dart';
@@ -10,20 +9,17 @@ import '../../../utils/data.dart';
 import '../../../utils/services.dart';
 
 class TapWidget extends StatefulWidget {
-  TapWidget({super.key, required this.tapIndex});
+  TapWidget({super.key, required this.dataType});
 
-  int tapIndex;
+  String dataType;
 
   @override
   State<TapWidget> createState() => _TapWidgetState();
 }
 
 class _TapWidgetState extends State<TapWidget> {
-
   @override
   void initState() {
-    // TODO: implement initState
-    getInit();
     super.initState();
   }
 
@@ -32,32 +28,33 @@ class _TapWidgetState extends State<TapWidget> {
         (index) => false,
   );
 
-  getInit() async {
-    for (var element in carList) {
-      for (var imageFile in element.carColor![0].imagesFile!) {
-        await Utils().loadFileImage(imageFile, context);
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomePageViewModel>(builder: (controller) {
       List<ReservationModel> dataList = [];
-      if(widget.tapIndex == 0){
-        dataList = controller.allReservation.where((element) => element.reservationStatus=="reservationPending").toList();
-      }else if (widget.tapIndex == 1){
-        dataList = controller.allReservation.where((element) => element.reservationStatus=="reservationStarted").toList();
-      }else if (widget.tapIndex == 2){
-        dataList = controller.allReservation.where((element) => element.reservationStatus=="reservationEnded").toList();
-      }else if (widget.tapIndex == 3){
-        dataList = controller.allReservation.where((element) => element.reservationStatus=="reservationCanceled").toList();
-      }
+      print(widget.dataType);
+      dataList= controller.allReservation.where((element) => element.reservationStatus == widget.dataType ).toList();
+
+      // if(widget.dataType == "all"){
+      //   dataList= controller.allReservation.where((element) => element.reservationStatus == Const.reservationEnded ||element.reservationStatus == Const.reservationCanceled &&element.carStatus == Const.carStatusIdle).toList();
+      //   _type="available";
+      // }else if(widget.dataType == Const.carStatusMaintenance){
+      //   dataList= controller.allReservation.where((element) => element.carStatus == Const.carStatusMaintenance ).toList();
+      //   _type="maintenance";
+      // }else if(widget.dataType == Const.reservationPending){
+      //   dataList= controller.allReservation.where((element) => element.reservationStatus == Const.reservationPending ).toList();
+      //   _type="pending";
+      // }else{
+      //   dataList= controller.allReservation.where((element) => element.reservationStatus == widget.dataType ).toList();
+      //   _type="active";
+      // }
       return dataList.isEmpty
         ?Center(child: Text("No Data",style: TextStyle(color: Colors.black),),)
         :ListView.builder(
         itemCount: dataList.length,
         itemBuilder: (BuildContext context, int index) {
+          ReservationModel model = dataList[index];
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 25),
             child: GestureDetector(
@@ -80,11 +77,7 @@ class _TapWidgetState extends State<TapWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: widget.tapIndex == 0
-                          ? 120
-                          : widget.tapIndex == 2
-                          ? 90
-                          : 70,
+                      height:  70+(model.addOns!=""?50:0),
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
@@ -115,25 +108,18 @@ class _TapWidgetState extends State<TapWidget> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                if (widget.tapIndex == 0)
+                                if ( (model.reservationStatus == Const.reservationPending ||model.reservationStatus == Const.reservationStarted)&& model.addOns!="")
                                   Text(
                                     "Add-ons" /*widget.carModel.carModule!*/,
                                     maxLines: 1,
                                     style: Styles.headLineStyle4.copyWith(
                                         color: Const.paigeToBrownColor),
                                   ),
-                                if (widget.tapIndex == 0)
+                                if (( model.reservationStatus == Const.reservationPending ||model.reservationStatus == Const.reservationStarted) && model.addOns!="")
                                   Text(
-                                    "With three suitcases and a refrigerator",
+                                    "With "+model.addOns.toString(),
                                     maxLines: 2,
                                     style: Styles.headLineStyle4.copyWith(),
-                                  ),
-                                if (widget.tapIndex == 2)
-                                  Text(
-                                    "Crashed" /*widget.carModel.carModule!*/,
-                                    maxLines: 1,
-                                    style: Styles.headLineStyle4.copyWith(
-                                        color: Const.paigeToBrownColor),
                                   ),
                               ],
                             ),
@@ -143,21 +129,26 @@ class _TapWidgetState extends State<TapWidget> {
                             right: -50,
                             child: SizedBox(
                               height: 135,
-
-                              child: Image.file(
-                                (carList[index].carColor![0]
-                                    .imagesFile![3]),
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.network(
-                                    carList[index].carColor![0]
-                                        .images![3],
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.asset(
-                                          "assets/px/mazda3Hatchback_1.png");
-                                    },
-                                  );
+                              child: FutureBuilder(
+                                future: Utils().saveImage(model.carImage3.toString()),
+                                builder: (context, snapshot) {
+                                  if(snapshot.data==null)
+                                    return SizedBox();
+                                  return Image.file(snapshot.data!);
                                 },
                               ),
+                              // child: Image.file(
+                              //   (model.carImage0!),
+                              //   errorBuilder: (context, error, stackTrace) {
+                              //     return Image.network(
+                              //       model.carImage.toString(),
+                              //       errorBuilder: (context, error, stackTrace) {
+                              //         return Image.asset(
+                              //             "assets/px/mazda3Hatchback_1.png");
+                              //       },
+                              //     );
+                              //   },
+                              // ),
                               /*    child: Image.network(
                               carList[index].carColor![0].images![3],
                             ),*/
@@ -167,8 +158,7 @@ class _TapWidgetState extends State<TapWidget> {
                       ),
                     ),
                     AnimatedCrossFade(
-                      firstChild: widget.tapIndex == 0
-                          ? Column(
+                      firstChild:  Column(
                         children: [
                           const SizedBox(
                             height: 5,
@@ -188,7 +178,7 @@ class _TapWidgetState extends State<TapWidget> {
                                   MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "Ali Dabol",
+                                      model.userName!,
                                       style: Styles.textStyle,
                                     ),
                                     Text(
@@ -240,19 +230,19 @@ class _TapWidgetState extends State<TapWidget> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const TextIconWidget(
+                               TextIconWidget(
                                 icon: Icons.location_on_outlined,
-                                text: "RAK",
+                                text: model.address.toString(),
                               ),
                               const Spacer(),
                               TextIconWidget(
                                 icon: Icons.access_time_outlined,
-                                text: "${Random().nextInt(8)} day",
+                                text: "${model.time} day",
                               ),
                               const Spacer(),
                               TextIconWidget(
                                 icon: Icons.credit_card_outlined,
-                                text: "\$ ${Random().nextInt(350)}",
+                                text: "${model.price} AED",
                               ),
                             ],
                           ),
@@ -267,7 +257,7 @@ class _TapWidgetState extends State<TapWidget> {
                               ),
                               const Spacer(),
                               Text(
-                                "15/7/2024",
+                                model.pickupDate.toString(),
                                 style: Styles.headLineStyle4
                                     .copyWith(color: Colors.black),
                               )
@@ -284,7 +274,7 @@ class _TapWidgetState extends State<TapWidget> {
                               ),
                               const Spacer(),
                               Text(
-                                "20/7/2024",
+                               model.returnDate.toString(),
                                 style: Styles.headLineStyle4
                                     .copyWith(color: Colors.black),
                               )
@@ -301,146 +291,129 @@ class _TapWidgetState extends State<TapWidget> {
                               ),
                               const Spacer(),
                               Text(
-                                "REV11788468453",
+                                model.id.toString(),
                                 style: Styles.headLineStyle4
                                     .copyWith(color: Colors.black),
                               ),
                             ],
-                          ),
-                        ],
-                      )
-                          : widget.tapIndex == 2
-                          ? Column(
-                        children: [
-                          const SizedBox(
-                            height: 5,
                           ),
                           Divider(
                             color: Const.mainColor.withOpacity(0.3),
                           ),
-                          Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "External Damage Assessment:\nFront Bumper: Significant damage including cracks and dents on the right side.\nRear Bumper: Minor scratches.\nDoors: Front right door has noticeable dents, other doors are intact.",
-                                style: Styles.headLineStyle4,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Divider(
-                            color: Const.mainColor.withOpacity(0.3),
-                          ),
+                          if(widget.dataType  == Const.reservationPending)
                           Row(
                             children: [
-                              Text(
-                                "Crash Date & Time",
-                                style: Styles.headLineStyle4,
-                              ),
-                              const Spacer(),
-                              Text(
-                                "${Random().nextInt(30)}/${Random().nextInt(12)}/2024",
-                                style: Styles.headLineStyle4
-                                    .copyWith(color: Colors.black),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Maintenance Number",
-                                style: Styles.headLineStyle4,
-                              ),
-                              const Spacer(),
-                              Text(
-                                "MAI11788468453",
-                                style: Styles.headLineStyle4
-                                    .copyWith(color: Colors.black),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            width: 180,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Const.paigeColor,
-
-                              border:
-                              Border.all(color: Const.paigeColor),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Row(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.center,
-                              mainAxisAlignment:
-                              MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Active",
-                                  style: Styles.headLineStyle2.copyWith(color: Colors.white),
-                                ),
-                                const SizedBox(width: 5,),
-                                const Icon(
-                                  Icons.check,
-                                  color: Colors.greenAccent,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )
-                          : Center(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              width: 180,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Const.paigeColor,
-                                border: Border.all(
-                                    color: Const.paigeColor),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Row(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.car_repair_outlined,
-                                    color: Colors.white,
+                              InkWell(
+                                onTap:(){
+                                  controller.changeReservationStatus(id:model.id! , status:Const.reservationCanceled);
+                                  },
+                                child: Container(
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Const.paigeColor,
+                                    border:
+                                    Border.all(color: Const.paigeColor),
+                                    borderRadius: BorderRadius.circular(4),
                                   ),
-                                  const SizedBox(width: 5,),
-                                  Text(
-                                    "Maintenance",
-                                    style: Styles.headLineStyle2.copyWith(color: Colors.white),
-                                  )
-                                ],
+                                  child: Row(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Cancel",
+                                        style: Styles.headLineStyle2.copyWith(color: Colors.white),
+                                      ),
+                                      const SizedBox(width: 5,),
+                                      Icon(
+                                        Icons.close,
+                                        color:Colors.red.shade700 ,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Spacer(),
+                              InkWell(
+                                onTap:(){
+                                  controller.changeReservationStatus(id:model.id! , status:Const.reservationStarted);
+                                  controller.changeCarStatus(id:model.carId! , status:Const.carStatusRented);
+                                },
+                                child: Container(
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Const.paigeColor,
+
+                                    border:
+                                    Border.all(color: Const.paigeColor),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Active",
+                                        style: Styles.headLineStyle2.copyWith(color: Colors.white),
+                                      ),
+                                      const SizedBox(width: 5,),
+                                      const Icon(
+                                        Icons.check,
+                                        color: Colors.greenAccent,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                          else
+                            InkWell(
+                              onTap:(){
+                                controller.changeReservationStatus(id:model.id! , status:Const.reservationEnded);
+                                controller.changeCarStatus(id:model.carId! , status:Const.carStatusIdle);
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Const.paigeColor,
+                                  border:
+                                  Border.all(color: Const.paigeColor),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Ended",
+                                      style: Styles.headLineStyle2.copyWith(color: Colors.white),
+                                    ),
+                                    const SizedBox(width: 5,),
+                                    Icon(
+                                      Icons.close,
+                                      color:Colors.red.shade700 ,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ],
-                        ),
+                        ],
                       ),
-                      secondChild: widget.tapIndex == 0
-                          ? Center(
+                      secondChild: Center(
                         child: Image.asset(
                           "assets/arrowDown.png",
                           height: 20,
                           color: Const.paigeColor,
                         ),
-                      )
-                          : const SizedBox(),
+                      ),
                       crossFadeState: expand[index]
                           ? CrossFadeState.showFirst
                           : CrossFadeState.showSecond,

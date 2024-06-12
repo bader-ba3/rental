@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:rental/controller/home_page_view_model.dart';
+import 'package:rental/model/small_car_model.dart';
 
 import '../../Utils/app_style.dart';
 import '../../utils/const.dart';
@@ -21,13 +24,16 @@ class CarHome extends StatefulWidget {
 
 class _CarHomeState extends State<CarHome> {
 
-bool isPriceFilterd = false;
-bool isDateFilterd = false;
-@override
+  bool isPriceFiltered = false;
+  bool isDateFiltered = false;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Const.mainColor,
-        body: SafeArea(
+      backgroundColor: Const.mainColor,
+      body: GetBuilder<HomePageViewModel>(builder: (controller) {
+        List<SmallCarModel> dataList = controller.allCars.where((element) => element.status == Const.carStatusIdle).toList();
+        return SafeArea(
           child: Column(
             children: [
               Row(
@@ -35,41 +41,41 @@ bool isDateFilterd = false;
                   BackButton(color: Colors.white,),
                   Spacer(),
                   ButtonWidget(
-                    borderRadius:15,
-                    isSelected: isPriceFilterd,
+                    borderRadius: 15,
+                    isSelected: isPriceFiltered,
                     height: 35,
                     width: 90,
-                    onTap: (){
-                      isPriceFilterd=!isPriceFilterd;
-                      setState((){});
+                    onTap: () {
+                      isPriceFiltered = !isPriceFiltered;
+                      setState(() {});
                     },
-                    child:  Center(child: Row(
+                    child: Center(child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Price",style: TextStyle(color: Colors.white,fontSize: 16),),
-                        Icon(Icons.arrow_drop_down_sharp,color: Colors.white,)
+                        Text("Price", style: TextStyle(color: Colors.white, fontSize: 16),),
+                        Icon(Icons.arrow_drop_down_sharp, color: Colors.white,)
                       ],
                     )),
                   ),
                   Spacer(),
                   ButtonWidget(
-                    borderRadius:15,
-                    isSelected: isDateFilterd,
+                    borderRadius: 15,
+                    isSelected: isDateFiltered,
                     height: 35,
                     width: 150,
-                    onTap: (){
-                      isDateFilterd=!isDateFilterd;
-                      setState((){});
+                    onTap: () {
+                      isDateFiltered = !isDateFiltered;
+                      setState(() {});
                     },
-                    child:  Center(child: Row(
+                    child: Center(child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("relese date",style: TextStyle(color: Colors.white,fontSize: 16),),
-                        Icon(Icons.arrow_drop_down_sharp,color: Colors.white,)
+                        Text("relese date", style: TextStyle(color: Colors.white, fontSize: 16),),
+                        Icon(Icons.arrow_drop_down_sharp, color: Colors.white,)
                       ],
                     )),
                   ),
-                 Spacer(),
+                  Spacer(),
                 ],
               ),
               Expanded(
@@ -77,11 +83,11 @@ bool isDateFilterd = false;
                   padding: const EdgeInsets.only(top: 50),
                   physics: const ClampingScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: carList.length,
+                  itemCount: dataList.length,
                   itemBuilder: (context, index) {
-                    return  Padding(
+                    return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: CarViewWidget(carModel: carList[index],index: 0,),
+                      child: CarViewWidget(carId: dataList[index].id!, index: 0,),
                     );
                   },
                   separatorBuilder: (context, index) => const SizedBox(height: 20,),
@@ -89,6 +95,8 @@ bool isDateFilterd = false;
               ),
             ],
           ),
-        ));
+        );
+      }),
+    );
   }
 }

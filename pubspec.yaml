@@ -96,6 +96,7 @@ flutter:
     - assets/car_details/
     - assets/card/
     - assets/onboarding/
+    - assets/addons/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

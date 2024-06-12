@@ -6,20 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:rental/controller/home_page_view_model.dart';
+import 'package:rental/view/Cars/widget/add_ons.dart';
 import 'package:rental/view/home_page/home_page_view.dart';
 import 'package:slider_button/slider_button.dart';
 
 import '../../Utils/app_style.dart';
 import '../../utils/const.dart';
 import '../../model/Car_Model.dart';
+import '../../utils/data.dart';
 import '../../utils/services.dart';
 
 class CarPage extends StatefulWidget {
-  const CarPage({super.key, required this.carModel});
+  const CarPage({super.key, required this.carId});
 
   @override
   State<CarPage> createState() => _CarPageState();
-  final CarModel carModel;
+  final String carId;
 }
 
 class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
@@ -29,8 +31,9 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
   bool enableRotation = true;
   double fingersCount = 0;
   // int rotationRate = 0;
+  List<String> selectedAddons  =[];
   double carWidth = Get.width, carHeight = 270,carLeft=0,carRight=0;
-
+  late CarModel carModel;
 
   bool carIsBig = false, carOrdered = false, detailsView = true;
 
@@ -41,6 +44,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    carModel = carList.firstWhere((element) => element.carId == widget.carId);
     getImage();
     fadeDetails();
   }
@@ -224,7 +228,16 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                 radius: 10,
                                 action: () async {
                                   HomePageViewModel homePageViewModel = Get.find<HomePageViewModel>();
-                                  homePageViewModel.addReservation(price: widget.carModel.carPrice.toString(), carName: widget.carModel.carName.toString(), carImage: widget.carModel.carColor!.first.images![0]);
+                                  homePageViewModel.addReservation(
+                                      price: carModel.carPrice.toString(),
+                                      carName: carModel.carName.toString(),
+                                      carDes: carModel.carModule.toString(),
+                                      carId: carModel.carId.toString(),
+                                      carImage13: carModel.carColor!.first.images![13],
+                                      carImage0: carModel.carColor!.first.images![0],
+                                      carImage3: carModel.carColor!.first.images![3],
+                                    addOns: selectedAddons.join(",")
+                                  );
                                   backAnimate();
                                   carOrdered=true;
                                   Timer(const Duration(seconds: 1), () {
@@ -436,21 +449,21 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
           alignment: Alignment.center,
           children: [
             Hero(
-              tag: widget.carModel.carColor![0].images![1],
+              tag: carModel.carColor![0].images![1],
 
               child: Image.file(
                 height: carHeight,
                 width: carWidth,
                 fit: BoxFit.cover,
 
-                ( widget.carModel.carColor![0].imagesFile![indexOf360Image]),
+                ( carModel.carColor![0].imagesFile![indexOf360Image]),
                 errorBuilder: (context, error, stackTrace) {
                   return Image.network(
                     height: carHeight,
                     width: carWidth,
                     fit: BoxFit.cover,
 
-                    widget.carModel.carColor![0].images![indexOf360Image],
+                    carModel.carColor![0].images![indexOf360Image],
                     errorBuilder: (context, error, stackTrace) {
                       return Image.asset(
                           "assets/px/mazda3Hatchback_1.png");
@@ -496,12 +509,12 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              widget.carModel.carName.toString(),
+              carModel.carName.toString(),
               style: Styles.headLineStyle1.copyWith(fontSize: 40),
             ),
             AnimatedCrossFade(
               firstChild: Text(
-                carOrdered?"Car in way to you":  widget.carModel.carModule.toString(),
+                carOrdered?"Car in way to you":  carModel.carModule.toString(),
                 style: Styles.headLineStyle4.copyWith(fontSize: carOrdered?30: 60),
               ),
               secondChild: Text(
@@ -562,7 +575,15 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
           const SizedBox(height: 20),
           _buildInfoCard("assets/car_details/travel.png", "Travel Bags", "More than 5 bag"),
           const SizedBox(height: 20),
-          _buildInfoCard2("assets/car_details/addOns.png", "AddOns", "might want to use"),
+          InkWell(
+              onTap: () async {
+               List<String>? _ = await  Get.to(()=>AddOns(selectedItem: selectedAddons,));
+               if(_!=null){
+                 selectedAddons = _;
+               }
+               print(selectedAddons);
+              },
+              child: _buildInfoCard2("assets/car_details/addOns.png", "AddOns", "might want to use")),
         ],
       ),
     );
@@ -570,7 +591,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
 
 
   Future<void> getImage() async {
-    for (var element in widget.carModel.carColor![0].imagesFile!) {
+    for (var element in carModel.carColor![0].imagesFile!) {
       await Utils().loadFileImage(element, context);
     }
 /*    for (var element in widget.carModel.carColor![0].images!) {
