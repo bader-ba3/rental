@@ -64,7 +64,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       child: VideoPlayer(_controller)),
                 )
               : const Center(
-                child: CircularProgressIndicator(color: Const.paigeColor,)
+            /*child: CircularProgressIndicator(color: Const.paigeColor,)*/
               ),
 
           Positioned(
@@ -74,25 +74,26 @@ class _OnboardingViewState extends State<OnboardingView> {
               child: GestureDetector(
                 onTap: () async {
                   if(!_controller.value.isPlaying) {
-                    setState(() async {
-                      _controller.play();
-                      index++;
-                      await Future.delayed(const Duration(milliseconds: 4000));
-                      _controller.pause();
-                      if (index == 3) {
-                        Get.offAll(const SignInView());
-                      }
-                      // _controller.value.isPlaying ? _controller.pause() : _controller.play();
+                    _controller.play();
+                    setState(() {
+
                     });
+                    index++;
+                    await Future.delayed(const Duration(milliseconds: 4600));
+                    _controller.pause();
+                    setState(() {
+
+                    });
+                    if (index == 3) {
+                      Get.offAll(const SignInView());
+                    }
+                    // _controller.value.isPlaying ? _controller.pause() : _controller.play();
+
                   }
                 },
-                child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Const.paigeColor,
-                      borderRadius: BorderRadius.circular(15)
-                    ),
-                    child: Text("NEXT",style: Styles.headLineStyle1.copyWith(color: Colors.white),)),
+                child: /*Image.asset("assets/fast-forward.png",color: Const.paigeColor,
+                height: 40,)*/
+                Icon(Icons.double_arrow_outlined,color: Const.paigeColor,size: 34,),
               ))
         ],
       ),
