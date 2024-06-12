@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:rental/adapter/bank_card_model_adapter.dart';
 import 'package:rental/model/bank_card_model.dart';
 
 class HiveDataBase {
@@ -6,6 +7,8 @@ class HiveDataBase {
   static late Box<BankCardModel> bankCardModelBox;
   static Future<void> init() async {
     await Hive.initFlutter();
+    Hive.registerAdapter(BankCardModelAdapter());
+
     accountBox=await Hive.openBox<String>("Account");
     bankCardModelBox=await Hive.openBox<BankCardModel>("AllBankCard");
 

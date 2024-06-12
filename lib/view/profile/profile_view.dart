@@ -4,6 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_cool_card_swiper/widgets/cool_swiper.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:rental/utils/hive.dart';
+import 'package:rental/view/home_page/home_page_view.dart';
+import 'package:rental/view/onboarding/onboarding.dart';
 
 import '../../model/bank_card_model.dart';
 import '../../utils/const.dart';
@@ -18,6 +21,13 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
   List bankCard=[];
+
+  @override
+  void initState() {
+    bankCard = HiveDataBase.bankCardModelBox.values.toList();
+    super.initState();
+  }
+
   GlobalKey key = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -249,6 +259,7 @@ class _ProfileViewState extends State<ProfileView> {
                                           );
                                           if (data != null) {
                                             if(data.number.isNotEmpty&&data.type.isNotEmpty&&data.bankName.isNotEmpty&&data.cvc.isNotEmpty&&data.exp.isNotEmpty){
+                                              HiveDataBase.bankCardModelBox.put(data.number+data.cvc, data);
                                               bankCard.add(data);
                                               key = GlobalKey();
                                               setState(() {});
@@ -281,23 +292,51 @@ class _ProfileViewState extends State<ProfileView> {
                             ),
                             SizedBox(height: 25,),
                             Center(
-                              child: Container(
-                                height: 60,
-                                width:MediaQuery.sizeOf(context).width/1.1,
-                                decoration: BoxDecoration(color: Const.paigeColor,borderRadius: BorderRadius.circular(15)),
-                                child: Center(
-                                  child: Text("Sign Out",style: TextStyle(color: Colors.white,fontSize: 22),),
+                              child: InkWell(
+                                onTap: (){
+                                  Get.offAll(()=>HomePageView(isUser:false));
+                                },
+                                child: Container(
+                                  height: 60,
+                                  width:MediaQuery.sizeOf(context).width/1.1,
+                                  decoration: BoxDecoration(color: Const.paigeColor,borderRadius: BorderRadius.circular(15)),
+                                  child: Center(
+                                    child: Text("provider mode",style: TextStyle(color: Colors.white,fontSize: 22),),
+                                  ),
                                 ),
                               ),
                             ),
                             SizedBox(height: 25,),
                             Center(
-                              child: Container(
-                                height: 60,
-                                width:MediaQuery.sizeOf(context).width/1.1,
-                                decoration: BoxDecoration(color: Const.secColor,borderRadius: BorderRadius.circular(15)),
-                                child: Center(
-                                  child: Text("Delete Account",style: TextStyle(color: Colors.white,fontSize: 22),),
+                              child: InkWell(
+                                onTap: (){
+                                  HiveDataBase.deleteUserData();
+                                  Get.offAll(()=>OnboardingView());
+                                },
+                                child: Container(
+                                  height: 60,
+                                  width:MediaQuery.sizeOf(context).width/1.1,
+                                  decoration: BoxDecoration(color: Const.paigeColor,borderRadius: BorderRadius.circular(15)),
+                                  child: Center(
+                                    child: Text("Sign Out",style: TextStyle(color: Colors.white,fontSize: 22),),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 25,),
+                            Center(
+                              child: InkWell(
+                                onTap: (){
+                                  HiveDataBase.deleteUserData();
+                                  Get.offAll(()=>OnboardingView());
+                                },
+                                child: Container(
+                                  height: 60,
+                                  width:MediaQuery.sizeOf(context).width/1.1,
+                                  decoration: BoxDecoration(color: Const.secColor,borderRadius: BorderRadius.circular(15)),
+                                  child: Center(
+                                    child: Text("Delete Account",style: TextStyle(color: Colors.white,fontSize: 22),),
+                                  ),
                                 ),
                               ),
                             ),

@@ -4,6 +4,9 @@ import 'package:get/get.dart';
 
 import '../../../Utils/app_style.dart';
 import '../../../utils/const.dart';
+import '../../../utils/hive.dart';
+import '../../home_page/home_page_view.dart';
+import '../../onboarding/onboarding.dart';
 
 class ProviderProfileView extends StatefulWidget {
   const ProviderProfileView({super.key});
@@ -160,22 +163,18 @@ class _ProviderProfileViewState extends State<ProviderProfileView> {
                                 height: 15,
                               ),
                               ImageOverlay(),
-
-                              const SizedBox(
-                                height: 25,
-                              ),
+                              SizedBox(height: 25,),
                               Center(
-                                child: Container(
-                                  height: 60,
-                                  width: MediaQuery.sizeOf(context).width / 1.1,
-                                  decoration: BoxDecoration(
-                                      color: Const.paigeColor,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: const Center(
-                                    child: Text(
-                                      "Sign Out",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 22),
+                                child: InkWell(
+                                  onTap: (){
+                                    Get.offAll(()=>HomePageView(isUser:true));
+                                  },
+                                  child: Container(
+                                    height: 60,
+                                    width:MediaQuery.sizeOf(context).width/1.1,
+                                    decoration: BoxDecoration(color: Const.paigeColor,borderRadius: BorderRadius.circular(15)),
+                                    child: Center(
+                                      child: Text("user mode",style: TextStyle(color: Colors.white,fontSize: 22),),
                                     ),
                                   ),
                                 ),
@@ -184,17 +183,48 @@ class _ProviderProfileViewState extends State<ProviderProfileView> {
                                 height: 25,
                               ),
                               Center(
-                                child: Container(
-                                  height: 60,
-                                  width: MediaQuery.sizeOf(context).width / 1.1,
-                                  decoration: BoxDecoration(
-                                      color: Const.secColor,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: const Center(
-                                    child: Text(
-                                      "Delete Account",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 22),
+                                child: InkWell(
+                                  onTap: (){
+                                    HiveDataBase.deleteUserData();
+                                    Get.offAll(()=>OnboardingView());
+                                  },
+                                  child: Container(
+                                    height: 60,
+                                    width: MediaQuery.sizeOf(context).width / 1.1,
+                                    decoration: BoxDecoration(
+                                        color: Const.paigeColor,
+                                        borderRadius: BorderRadius.circular(15)),
+                                    child: const Center(
+                                      child: Text(
+                                        "Sign Out",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 22),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 25,
+                              ),
+                              Center(
+                                child: InkWell(
+                                  onTap: (){
+                                    HiveDataBase.deleteUserData();
+                                    Get.offAll(()=>OnboardingView());
+                                  },
+                                  child: Container(
+                                    height: 60,
+                                    width: MediaQuery.sizeOf(context).width / 1.1,
+                                    decoration: BoxDecoration(
+                                        color: Const.secColor,
+                                        borderRadius: BorderRadius.circular(15)),
+                                    child: const Center(
+                                      child: Text(
+                                        "Delete Account",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 22),
+                                      ),
                                     ),
                                   ),
                                 ),

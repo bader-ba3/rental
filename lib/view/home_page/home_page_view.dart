@@ -15,17 +15,16 @@ import '../provider/logs/logs_view.dart';
 import '../provider/profile/profile_view.dart';
 
 class HomePageView extends StatefulWidget {
-  const HomePageView({super.key});
+  final bool isUser;
+  const HomePageView({super.key, required this.isUser});
 
   @override
   State<HomePageView> createState() => _HomePageViewState();
 }
 
 class _HomePageViewState extends State<HomePageView> {
-  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    bool isUser = true;
     return Scaffold(
       backgroundColor: Color(0xff3d0312),
       appBar: AppBar(toolbarHeight: 0,),
@@ -35,9 +34,9 @@ class _HomePageViewState extends State<HomePageView> {
             children: [
               Expanded(
                 child: IndexedStack(
-                  index: _currentIndex,
+                  index: controller.currentIndex,
                   children:
-                  isUser
+                  widget.isUser
                   ?[
                     HomeView(),
                     TripView(),
@@ -61,10 +60,10 @@ class _HomePageViewState extends State<HomePageView> {
                       selectedItemColor:Const.paigeColor,
                       unselectedItemColor: Const.brownColor,
                       selectedColorOpacity: 0,
-                      currentIndex: _currentIndex,
+                      currentIndex: controller.currentIndex,
                       backgroundColor: Colors.transparent,
-                      onTap: (i) => setState(() => _currentIndex = i),
-                      items:isUser
+                      onTap: (i) => setState(() => controller.currentIndex = i),
+                      items:widget.isUser
                       ?[
                         SalomonBottomBarItem(
                           icon: Icon(Icons.home_outlined),

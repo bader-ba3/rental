@@ -41,7 +41,7 @@ class _AddLicenseState extends State<AddLicense> {
                 // ),
                 // );
                 // if(res?.isNotEmpty??false){
-                Get.offAll(()=>HomePageView());
+                Get.offAll(()=>HomePageView(isUser: true,));
                 // }
               },
               child: Container(

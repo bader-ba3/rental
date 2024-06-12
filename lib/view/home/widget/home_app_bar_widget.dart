@@ -141,8 +141,8 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   },
                   child: Container(
                     child: Icon(
-                      Icons.settings,
-                      color: controller.startAndEndDate != null ? Colors.green.shade700 : Colors.white,
+                      controller.startAndEndDate != null? Icons.check:Icons.date_range,
+                      color: controller.startAndEndDate != null ? Colors.green : Colors.white,
                     ),
                     height: 65,
                     width: 55,

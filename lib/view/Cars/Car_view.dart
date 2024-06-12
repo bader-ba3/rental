@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:rental/controller/home_page_view_model.dart';
+import 'package:rental/utils/hive.dart';
 import 'package:rental/view/Cars/widget/add_ons.dart';
 import 'package:rental/view/home_page/home_page_view.dart';
 import 'package:slider_button/slider_button.dart';
@@ -60,8 +63,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
     return WillPopScope(
       onWillPop: () async{
         if(carIsBig){
-          carIsBig=false;
-          // setState(() {});
+          backAnimate();
           return false;
         }else{
           return true;
@@ -206,7 +208,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                               style: Styles.headLineStyle3.copyWith(color: Colors.black),
                                             ),
                                             Text(
-                                              "Can you request an extension of the rental?",
+                                              "are you planning to extend your rental?",
                                               style: Styles.headLineStyle4.copyWith(color: Colors.black.withOpacity(0.8),fontSize: 14),
                                             ),
                                           ],
@@ -226,7 +228,25 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                               child: SliderButton(
                                 buttonColor: Const.mainColor,
                                 radius: 10,
+                                vibrationFlag: true,
                                 action: () async {
+                                  if(HiveDataBase.bankCardModelBox.values.toList().isEmpty){
+                                    CherryToast.error(
+                                      title: Text("You Should Add Credit Card"),
+                                      animationDuration: Duration(milliseconds: 300),
+                                      action: Text("Add Credit Card",style: TextStyle(color: Colors.blueAccent),),
+                                      actionHandler: (){
+                                        HomePageViewModel homePageViewModel = Get.find<HomePageViewModel>();
+                                        Get.back();
+                                        Get.back();
+                                        Get.back();
+                                        homePageViewModel.currentIndex=3;
+                                        homePageViewModel.update();
+                                      },
+                                      animationType: AnimationType.fromTop,
+                                    ).show(context);
+                                    return false;
+                                  }
                                   HomePageViewModel homePageViewModel = Get.find<HomePageViewModel>();
                                   homePageViewModel.addReservation(
                                       price: carModel.carPrice.toString(),
@@ -249,7 +269,7 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                   carRight=-100;
                                   setState(() {});
                                   Timer(const Duration(seconds: 3), () {
-                                    Get.offAll(const HomePageView());
+                                    Get.offAll(const HomePageView(isUser: true,));
                                   },);
                                   return true;
                                 },

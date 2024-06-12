@@ -18,6 +18,8 @@ import '../utils/services.dart';
 
 class HomePageViewModel extends GetxController{
   Map<MarkerId, Marker> markers = {};
+  int currentIndex = 0;
+
   Completer<GoogleMapController> mapController = Completer();
   List<ReservationModel> allReservation = [];
   List<SmallCarModel> allCars = [];
@@ -47,6 +49,13 @@ class HomePageViewModel extends GetxController{
       }
       WidgetsFlutterBinding.ensureInitialized().waitUntilFirstFrameRasterized.then((value) => update());
     });
+    FirebaseFirestore.instance.collection('dashboardMap').doc('0').snapshots().listen((event) {
+      markers.removeWhere((key, _value) => key.value.contains("marker"));
+      (event.data()!["markers"] as Map).forEach((key, value) {
+        setMarker(LatLng(double.parse(value['lat']),double.parse(value['lng'])), value['image'], value['id'].toString(),"0",size: 200,flat: false);
+        WidgetsFlutterBinding.ensureInitialized().waitUntilFirstFrameRasterized.then((value) => update());
+      });
+    });
     Future.sync(() async {
       await Geolocator.requestPermission();
       Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((value) {
@@ -60,11 +69,11 @@ class HomePageViewModel extends GetxController{
     });
   }
 
-  void setMarker(LatLng location, String path, String uID,String bearing,{int? size}) {
+  void setMarker(LatLng location, String path, String uID,String bearing,{int? size, bool? flat}) {
     getBytesFromAsset(path: 'assets/$path.png', width: size??100)
         .then((value) {
       Marker newMarker = Marker(
-        flat: true,
+        flat: flat ??true,
         markerId: MarkerId(uID),
         icon: BitmapDescriptor.fromBytes(value),
         position: location,
