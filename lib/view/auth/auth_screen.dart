@@ -59,7 +59,7 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
           var gender = json.decode(value.body)['gender'];
           var mobile = json.decode(value.body)['mobile'];
           var email = json.decode(value.body)['email'];
-          await HiveDataBase.setUserData((name: name,email: email,gender: gender,mobile: mobile,licenseImage: ""));
+          await HiveDataBase.setUserData((name: name,email: email,gender: gender,mobile: mobile));
 
 
           // data = value.body.toString();
@@ -128,7 +128,7 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
                   var mobile = json.decode(value.body)['mobile'];
                   var email = json.decode(value.body)['email'];
 
-                  await HiveDataBase.setUserData((name: name,email: email,gender: gender,mobile: mobile,licenseImage: ""));
+                  await HiveDataBase.setUserData((name: name,email: email,gender: gender,mobile: mobile));
                   Get.offAll(()=>AddLicense());
                   // data = value.body.toString();
                   // setState(() {});

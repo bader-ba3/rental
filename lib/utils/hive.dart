@@ -13,31 +13,40 @@ class HiveDataBase {
     bankCardModelBox=await Hive.openBox<BankCardModel>("AllBankCard");
 
   }
-  static ({String name,String gender,String email,String mobile,String licenseImage}) getUserData(){
+  static ({String name,String gender,String email,String mobile,String licenseImage,String passport}) getUserData(){
      String mobile = accountBox.get("mobile").toString();
      String name = accountBox.get("name").toString();
      String gender =accountBox.get("gender").toString();
      String email =accountBox.get("email").toString();
      String licenseImage =accountBox.get("licenseImage").toString();
-     // String paspoartImage =accountBox.get("licenseImage").toString();
-     return (name: name,gender: gender,email: email,mobile:mobile,licenseImage:licenseImage);
+     String passport =accountBox.get("passport").toString();
+
+     return (name: name,gender: gender,email: email,mobile:mobile,licenseImage:licenseImage,passport:passport);
   }
 
-  static  setUserData(({String name,String gender,String email,String mobile,String licenseImage}) data)async{
+  static  setUserData(({String name,String gender,String email,String mobile}) data)async{
     await accountBox.put("mobile",data.mobile);
     await accountBox.put("name",data.name);
     await accountBox.put("gender",data.gender);
     await accountBox.put("email",data.email);
-    await accountBox.put("licenseImage",data.licenseImage);
      return true;
   }
 
+  static  setUserPassPortData(String passport)async{
+    await accountBox.put("passport",passport);
+    return true;
+  }
+  static  setUserLicenseImageData(String licenseImage)async{
+    await accountBox.put("licenseImage",licenseImage);
+    return true;
+  }
   static  deleteUserData(){
     accountBox.delete("mobile");
     accountBox.delete("name");
     accountBox.delete("gender");
     accountBox.delete("email");
     accountBox.delete("licenseImage");
+    accountBox.delete("passport");
   }
 
 
