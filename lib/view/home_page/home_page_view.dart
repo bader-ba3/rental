@@ -74,7 +74,7 @@ class _HomePageViewState extends State<HomePageView> {
                           title: Text("Trip"),
                         ),
                         SalomonBottomBarItem(
-                          icon: Icon(Icons.emoji_transportation),
+                          icon: Icon(Icons.history),
                           title: Text("History"),
                         ),
                         SalomonBottomBarItem(
@@ -88,8 +88,8 @@ class _HomePageViewState extends State<HomePageView> {
                           title: Text("Home"),
                         ),
                         SalomonBottomBarItem(
-                          icon: Icon(Icons.emoji_transportation),
-                          title: Text("analytics"),
+                          icon: const Icon(Icons.analytics_outlined),
+                          title: const Text("analytics"),
                         ),
                         SalomonBottomBarItem(
                           icon: Icon(Icons.person),

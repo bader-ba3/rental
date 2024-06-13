@@ -3,8 +3,11 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
+import '../../controller/home_page_view_model.dart';
 import '../../utils/const.dart';
+import '../Cars/car_home.dart';
 
 class TripDetails extends StatefulWidget {
   final int index;
@@ -57,21 +60,23 @@ class _TripDetailsState extends State<TripDetails> {
               width: MediaQuery.sizeOf(context).width,
               decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ListView(
-                  padding: EdgeInsets.zero,
+shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  // padding: EdgeInsets.zero,
                   children: [
                     Row(
                       children: [
                         Container(
 
-                          padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+                          padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 10),
                           decoration: BoxDecoration(color: Const.paigeColor,borderRadius: BorderRadius.circular(10)),
-                          child: Text("Best on Dubai",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
+                          child: const Text("Best on Dubai",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600),),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     Text("Dubai Dubai",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                     SizedBox(height: 20,),
                     Row(
@@ -93,7 +98,7 @@ class _TripDetailsState extends State<TripDetails> {
                     InkWell(onTap: (){}, child: Text("Show Rates",style: TextStyle(color: Colors.blue),)),
                     SizedBox(height: 20,),
                     Text("Description",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-                    Text("Des "*30,style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
+                    const Text("Embark on an unforgettable journey through the United Arab Emirates, a land of modern marvels, rich cultural heritage, and breathtaking landscapes. This trip will take you through the bustling metropolis of Dubai, the cultural heart of Sharjah, the serene beauty of Ras Al Khaimah, the vibrant streets of Abu Dhabi, and the charming emirates of Ajman and Umm Al Quwain. Get ready to experience a perfect blend of traditional and contemporary, desert and sea, luxury and simplicity.",style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
                     SizedBox(height: 20,),
                     Text("The Conditions",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
                     Text("Conditions "*5,style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
@@ -165,11 +170,18 @@ class _TripDetailsState extends State<TripDetails> {
                     }
                   ),
                   Spacer(),
-                  Container(
-                    decoration: BoxDecoration(color: Const.mainColor,borderRadius: BorderRadius.circular(10)),
-                    width: 150,
-                    height: 40,
-                    child: Center(child: Text("Show Car",style: TextStyle(color: Colors.white,fontSize: 18),),),
+                  GestureDetector(
+                    onTap: (){
+                      if (Get.find<HomePageViewModel>().carIsLoading) {
+                        Get.to(const CarHome());
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(color: Const.mainColor,borderRadius: BorderRadius.circular(10)),
+                      width: 150,
+                      height: 40,
+                      child: Center(child: Text("Show Car",style: TextStyle(color: Colors.white,fontSize: 18),),),
+                    ),
                   )
                 ],
               ),

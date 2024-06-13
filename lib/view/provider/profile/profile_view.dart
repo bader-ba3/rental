@@ -109,11 +109,11 @@ class _ProviderProfileViewState extends State<ProviderProfileView> {
                               const SizedBox(
                                 height: 15,
                               ),
-                              ImageOverlay(
+                              const ImageOverlay(
                                 imageUrl:
                                     "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgVq8qdsC2hih6S4T-aqpV21W9DSznbV5xNZ9V9PV0Sy2Jcl0xZg0OA5dAj9FTHZXhgeBeK1dePoDek7hSMoH7lg615bZH7m-j1GBd0eb8kOSeXhitRpkvypnZZ0K1Fievlxe9S4JP7sGk_/s1600/%10D8%10B1%10D8%10AE%10D8%10B5%10D8%10A9+%10D8%25B4%25D8%25B1%25D9%2583%25D8%25A9+%25D8%25A7%25D9%2584%25D9%258A%25D8%25AF+%25D8%25A7%25D9%2584%25D8%25A3%25D9%2585%25D9%258A%25D9%2586%25D8%25A9+%25D9%2584%25D9%2585%25D9%2582%25D8%25A7%25D9%2588%25D9%2584%25D8%25A7%25D8%25AA+%25D8%25A7%25D9%2584%25D8%25A8%25D9%2586%25D8%25A7%25D8%25A1.bmp",
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 25,
                               ),
                               Center(
@@ -121,15 +121,15 @@ class _ProviderProfileViewState extends State<ProviderProfileView> {
                                   onTap: () {
                                     HomePageViewModel homeViewModel = Get.find<HomePageViewModel>();
                                     homeViewModel.currentIndex = 3;
-                                    Get.offAll(() => HomePageView(isUser: true));
+                                    Get.offAll(() => const HomePageView(isUser: true));
                                   },
                                   child: Container(
                                     height: 60,
                                     width: MediaQuery.sizeOf(context).width / 1.1,
                                     decoration: BoxDecoration(color: Const.paigeColor, borderRadius: BorderRadius.circular(15)),
-                                    child: Center(
+                                    child: const Center(
                                       child: Text(
-                                        "user mode",
+                                        "User Mode",
                                         style: TextStyle(color: Colors.white, fontSize: 22),
                                       ),
                                     ),
@@ -143,7 +143,7 @@ class _ProviderProfileViewState extends State<ProviderProfileView> {
                                 child: InkWell(
                                   onTap: () {
                                     HiveDataBase.deleteUserData();
-                                    Get.offAll(() => OnboardingView());
+                                    Get.offAll(() => const OnboardingView());
                                   },
                                   child: Container(
                                     height: 60,

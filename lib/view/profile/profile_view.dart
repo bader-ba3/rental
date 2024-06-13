@@ -290,7 +290,7 @@ class _ProfileViewState extends State<ProfileView> {
                                     ),
                                   )
                                 else
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 250,
                                     child: Center(
                                       child: Text("You have not added a bank card yet",style: TextStyle(color: Colors.red,fontSize: 20),),
@@ -311,7 +311,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   width:MediaQuery.sizeOf(context).width/1.1,
                                   decoration: BoxDecoration(color: Const.paigeColor,borderRadius: BorderRadius.circular(15)),
                                   child: Center(
-                                    child: Text("provider mode",style: TextStyle(color: Colors.white,fontSize: 22),),
+                                    child: Text("Provider Mode",style: TextStyle(color: Colors.white,fontSize: 22),),
                                   ),
                                 ),
                               ),

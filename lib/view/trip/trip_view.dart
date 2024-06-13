@@ -98,7 +98,7 @@ class TripView extends StatelessWidget {
                                           child: Row(
                                             children: [
                                               Text(
-                                                "Des "*3,
+                                                "Embark on an......",
                                                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600,color: Colors.white),
                                               ),
                                               Spacer(),
