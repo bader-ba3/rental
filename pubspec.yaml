@@ -64,6 +64,7 @@ dependencies:
   cherry_toast:
   video_player:
   firebase_storage: ^12.0.1
+  image_picker: ^1.1.2
 
 
 

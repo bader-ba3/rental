@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rental/utils/hive.dart';
 import 'package:rental/view/sign_in/add_passport.dart';
 import 'package:whatsapp_camera/camera/camera_whatsapp.dart';
@@ -20,7 +21,14 @@ class AddLicense extends StatefulWidget {
 }
 
 class _AddLicenseState extends State<AddLicense> {
-
+  Future<File?> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      return File(pickedFile.path);
+    }
+    return null;
+  }
   bool isLoading=false;
   @override
   Widget build(BuildContext context) {
@@ -40,22 +48,21 @@ class _AddLicenseState extends State<AddLicense> {
             !isLoading?
             InkWell(
               onTap: () async {
+                isLoading=true;
+setState(() {
 
-                List<File>? res = await Navigator.push(
-                  context, MaterialPageRoute(
+});
+                _pickImage().then((image)async{
 
-                  builder: (context) => const WhatsappCamera(multiple: false,),),);
-                if(res?.isNotEmpty??false){
-                  isLoading=true;
-                  setState(() {
+                  if(image?.exists() != null){
+                    final storageRef = FirebaseStorage.instance.ref().child('uploads/${DateTime.now().millisecondsSinceEpoch}.jpg');
+                    await storageRef.putFile(image!);
+                    final licenseImage = await storageRef.getDownloadURL();
+                    HiveDataBase.setUserLicenseImageData(licenseImage);
+                    Get.offAll(()=>const HomePageView(isUser: true,));
+                  }
+                });
 
-                  });
-                  final storageRef = FirebaseStorage.instance.ref().child('uploads/${DateTime.now().millisecondsSinceEpoch}.jpg');
-                  await storageRef.putFile(res![0]);
-                  final licenseImage = await storageRef.getDownloadURL();
-                  HiveDataBase.setUserLicenseImageData(licenseImage);
-                Get.offAll(()=>const HomePageView(isUser: false,));
-                }
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width/1.2,
