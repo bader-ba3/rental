@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_cool_card_swiper/widgets/cool_swiper.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:rental/controller/home_page_view_model.dart';
 import 'package:rental/utils/hive.dart';
 import 'package:rental/view/home_page/home_page_view.dart';
 import 'package:rental/view/onboarding/onboarding.dart';
@@ -61,17 +62,16 @@ class _ProfileViewState extends State<ProfileView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text("Name:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            const Text("Badr Aldin Almasri",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
+                            Text(HiveDataBase.getUserData().name,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
                             const SizedBox(height: 25,),
                             const Text("Number:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            const Text("+971562064458",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
+                            Text(HiveDataBase.getUserData().mobile,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
                             const SizedBox(height: 25,),
                             const Text("Id Number:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            const Text("123456789",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
-
+                            const Text("88624256756",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
                             const SizedBox(height: 25,),
                             const Text("Driving License:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            const Text("123456789",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
+                            const Text("94761891849245",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
                             const SizedBox(height: 15,),
                             ImageOverlay(imageUrl: HiveDataBase.getUserData().licenseImage),
                             const SizedBox(height: 25,),
@@ -302,6 +302,8 @@ class _ProfileViewState extends State<ProfileView> {
                             Center(
                               child: InkWell(
                                 onTap: (){
+                                  HomePageViewModel homeViewModel = Get.find<HomePageViewModel>();
+                                  homeViewModel.currentIndex = 2;
                                   Get.offAll(()=>HomePageView(isUser:false));
                                 },
                                 child: Container(

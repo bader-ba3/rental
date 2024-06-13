@@ -78,6 +78,7 @@ print(a.displayName!.text!);
             if (places.places!.isEmpty) {
               controller.markers.removeWhere((key, value) => value.position == argument);
               controller.address = null;
+              controller.update();
             } else {
               controller.address = places.places!.first.displayName!.text;
               setState(() {});

@@ -28,13 +28,9 @@ class _GlowingButtonState extends State<GlowingButton> {
 
     return InkWell(
       onTap: (){
-        String? _ = homePageViewModel.checkFilter();
+        CherryToast? _ = homePageViewModel.checkFilter();
         if(_!=null){
-          CherryToast.error(
-            title: Text(_.toString()),
-            animationType: AnimationType.fromTop,
-            animationDuration: Duration(milliseconds: 300),
-          ).show(context);
+          _.show(context);
         }else {
           if (Get.find<HomePageViewModel>().carIsLoading) {
             Get.to(const CarHome());

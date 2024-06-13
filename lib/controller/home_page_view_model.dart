@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart' hide Position;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -141,12 +144,28 @@ class HomePageViewModel extends GetxController{
     print("--------------done");
   }
 
-  String? checkFilter() {
+  CherryToast? checkFilter() {
     if(startAndEndDate==null){
-      return "You Should Enter Date";
+      return CherryToast.error(
+        title: Text("You Should Enter Date"),
+        animationType: AnimationType.fromTop,
+        action: Text("add Date",style: TextStyle(color: Colors.blueAccent),),
+        actionHandler: (){
+          editSetting(true);
+        },
+        animationDuration: Duration(milliseconds: 300),
+      );
     }else
     if(address==null){
-      return "You Should Enter address";
+      return CherryToast.error(
+        title: Text("You Should Enter address"),
+        animationType: AnimationType.fromTop,
+        action: Text("add Address",style: TextStyle(color: Colors.blueAccent),),
+        actionHandler: (){
+          editSearch(true);
+        },
+        animationDuration: Duration(milliseconds: 300),
+      );
     }
     return null;
   }
@@ -160,6 +179,21 @@ class HomePageViewModel extends GetxController{
     FirebaseFirestore.instance.collection("Cars").doc(id).update({
       "status":status
     });
+  }
+
+
+  bool isSettingOpened = false;
+  bool isSearchOpened = false;
+  editSetting(bool type){
+    isSettingOpened = type;
+    isSearchOpened = !type;
+    update();
+  }
+  editSearch(bool type){
+    isSettingOpened = !type;
+    isSearchOpened = type;
+    update();
+
   }
 
 }

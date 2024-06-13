@@ -15,24 +15,43 @@ class TripDetails extends StatefulWidget {
 }
 
 class _TripDetailsState extends State<TripDetails> {
+  double top = 1000;
+
+  @override
+  void initState() {
+    WidgetsFlutterBinding.ensureInitialized().waitUntilFirstFrameRasterized.then((value) {
+      top = 220;
+      setState(() {});
+    });
+    super.initState();
+  }
+
   int seats = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Const.mainColor,
       body: Stack(
         children: [
-          Container(
-            height:250,
-            width: MediaQuery.sizeOf(context).width,
-            child: Image.asset("assets/trip/trip${widget.index}.png",fit: BoxFit.fill,),
+          Hero(
+            tag: widget.index,
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                height:250,
+                width: MediaQuery.sizeOf(context).width,
+                child: Image.asset("assets/trip/trip${widget.index}.png",fit: BoxFit.fill,),
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.topLeft,
             child: SafeArea(child: BackButton(color: Colors.white,)),
           ),
-          Positioned(
-            top: 220,
+      AnimatedPositioned(
+        duration: Duration(milliseconds: 500),
+            top: top,
             bottom: 90,
             child: Container(
               width: MediaQuery.sizeOf(context).width,

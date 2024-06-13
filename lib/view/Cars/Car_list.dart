@@ -49,8 +49,8 @@ class _CarViewWidgetState extends State<CarViewWidget> {
               children: [
                 SizedBox(
                   height: 190,
-                  child: Hero(
-                    tag: carModel.carColor![widget.index].images![1],
+                  child: SafeArea(
+                 //   tag: carModel.carColor![widget.index].images![1],
                     child:Image.file(
                       ( carModel.carColor![widget.index].imagesFile![3]),
                       errorBuilder: (context, error, stackTrace) {

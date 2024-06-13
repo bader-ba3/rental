@@ -48,8 +48,8 @@ bool expand=false;
               children: [
                 SizedBox(
                   height: 150,
-                  child: Hero(
-                    tag: widget.reservationModel.carImage0.toString(),
+                  child: SafeArea(
+                    // tag: widget.reservationModel.carImage0.toString(),
                     child: FutureBuilder(
                       future: Utils().saveImage(widget.reservationModel.carImage13.toString()),
                       builder: (context, snapshot) {

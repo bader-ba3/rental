@@ -29,7 +29,8 @@ class _AddLicenseState extends State<AddLicense> {
     }
     return null;
   }
-  bool isLoading=false;
+
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,40 +39,58 @@ class _AddLicenseState extends State<AddLicense> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(height: 25,),
+            const SizedBox(
+              height: 25,
+            ),
             Image.asset("assets/card.png"),
-            const SizedBox(height: 40,),
-            const SizedBox(height: 25,),
-            const Text("Add Your Driving License",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w700),),
-            const SizedBox(height: 100,),
-            const SizedBox(height: 100,),
-            !isLoading?
-            InkWell(
-              onTap: () async {
-                isLoading=true;
-setState(() {
-
-});
-                _pickImage().then((image)async{
-
-                  if(image?.exists() != null){
-                    final storageRef = FirebaseStorage.instance.ref().child('uploads/${DateTime.now().millisecondsSinceEpoch}.jpg');
-                    await storageRef.putFile(image!);
-                    final licenseImage = await storageRef.getDownloadURL();
-                    HiveDataBase.setUserLicenseImageData(licenseImage);
-                    Get.offAll(()=>const HomePageView(isUser: true,));
-                  }
-                });
-
-              },
-              child: Container(
-                width: MediaQuery.sizeOf(context).width/1.2,
-                height: 65,
-                decoration: BoxDecoration(color: Const.mainColor,borderRadius: BorderRadius.circular(15)),
-                child: const Center(child: Text("Capture",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 22),)),
-              ),
-            ):const CircularProgressIndicator(),
-            const SizedBox(height: 1,),
+            const SizedBox(
+              height: 40,
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            const Text(
+              "Add Your Driving License",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(
+              height: 100,
+            ),
+            const SizedBox(
+              height: 100,
+            ),
+            !isLoading
+                ? InkWell(
+                    onTap: () async {
+                      isLoading = true;
+                      setState(() {});
+                      _pickImage().then((image) async {
+                        if (image?.exists() != null) {
+                          final storageRef = FirebaseStorage.instance.ref().child('uploads/${DateTime.now().millisecondsSinceEpoch}.jpg');
+                          await storageRef.putFile(image!);
+                          final licenseImage = await storageRef.getDownloadURL();
+                          HiveDataBase.setUserLicenseImageData(licenseImage);
+                          Get.offAll(() => const HomePageView(
+                                isUser: true,
+                              ));
+                        }
+                      });
+                    },
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width / 1.2,
+                      height: 65,
+                      decoration: BoxDecoration(color: Const.mainColor, borderRadius: BorderRadius.circular(15)),
+                      child: const Center(
+                          child: Text(
+                        "Capture",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 22),
+                      )),
+                    ),
+                  )
+                : const CircularProgressIndicator(),
+            const SizedBox(
+              height: 1,
+            ),
           ],
         ),
       ),

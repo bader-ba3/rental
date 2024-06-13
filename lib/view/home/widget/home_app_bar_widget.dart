@@ -34,8 +34,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
   }
 
   TextEditingController searchTextController = TextEditingController();
-  bool isSettingOpened = false;
-  bool isSearchOpened = false;
+
   List placeSearchList = [];
   @override
   Widget build(BuildContext context) {
@@ -53,9 +52,9 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 Expanded(
                   child: SizedBox(
                     height: 65,
-                    child: isSearchOpened
+                    child: controller.isSearchOpened
                         ? Container(
-                            decoration: BoxDecoration(color: Const.mainColor, borderRadius: isSearchOpened ? BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
+                            decoration: BoxDecoration(color: Const.mainColor, borderRadius: controller.isSearchOpened ? BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
                             child: Row(
                               children: [
                                 const SizedBox(
@@ -79,7 +78,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                                 ),
                                 InkWell(
                                     onTap: () {
-                                      isSearchOpened = false;
+                                      controller.isSearchOpened=false;
                                       searchTextController.clear();
                                       setState(() {});
                                     },
@@ -92,15 +91,16 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                           )
                         : InkWell(
                             onTap: () {
-                              isSearchOpened = !isSearchOpened;
-                              if (isSettingOpened) {
-                                isSettingOpened = false;
-                              }
-                              setState(() {});
+                              controller.editSearch(!controller.isSearchOpened);
+                              // isSearchOpened = !isSearchOpened;
+                              // if (isSettingOpened) {
+                              //   isSettingOpened = false;
+                              // }
+                              // setState(() {});
                             },
                             child: Container(
                               clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(color: Const.mainColor, borderRadius: isSearchOpened ? BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
+                              decoration: BoxDecoration(color: Const.mainColor, borderRadius: controller.isSearchOpened ? BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
                               // borderRadius: BorderRadius.circular(15)),
                               child: Row(
                                 children: [
@@ -133,16 +133,17 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ),
                 InkWell(
                   onTap: () {
-                    isSettingOpened = !isSettingOpened;
-                    if (isSearchOpened) {
-                      isSearchOpened = false;
-                    }
-                    setState(() {});
+                    controller.editSetting(!controller.isSettingOpened);
+                    // isSettingOpened = !isSettingOpened;
+                    // if (isSearchOpened) {
+                    //   isSearchOpened = false;
+                    // }
+                    // setState(() {});
                   },
                   child: Container(
                     height: 65,
                     width: 55,
-                    decoration: BoxDecoration(color: Const.mainColor, borderRadius: isSettingOpened ? const BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
+                    decoration: BoxDecoration(color: Const.mainColor, borderRadius: controller.isSettingOpened ? const BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
                     child: Icon(
                       controller.startAndEndDate != null? Icons.check:Icons.date_range,
                       color: controller.startAndEndDate != null ? Colors.green : Colors.white,
@@ -158,7 +159,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   child: Container(
                       height: 5,
                       decoration: BoxDecoration(
-                        color: isSearchOpened ? Const.mainColor : Colors.transparent,
+                        color: controller.isSearchOpened ? Const.mainColor : Colors.transparent,
                       ) // borderRadius: BorderRadius.circular(15)),
                       ),
                 ),
@@ -169,11 +170,11 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                     height: 5,
                     width: 55,
                     decoration: BoxDecoration(
-                      color: isSettingOpened ? Const.mainColor : Colors.transparent,
+                      color: controller.isSettingOpened ? Const.mainColor : Colors.transparent,
                     )),
               ],
             ),
-            if (isSettingOpened)
+            if (controller.isSettingOpened)
               Container(
                 height: 400,
                 width: double.infinity,
@@ -211,7 +212,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                           InkWell(
                               onTap: () {
                                 tempDate = null;
-                                isSettingOpened = false;
+                                controller.isSettingOpened = false;
                                 setState(() {});
                               },
                               child: Icon(
@@ -230,7 +231,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                                 if (tempDate != null) {
                                   controller.startAndEndDate = tempDate;
                                 }
-                                isSettingOpened = false;
+                                controller.isSettingOpened = false;
                                 setState(() {});
                               },
                               child: const Text("ok")),
@@ -246,7 +247,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   ),
                 ),
               )
-            else if (isSearchOpened)
+            else if (controller.isSearchOpened)
               Container(
                 height:placeSearchList.isEmpty?0:placeSearchList.length*50<350?placeSearchList.length*80: 350,
                 width: MediaQuery.sizeOf(context).width,
@@ -260,7 +261,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
                           onTap: () {
-                            isSearchOpened = false;
+                            controller.isSearchOpened = false;
                             controller.address = placeSearchList[index];
                             controller.markers.removeWhere((key, value) => value.markerId.value == 'marker_from');
                             controller.update();
