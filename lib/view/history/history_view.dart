@@ -33,53 +33,59 @@ class _HistoryViewState extends State<HistoryView> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomePageViewModel>(builder: (controller) {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Container(color: Const.mainColor,
-              width: MediaQuery.sizeOf(context).width,
-              child: TabBar(
-                indicatorPadding: EdgeInsets.zero,
-                dividerHeight: 0,
-                isScrollable: true,
-                indicator: BoxDecoration(),
-                controller: tabController,
-                padding: EdgeInsets.zero,
-                labelPadding: EdgeInsets.zero,
-                tabAlignment: TabAlignment.start,
-                onTap: (_) {
-                  setState(() {});
-                },
-                tabs: List.generate(text.length, (index) =>
-                    ButtonWidget(
-                      borderRadius: 15,
-                      isSelected: tabController.index == index,
-                      height: 40,
-                      width: 120,
-                      onTap: () {
-                        tabController.animateTo(index, duration: Duration(milliseconds: 300), curve: Curves.linear);
-                        setState(() {});
-                      },
-                      child: Center(
-                        child: Text(text[index], style: TextStyle(color: Colors.white, fontSize: 22)
+      return Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(40))
+        ),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: Column(
+            children: [
+              Container(color: Const.mainColor,
+                width: MediaQuery.sizeOf(context).width,
+                child: TabBar(
+                  indicatorPadding: EdgeInsets.zero,
+                  dividerHeight: 0,
+                  isScrollable: true,
+                  indicator: BoxDecoration(),
+                  controller: tabController,
+                  padding: EdgeInsets.zero,
+                  labelPadding: EdgeInsets.zero,
+                  tabAlignment: TabAlignment.start,
+                  onTap: (_) {
+                    setState(() {});
+                  },
+                  tabs: List.generate(text.length, (index) =>
+                      ButtonWidget(
+                        borderRadius: 15,
+                        isSelected: tabController.index == index,
+                        height: 40,
+                        width: 120,
+                        onTap: () {
+                          tabController.animateTo(index, duration: Duration(milliseconds: 300), curve: Curves.linear);
+                          setState(() {});
+                        },
+                        child: Center(
+                          child: Text(text[index], style: TextStyle(color: Colors.white, fontSize: 22)
+                          ),
                         ),
-                      ),
-                    ),),
+                      ),),
+                ),
               ),
-            ),
-            Expanded(
-              child: IndexedStack(
-                index: tabController.index,
-                children: [
-                  page(controller.allReservation.where((element) => element.reservationStatus ==Const.reservationStarted).toList() ),
-                  page(controller.allReservation.where((element) => element.reservationStatus ==Const.reservationPending).toList() ),
-                  page(controller.allReservation.where((element) => element.reservationStatus ==Const.reservationEnded).toList() ),
-                  page(controller.allReservation.where((element) => element.reservationStatus ==Const.reservationCanceled).toList() ),
-                ],
-              ),
-            )
-          ],
+              Expanded(
+                child: IndexedStack(
+                  index: tabController.index,
+                  children: [
+                    page(controller.allReservation.where((element) => element.reservationStatus ==Const.reservationStarted).toList() ),
+                    page(controller.allReservation.where((element) => element.reservationStatus ==Const.reservationPending).toList() ),
+                    page(controller.allReservation.where((element) => element.reservationStatus ==Const.reservationEnded).toList() ),
+                    page(controller.allReservation.where((element) => element.reservationStatus ==Const.reservationCanceled).toList() ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       );
     });

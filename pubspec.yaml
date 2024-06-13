@@ -63,6 +63,7 @@ dependencies:
   flutter_cache_manager: ^3.3.1
   cherry_toast:
   video_player:
+  firebase_storage: ^12.0.1
 
 
 dev_dependencies:

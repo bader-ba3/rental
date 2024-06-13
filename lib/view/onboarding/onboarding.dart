@@ -42,19 +42,6 @@ class _OnboardingViewState extends State<OnboardingView> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          /*    Container(
-            width: Get.width,
-            height: Get.height,
-            color: const Color(0xff180002),
-          ),*/
-          AnimatedPositioned(
-              bottom: 0,
-              // top: 0,
-              duration: Durations.extralong4,
-              child: Text(
-                "Rent your vehicle in three clicks",
-                style: Styles.headLineStyle1.copyWith(color: Const.mainColor),
-              )),
           _controller.value.isInitialized
               ? Positioned(
                   bottom: 0,
@@ -64,13 +51,10 @@ class _OnboardingViewState extends State<OnboardingView> {
                       child: VideoPlayer(_controller)),
                 )
               : const Center(
-            /*child: CircularProgressIndicator(color: Const.paigeColor,)*/
               ),
-
           Positioned(
               bottom: 50,
               right: 20,
-
               child: GestureDetector(
                 onTap: () async {
                   if(!_controller.value.isPlaying) {
@@ -87,31 +71,15 @@ class _OnboardingViewState extends State<OnboardingView> {
                     if (index == 3) {
                       Get.offAll(const SignInView());
                     }
-                    // _controller.value.isPlaying ? _controller.pause() : _controller.play();
+
 
                   }
                 },
-                child: /*Image.asset("assets/fast-forward.png",color: Const.paigeColor,
-                height: 40,)*/
-                Icon(Icons.double_arrow_outlined,color: Const.paigeColor,size: 34,),
+                child:
+                const Icon(Icons.double_arrow_outlined,color: Const.paigeColor,size: 34,),
               ))
         ],
       ),
-     /* floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          setState(() async {
-            _controller.play();
-            index++;
-            await Future.delayed(const Duration(milliseconds: 4000));
-            _controller.pause();
-            if (index == 3) {
-              Get.offAll(SignInView());
-            }
-            // _controller.value.isPlaying ? _controller.pause() : _controller.play();
-          });
-        },
-        child:Text("NEXT",style: Styles.headLineStyle1,)
-      ),*/
     );
   }
 }

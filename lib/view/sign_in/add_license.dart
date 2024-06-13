@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:rental/utils/hive.dart';
 import 'package:rental/view/sign_in/add_passport.dart';
 import 'package:whatsapp_camera/camera/camera_whatsapp.dart';
 
@@ -26,23 +28,25 @@ class _AddLicenseState extends State<AddLicense> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(height: 25,),
+            const SizedBox(height: 25,),
             Image.asset("assets/card.png"),
-            SizedBox(height: 40,),
-            SizedBox(height: 25,),
-            Text("Add Your Driving License",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w700),),
-            SizedBox(height: 100,),
-            SizedBox(height: 100,),
+            const SizedBox(height: 40,),
+            const SizedBox(height: 25,),
+            const Text("Add Your Driving License",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w700),),
+            const SizedBox(height: 100,),
+            const SizedBox(height: 100,),
             InkWell(
               onTap: () async {
-                // List<File>? res = await Navigator.push(
-                //   context, MaterialPageRoute(
-                //   builder: (context) => const WhatsappCamera(multiple: false,),
-                // ),
-                // );
-                // if(res?.isNotEmpty??false){
-                Get.offAll(()=>HomePageView(isUser: true,));
-                // }
+                List<File>? res = await Navigator.push(
+                  context, MaterialPageRoute(
+                  builder: (context) => const WhatsappCamera(multiple: false,),),);
+                if(res?.isNotEmpty??false){
+                  final storageRef = FirebaseStorage.instance.ref().child('uploads/${DateTime.now().millisecondsSinceEpoch}.jpg');
+                  await storageRef.putFile(res![0]);
+                  final licenseImage = await storageRef.getDownloadURL();
+                  HiveDataBase.setUserLicenseImageData(licenseImage);
+                Get.offAll(()=>const HomePageView(isUser: true,));
+                }
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width/1.2,

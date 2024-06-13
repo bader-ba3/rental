@@ -33,13 +33,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData.light().copyWith(
-        appBarTheme: AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light,backgroundColor: Const.mainColor),
+        // textTheme: TextTheme(bodyLarge: TextStyle(color: Colors.black)),
+        // primaryTextTheme: TextTheme(bodyLarge: TextStyle(color: Colors.red)),
+        appBarTheme: const AppBarTheme(systemOverlayStyle: SystemUiOverlayStyle.light,backgroundColor: Const.mainColor),
         primaryColor: Const.paigeColor,
-        colorScheme: ColorScheme.dark(primary: Const.paigeColor)
+        colorScheme: const ColorScheme.light(primary: Const.paigeColor)
       ),
       initialBinding: GetBinding(),
       // home: OnboardingView()
-      home: HomePageView(isUser: true,),
+      home: const OnboardingView()
     );
   }
 }

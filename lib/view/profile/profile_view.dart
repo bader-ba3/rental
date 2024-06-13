@@ -1,3 +1,5 @@
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,6 +9,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:rental/utils/hive.dart';
 import 'package:rental/view/home_page/home_page_view.dart';
 import 'package:rental/view/onboarding/onboarding.dart';
+import 'package:rental/view/provider/profile/profile_view.dart';
 
 import '../../model/bank_card_model.dart';
 import '../../utils/const.dart';
@@ -57,18 +60,21 @@ class _ProfileViewState extends State<ProfileView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Name:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            Text("Badr Aldin Almasri",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
-                            SizedBox(height: 25,),
-                            Text("Number:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            Text("+971562064458",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
-                            SizedBox(height: 25,),
-                            Text("Id Number:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            Text("123456789",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
-                            SizedBox(height: 25,),
-                            Text("Driving License:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            Text("123456789",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
-                            SizedBox(height: 25,),
+                            const Text("Name:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
+                            const Text("Badr Aldin Almasri",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
+                            const SizedBox(height: 25,),
+                            const Text("Number:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
+                            const Text("+971562064458",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
+                            const SizedBox(height: 25,),
+                            const Text("Id Number:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
+                            const Text("123456789",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
+
+                            const SizedBox(height: 25,),
+                            const Text("Driving License:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
+                            const Text("123456789",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
+                            const SizedBox(height: 15,),
+                            ImageOverlay(imageUrl: HiveDataBase.getUserData().licenseImage),
+                            const SizedBox(height: 25,),
                             Row(
                               children: [
                                 Text("Address",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
@@ -263,6 +269,8 @@ class _ProfileViewState extends State<ProfileView> {
                                               bankCard.add(data);
                                               key = GlobalKey();
                                               setState(() {});
+                                            }else{
+                                              CherryToast.error(title: const Text("Invalid Card"),animationType: AnimationType.fromTop,animationDuration: const Duration(milliseconds: 300),);
                                             }
                                           }
                                         },

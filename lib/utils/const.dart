@@ -12,6 +12,8 @@ abstract class Const{
   static const reservationEnded = "reservationEnded";
   static const reservationCanceled = "reservationCanceled";
 
+  static const bool isUser = false;
+
   static const carStatusIdle = "carStatusIdle";
   static const carStatusMaintenance = "carStatusMaintenance";
   static const carStatusRented = "carStatusRented";

@@ -44,27 +44,27 @@ class _AppBarWidgetState extends State<AppBarWidget> {
       child: GetBuilder<HomePageViewModel>(builder: (controller) {
         return Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     height: 65,
                     child: isSearchOpened
                         ? Container(
                             decoration: BoxDecoration(color: Const.mainColor, borderRadius: isSearchOpened ? BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
                             child: Row(
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
                                   child: TextFormField(
                                     autofocus: true,
-                                    style: TextStyle(color: Colors.white),
+                                    style: const TextStyle(color: Colors.white),
                                     controller: searchTextController,
                                     onChanged: (_) async {
                                       PlaceViewModel placeViewModel = Get.find();
@@ -74,7 +74,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                                     },
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 InkWell(
@@ -84,7 +84,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                                       setState(() {});
                                     },
                                     child: Icon(Icons.close, color: Colors.white)),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                               ],
@@ -104,14 +104,14 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                               // borderRadius: BorderRadius.circular(15)),
                               child: Row(
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.search,
                                     color: Colors.white,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 5,
                                   ),
                                   Expanded(
@@ -128,7 +128,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                           ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 InkWell(
@@ -140,13 +140,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                     setState(() {});
                   },
                   child: Container(
+                    height: 65,
+                    width: 55,
+                    decoration: BoxDecoration(color: Const.mainColor, borderRadius: isSettingOpened ? const BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
                     child: Icon(
                       controller.startAndEndDate != null? Icons.check:Icons.date_range,
                       color: controller.startAndEndDate != null ? Colors.green : Colors.white,
                     ),
-                    height: 65,
-                    width: 55,
-                    decoration: BoxDecoration(color: Const.mainColor, borderRadius: isSettingOpened ? BorderRadius.only(topRight: Radius.circular(15), topLeft: Radius.circular(15)) : BorderRadius.circular(15)),
                   ),
                 ),
               ],
@@ -162,7 +162,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                       ) // borderRadius: BorderRadius.circular(15)),
                       ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Container(
@@ -177,7 +177,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               Container(
                 height: 400,
                 width: double.infinity,
-                decoration: BoxDecoration(color: Const.mainColor, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15), topLeft: Radius.circular(15))),
+                decoration: const BoxDecoration(color: Const.mainColor, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15), topLeft: Radius.circular(15))),
                 child: Padding(
                   padding: const EdgeInsets.all(0.0),
                   child: Column(
@@ -187,6 +187,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                       ),
                       Expanded(
                         child: FastCalendar(
+
                           initialSelectedFirstDate: controller.startAndEndDate?.start,
                           initialSelectedLastDate: controller.startAndEndDate?.end,
                           onRangeSelected: (DateTime? start, DateTime? end) {
@@ -196,6 +197,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                           },
                           decoration: BoxDecoration(color: Colors.white.withOpacity(0.1)),
                           rangeMode: true,
+
                         ),
                       ),
                       SizedBox(
@@ -231,13 +233,13 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                                 isSettingOpened = false;
                                 setState(() {});
                               },
-                              child: Text("ok")),
-                          SizedBox(
+                              child: const Text("ok")),
+                          const SizedBox(
                             width: 40,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                     ],
@@ -246,9 +248,9 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               )
             else if (isSearchOpened)
               Container(
-                height: 400,
+                height:placeSearchList.isEmpty?0:placeSearchList.length*50<350?placeSearchList.length*80: 350,
                 width: MediaQuery.sizeOf(context).width,
-                decoration: BoxDecoration(color: Const.mainColor, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15), topRight: Radius.circular(15))),
+                decoration: const BoxDecoration(color: Const.mainColor, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15), topRight: Radius.circular(15))),
                 child: Padding(
                   padding: const EdgeInsets.all(0.0),
                   child: ListView.builder(
@@ -269,14 +271,14 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                               color: Colors.white12,
                               child: Row(
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   SizedBox(
                                       width: MediaQuery.sizeOf(context).width - 50,
                                       child: Text(
                                         placeSearchList[index],
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 18,
                                         ),
@@ -291,7 +293,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ),
               )
             else
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: DefaultTabController(
                     length: 5,
@@ -339,18 +341,18 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(
                 text,
                 style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
               ),
-              Icon(
+              const Icon(
                 Icons.keyboard_arrow_down_outlined,
                 color: Colors.white,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
             ],
@@ -373,17 +375,17 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               width: MediaQuery.sizeOf(context).width,
               decoration: BoxDecoration(color: Const.mainColor, borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
             ),
-            Container(
+            SizedBox(
               height: 200,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Center(
+                  const Center(
                       child: Text(
                     "Engine Selender",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
                   )),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   StatefulBuilder(builder: (context, setstate) {
@@ -441,7 +443,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Center(
+                  const Center(
                       child: Text(
                     "Transmission",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
@@ -504,7 +506,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Center(
+                  const Center(
                       child: Text(
                     "Seats",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
@@ -575,7 +577,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         return StatefulBuilder(builder: (context, setstate) {
           return Container(
             width: MediaQuery.sizeOf(context).width,
-            decoration: BoxDecoration(color: Const.mainColor, borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20))),
+            decoration: const BoxDecoration(color: Const.mainColor, borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20))),
             child: SingleChildScrollView(
               child: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
@@ -713,7 +715,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                   ),
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width,
-                    child: Center(
+                    child: const Center(
                         child: Text(
                       "Choose Car Type",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),
