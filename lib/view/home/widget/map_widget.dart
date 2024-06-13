@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rental/controller/home_page_view_model.dart';
 import 'package:rental/controller/place_view_model.dart';
+import 'package:rental/utils/hive.dart';
 
 import '../../../model/PlaceModel.dart';
 
@@ -18,7 +19,11 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   bool showMarker = false;
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomePageViewModel>(builder: (controller) {
@@ -52,9 +57,19 @@ class _MapWidgetState extends State<MapWidget> {
           },
           onMapCreated: (mapController) async {
             String mapStyle = await rootBundle.loadString('assets/map_style.json');
+            PlaceViewModel placeViewModel = Get.find<PlaceViewModel>();
+            PlaceModel places = await placeViewModel.getLocationName(LatLng(controller.userPosition!.latitude, controller.userPosition!.longitude));
+print("------------------object");
+            if(places.places?.length!=0) {
+              for(var a in places.places!){
+print(a.displayName!.text!);
+              }
+              HiveDataBase.setUserLocationData(places.places![0].displayName!.text!);
+            }
             mapController.setMapStyle(mapStyle);
             controller.mapController = Completer();
             controller.mapController.complete(mapController);
+
           },
           onTap: (argument) async {
             controller.setMarker(argument, "location_icon", "marker_from", "0", size: 100);

@@ -52,7 +52,7 @@ class _CarTapWidgetState extends State<CarTapWidget> {
       //   _type="active";
       // }
       return dataList.isEmpty
-          ? Center(
+          ? const Center(
               child: Text(
                 "No Data",
                 style: TextStyle(color: Colors.black),

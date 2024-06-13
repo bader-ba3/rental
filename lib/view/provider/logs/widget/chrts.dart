@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -166,14 +168,14 @@ class _LineChartWidgetState extends State<LineChartWidget> {
       maxY: 6,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
+          spots:  [
+            FlSpot(0, Random().nextInt(5)*1.0),
+            FlSpot(2.6,  Random().nextInt(5)*1.0),
+            FlSpot(4.9, Random().nextInt(5)*1.0),
+            FlSpot(6.8, Random().nextInt(5)*1.0),
+            FlSpot(8, Random().nextInt(5)*1.0),
+            FlSpot(9.5, Random().nextInt(5)*1.0),
+            FlSpot(11, Random().nextInt(5)*1.0),
           ],
           isCurved: true,
        color: Const.mainColor,

@@ -85,7 +85,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 SizedBox(width: 10,),
                               ],
                             ),
-                            Text("UAE, Dubai, 16 Street",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
+                            Text(HiveDataBase.getUserData().location,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
                             SizedBox(height: 25,),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

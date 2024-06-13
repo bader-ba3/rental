@@ -55,28 +55,31 @@ class _OnboardingViewState extends State<OnboardingView> {
           Positioned(
               bottom: 50,
               right: 20,
-              child: GestureDetector(
-                onTap: () async {
-                  if(!_controller.value.isPlaying) {
-                    _controller.play();
-                    setState(() {
+              child: Visibility(
+                visible: !_controller.value.isPlaying,
+                child: GestureDetector(
+                  onTap: () async {
+                    if(!_controller.value.isPlaying) {
+                      _controller.play();
+                      setState(() {
 
-                    });
-                    index++;
-                    await Future.delayed(const Duration(milliseconds: 4600));
-                    _controller.pause();
-                    setState(() {
+                      });
+                      index++;
+                      await Future.delayed(const Duration(milliseconds: 4600));
+                      _controller.pause();
+                      setState(() {
 
-                    });
-                    if (index == 3) {
-                      Get.offAll(const SignInView());
+                      });
+                      if (index == 3) {
+                        Get.offAll(const SignInView());
+                      }
+
+
                     }
-
-
-                  }
-                },
-                child:
-                const Icon(Icons.double_arrow_outlined,color: Const.paigeColor,size: 34,),
+                  },
+                  child:
+                  const Icon(Icons.double_arrow_outlined,color: Const.paigeColor,size: 34,),
+                ),
               ))
         ],
       ),

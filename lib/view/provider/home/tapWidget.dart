@@ -53,6 +53,7 @@ class _TapWidgetState extends State<TapWidget> {
         ?Center(child: Text("No Data",style: TextStyle(color: Colors.black),),)
         :ListView.builder(
         itemCount: dataList.length,
+        shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           ReservationModel model = dataList[index];
           return Padding(

@@ -175,7 +175,7 @@ class _ProviderProfileViewState extends State<ProviderProfileView> {
                                     width:MediaQuery.sizeOf(context).width/1.1,
                                     decoration: BoxDecoration(color: Const.paigeColor,borderRadius: BorderRadius.circular(15)),
                                     child: Center(
-                                      child: Text("user mode",style: TextStyle(color: Colors.white,fontSize: 22),),
+                                      child: Text("User Mode",style: TextStyle(color: Colors.white,fontSize: 22),),
                                     ),
                                   ),
                                 ),

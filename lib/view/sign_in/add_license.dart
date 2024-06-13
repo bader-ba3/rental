@@ -20,6 +20,8 @@ class AddLicense extends StatefulWidget {
 }
 
 class _AddLicenseState extends State<AddLicense> {
+
+  bool isLoading=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,27 +37,34 @@ class _AddLicenseState extends State<AddLicense> {
             const Text("Add Your Driving License",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w700),),
             const SizedBox(height: 100,),
             const SizedBox(height: 100,),
+            !isLoading?
             InkWell(
               onTap: () async {
+
                 List<File>? res = await Navigator.push(
                   context, MaterialPageRoute(
+
                   builder: (context) => const WhatsappCamera(multiple: false,),),);
                 if(res?.isNotEmpty??false){
+                  isLoading=true;
+                  setState(() {
+
+                  });
                   final storageRef = FirebaseStorage.instance.ref().child('uploads/${DateTime.now().millisecondsSinceEpoch}.jpg');
                   await storageRef.putFile(res![0]);
                   final licenseImage = await storageRef.getDownloadURL();
                   HiveDataBase.setUserLicenseImageData(licenseImage);
-                Get.offAll(()=>const HomePageView(isUser: true,));
+                Get.offAll(()=>const HomePageView(isUser: false,));
                 }
               },
               child: Container(
                 width: MediaQuery.sizeOf(context).width/1.2,
                 height: 65,
                 decoration: BoxDecoration(color: Const.mainColor,borderRadius: BorderRadius.circular(15)),
-                child: Center(child: const Text("Capture",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 22),)),
+                child: const Center(child: Text("Capture",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 22),)),
               ),
-            ),
-            SizedBox(height: 1,),
+            ):const CircularProgressIndicator(),
+            const SizedBox(height: 1,),
           ],
         ),
       ),

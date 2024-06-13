@@ -94,7 +94,7 @@ class _HistoryViewState extends State<HistoryView> with SingleTickerProviderStat
   Widget page(List<ReservationModel> list) {
     return Container(
       child: list.isEmpty
-      ?Center(child: Text("No Things to show",style: TextStyle(fontSize: 22,color: Colors.white),),)
+      ?const Center(child: Text("No Things to show",style: TextStyle(fontSize: 22,color: Colors.white),),)
       :ListView.builder(
         itemCount: list.length,
         itemBuilder: (context, index) {
