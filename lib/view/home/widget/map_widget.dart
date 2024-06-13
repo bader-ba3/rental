@@ -29,7 +29,7 @@ class _MapWidgetState extends State<MapWidget> {
     return GetBuilder<HomePageViewModel>(builder: (controller) {
       return Container(
         // padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50), bottomRight: Radius.circular(50)
             )
         ),

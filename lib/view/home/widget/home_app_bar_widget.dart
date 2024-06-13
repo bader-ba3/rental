@@ -291,14 +291,14 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                                 controller.isSettingOpened = false;
                                 setState(() {});
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.close,
                                 color: Colors.red,
                                 size: 30,
                               )),
                           Spacer(),
                           ElevatedButton(
-                              style: ButtonStyle(
+                              style: const ButtonStyle(
                                 elevation: MaterialStatePropertyAll(0),
                                 backgroundColor:
                                     MaterialStatePropertyAll(Const.paigeColor),

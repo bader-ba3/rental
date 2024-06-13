@@ -25,7 +25,7 @@ bool expand=false;
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: Durations.short2,
-      height:expand?225: 475,
+      height:expand?475: 225,
       width: Get.width,
       margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
       padding: const EdgeInsets.all(8),
@@ -195,7 +195,8 @@ bool expand=false;
                                   ),
                                 ],
                               ),
-                              secondChild: Column(
+                              secondChild:
+                              Column(
                                 children: [
                                   const SizedBox(
                                     height: 5,
@@ -380,8 +381,8 @@ SizedBox(height: 10,),
                                 ],
                               ),
                               crossFadeState: expand
-                                  ? CrossFadeState.showFirst
-                                  : CrossFadeState.showSecond,
+                                  ? CrossFadeState.showSecond
+                                  : CrossFadeState.showFirst,
                               duration: Durations.short4,
                             ),
                           ),
