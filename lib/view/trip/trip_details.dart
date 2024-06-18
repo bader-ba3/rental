@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:fast_ui_kit/ui/widgets/calendar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -62,7 +63,7 @@ class _TripDetailsState extends State<TripDetails> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ListView(
-shrinkWrap: true,
+                  shrinkWrap: true,
                   physics: const ClampingScrollPhysics(),
                   // padding: EdgeInsets.zero,
                   children: [
@@ -101,10 +102,13 @@ shrinkWrap: true,
                     const Text("Embark on an unforgettable journey through the United Arab Emirates, a land of modern marvels, rich cultural heritage, and breathtaking landscapes. This trip will take you through the bustling metropolis of Dubai, the cultural heart of Sharjah, the serene beauty of Ras Al Khaimah, the vibrant streets of Abu Dhabi, and the charming emirates of Ajman and Umm Al Quwain. Get ready to experience a perfect blend of traditional and contemporary, desert and sea, luxury and simplicity.",style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
                     SizedBox(height: 20,),
                     Text("The Conditions",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-                    Text("Conditions "*5,style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
+                    Text("The credit Card is required.",style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
+                    Text("Family only.",style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
                     SizedBox(height: 20,),
                     Text("Additional information",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-                    Text("information "*5,style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
+                    Text("Contains breakfast.",style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
+                    Text("Free canceled.",style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
+                    Text("No need to advance payments.",style: TextStyle(fontWeight: FontWeight.w200,fontSize: 18),),
                     SizedBox(height: 20,),
                     Text("Location",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
                     SizedBox(height: 10,),
@@ -172,8 +176,46 @@ shrinkWrap: true,
                   Spacer(),
                   GestureDetector(
                     onTap: (){
+                      ({DateTime start, DateTime end})? tempDate ;
+                      HomePageViewModel homePageViewModel = Get.find<HomePageViewModel>();
                       if (Get.find<HomePageViewModel>().carIsLoading) {
-                        Get.to(const CarHome());
+                        Get.defaultDialog(
+                            backgroundColor: Const.mainColor,
+                            title: "choose start and end date",
+                            titleStyle: TextStyle(color: Colors.white),
+                            content: Container(
+                              color: Const.mainColor,
+                              height: Get.height/2,
+                              width: Get.height/2,
+                              child: FastCalendar(
+                                initialSelectedFirstDate:
+                                homePageViewModel.startAndEndDate?.start,
+                                initialSelectedLastDate:
+                                homePageViewModel.startAndEndDate?.end,
+                                onRangeSelected: (DateTime? start, DateTime? end) {
+                                  if (start != null && end != null) {
+                                    tempDate = (start: start, end: end);
+                                  }
+                                },
+                                decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.1)),
+                                rangeMode: true,
+                              ),
+                            ),
+                            actions: [
+                              ElevatedButton(onPressed: (){
+                                Get.back();
+                              }, child: Text("cancel")),
+                              ElevatedButton(onPressed: (){
+                                if(tempDate!=null){
+                                  homePageViewModel.startAndEndDate = tempDate;
+                                  Get.to(const CarHome());
+                                }
+                              }, child: Text("ok")),
+
+                            ]
+                        );
+                        //
                       }
                     },
                     child: Container(

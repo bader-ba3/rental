@@ -58,12 +58,12 @@ dependencies:
   slider_button:
   flutter_cool_card_swiper:
   fl_chart:
-  firebase_core: ^3.0.0
-  cloud_firestore: ^5.0.0
+  firebase_core:
+  cloud_firestore:
   flutter_cache_manager: ^3.3.1
   cherry_toast:
   video_player:
-  firebase_storage:
+  firebase_storage: 11.6.0
   image_picker:
 
 

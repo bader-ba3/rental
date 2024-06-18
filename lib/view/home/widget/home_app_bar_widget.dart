@@ -153,12 +153,12 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ),
                 InkWell(
                   onTap: () {
-                    controller.editSetting(!controller.isSettingOpened);
-                    // isSettingOpened = !isSettingOpened;
-                    // if (isSearchOpened) {
-                    //   isSearchOpened = false;
-                    // }
-                    // setState(() {});
+                    // controller.editSetting(!controller.isSettingOpened);
+                    controller.isSettingOpened = !controller.isSettingOpened;
+                    if (controller.isSearchOpened) {
+                      controller.isSearchOpened = false;
+                    }
+                    setState(() {});
                   },
                   child: Container(
                     height: 65,
@@ -226,55 +226,19 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                         height: 5,
                       ),
                       Expanded(
-                        child: Theme(
-                          data: ThemeData(
-                            bottomAppBarTheme: const BottomAppBarTheme(color: Colors.white),
-                            textTheme: const TextTheme(
-                                bodyLarge: TextStyle(color: Colors.white),
-                                bodySmall: TextStyle(color: Colors.white),
-                                bodyMedium: TextStyle(color: Colors.white),
-                                titleMedium: TextStyle(color: Colors.white),
-                                displayLarge: TextStyle(color: Colors.white),
-                                displayMedium: TextStyle(color: Colors.white),
-                                displaySmall: TextStyle(color: Colors.white),
-                                headlineLarge: TextStyle(color: Colors.white),
-                                headlineMedium: TextStyle(color: Colors.white),
-                                headlineSmall: TextStyle(color: Colors.white),
-                                labelLarge: TextStyle(color: Colors.white),
-                                labelMedium: TextStyle(color: Colors.white),
-                                labelSmall: TextStyle(color: Colors.white),
-                                titleLarge: TextStyle(color: Colors.white),
-                                titleSmall: TextStyle(color: Colors.white)),
-                            primaryTextTheme:const TextTheme(
-                                bodyLarge: TextStyle(color: Colors.white),
-                                bodySmall: TextStyle(color: Colors.white),
-                                bodyMedium: TextStyle(color: Colors.white),
-                                titleMedium: TextStyle(color: Colors.white),
-                                displayLarge: TextStyle(color: Colors.white),
-                                displayMedium: TextStyle(color: Colors.white),
-                                displaySmall: TextStyle(color: Colors.white),
-                                headlineLarge: TextStyle(color: Colors.white),
-                                headlineMedium: TextStyle(color: Colors.white),
-                                headlineSmall: TextStyle(color: Colors.white),
-                                labelLarge: TextStyle(color: Colors.white),
-                                labelMedium: TextStyle(color: Colors.white),
-                                labelSmall: TextStyle(color: Colors.white),
-                                titleLarge: TextStyle(color: Colors.white),
-                                titleSmall: TextStyle(color: Colors.white))),
-                          child: FastCalendar(
-                            initialSelectedFirstDate:
-                                controller.startAndEndDate?.start,
-                            initialSelectedLastDate:
-                                controller.startAndEndDate?.end,
-                            onRangeSelected: (DateTime? start, DateTime? end) {
-                              if (start != null && end != null) {
-                                tempDate = (start: start, end: end);
-                              }
-                            },
-                            decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.1)),
-                            rangeMode: true,
-                          ),
+                        child: FastCalendar(
+                          initialSelectedFirstDate:
+                          controller.startAndEndDate?.start,
+                          initialSelectedLastDate:
+                          controller.startAndEndDate?.end,
+                          onRangeSelected: (DateTime? start, DateTime? end) {
+                            if (start != null && end != null) {
+                              tempDate = (start: start, end: end);
+                            }
+                          },
+                          decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1)),
+                          rangeMode: true,
                         ),
                       ),
                       SizedBox(

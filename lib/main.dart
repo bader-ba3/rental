@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme.light(primary: Const.paigeColor)
       ),
       initialBinding: GetBinding(),
-      // home: const HomePageView(isUser: true,)
+      home: const HomePageView(isUser: true,)
       // home: SignInView()
-      home: const OnboardingView()
+      // home: const OnboardingView()
     );
   }
 }

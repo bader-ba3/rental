@@ -125,7 +125,7 @@ class HomePageViewModel extends GetxController{
         price: price,
         pickupDate: startAndEndDate!.start.toString().split(" ")[0],
         returnDate: startAndEndDate!.end.toString().split(" ")[0],
-        address: address,
+        address: address??HiveDataBase.getUserData().location,
         reservationStatus: Const.reservationPending,
         carStatus: Const.carStatusIdle,
     );

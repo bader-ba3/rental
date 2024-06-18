@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
+import 'package:fast_ui_kit/ui/widgets/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -230,13 +231,14 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                 radius: 10,
                                 vibrationFlag: true,
                                 action: () async {
+                                  HomePageViewModel homePageViewModel = Get.find<HomePageViewModel>();
                                   if(HiveDataBase.bankCardModelBox.values.toList().isEmpty){
                                     CherryToast.error(
                                       title: Text("You Should Add Credit Card"),
                                       animationDuration: Duration(milliseconds: 300),
                                       action: Text("Add Credit Card",style: TextStyle(color: Colors.blueAccent),),
                                       actionHandler: (){
-                                        HomePageViewModel homePageViewModel = Get.find<HomePageViewModel>();
+
                                         Get.back();
                                         Get.back();
                                         Get.back();
@@ -246,20 +248,21 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                       animationType: AnimationType.fromTop,
                                     ).show(context);
                                     return false;
+                                  }else{
+                                    HomePageViewModel homePageViewModel = Get.find<HomePageViewModel>();
+                                    homePageViewModel.addReservation(
+                                        price: carModel.carPrice.toString(),
+                                        carName: carModel.carName.toString(),
+                                        carDes: carModel.carModule.toString(),
+                                        carId: carModel.carId.toString(),
+                                        carImage13: carModel.carColor!.first.images![13],
+                                        carImage0: carModel.carColor!.first.images![0],
+                                        carImage3: carModel.carColor!.first.images![3],
+                                        addOns: selectedAddons.join(",")
+                                    );
+                                    backAnimate();
+                                    carOrdered=true;
                                   }
-                                  HomePageViewModel homePageViewModel = Get.find<HomePageViewModel>();
-                                  homePageViewModel.addReservation(
-                                      price: carModel.carPrice.toString(),
-                                      carName: carModel.carName.toString(),
-                                      carDes: carModel.carModule.toString(),
-                                      carId: carModel.carId.toString(),
-                                      carImage13: carModel.carColor!.first.images![13],
-                                      carImage0: carModel.carColor!.first.images![0],
-                                      carImage3: carModel.carColor!.first.images![3],
-                                    addOns: selectedAddons.join(",")
-                                  );
-                                  backAnimate();
-                                  carOrdered=true;
                                   Timer(const Duration(seconds: 1), () {
                                     carLeft=-400;
                                     carRight=400;
@@ -268,6 +271,8 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
                                   carLeft=100;
                                   carRight=-100;
                                   setState(() {});
+                                  homePageViewModel.startAndEndDate = null;
+                                  homePageViewModel.address = null;
                                   Timer(const Duration(seconds: 3), () {
                                     Get.offAll(const HomePageView(isUser: true,));
                                   },);

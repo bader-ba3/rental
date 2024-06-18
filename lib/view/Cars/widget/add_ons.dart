@@ -32,11 +32,11 @@ class _AddOnsState extends State<AddOns> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-         item("child's seat","car_seats"),
+         item("Child's Seat","car_seats"),
           item("GPS","gps"),
-          item("refrigerator","refrigerator"),
-          item("Phone holder","Phone_holder"),
-          item("Unlimited internet","wifi"),
+          item("Refrigerator","refrigerator"),
+          item("Phone Holder","Phone_holder"),
+          item("Unlimited Internet","wifi"),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
