@@ -52,12 +52,15 @@ class _CarTapWidgetState extends State<CarTapWidget> {
       //   _type="active";
       // }
       return dataList.isEmpty
-          ? const Center(
-              child: Text(
-                "No Data",
-                style: TextStyle(color: Colors.black),
-              ),
-            )
+          ? Center(child: Column(
+        children: [
+          Spacer(flex: 2,),
+          Image.asset("assets/no_data.png"),
+          Spacer(flex: 1,),
+          Text("No Data",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),),
+          Spacer(flex: 1,),
+        ],
+      ))
           : ListView.builder(
               itemCount: dataList.length,
               itemBuilder: (BuildContext context, int index) {
