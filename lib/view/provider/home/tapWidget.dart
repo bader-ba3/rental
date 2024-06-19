@@ -202,16 +202,34 @@ class _TapWidgetState extends State<TapWidget> {
                                   ],
                                 ),
                                 const Spacer(),
-                                Container(
-                                  width: 95,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(5),
-                                      color: Const.mainColor.withOpacity(0.3),
-                                      image: const DecorationImage(
-                                          image: NetworkImage(
-                                              "https://cdn.al-ain.com/lg/images/2020/9/24/176-163839-muhammad-ramadan-off-his-new-car-3.jpeg"),
-                                          fit: BoxFit.contain)),
+                                InkWell(
+                                  onTap: (){
+                                    Get.defaultDialog(
+                                      backgroundColor: Colors.white,
+                                      title: "License Image",
+                                      cancel: InkWell(
+                                          onTap: (){
+                                            Get.back();
+                                          },
+                                          child: Icon(Icons.close,color: Colors.red,)),
+                                      content: Container(
+                                        height: Get.width/1.5,
+                                        width: Get.width/1.5,
+                                        child: Image.network(model.licenseImage!),
+                                      )
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 95,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(5),
+                                        color: Const.mainColor.withOpacity(0.3),
+                                        image:  DecorationImage(
+                                            image: NetworkImage(
+                                                model.licenseImage!),
+                                            fit: BoxFit.fill)),
+                                  ),
                                 ),
                               ],
                             ),

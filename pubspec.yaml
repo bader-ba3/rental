@@ -47,7 +47,6 @@ dependencies:
   audioplayers_darwin: ^5.0.0
   flutter_inset_box_shadow:
   clay_containers:
-  fast_ui_kit:
   uae_pass_flutter:
   uni_links:
   appcheck:
@@ -65,6 +64,7 @@ dependencies:
   video_player:
   firebase_storage: 11.6.0
   image_picker:
+  fast_ui_kit: ^1.0.10
 
 
 
