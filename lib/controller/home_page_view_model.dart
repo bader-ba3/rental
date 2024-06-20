@@ -87,8 +87,8 @@ class HomePageViewModel extends GetxController{
         onTap: () async {
           PlaceViewModel placeViewModel = Get.find<PlaceViewModel>();
           PlaceModel places = await placeViewModel.getLocationName(location);
-          markers.removeWhere((key, value) => value.markerId.value == uID);
-          address = places.places == null ?"المركز الرئيسي":places.places!.first.displayName!.text;
+          markers.removeWhere((key, value) => value.markerId.value == "marker_from");
+          address = places.places!.isEmpty ?"المركز الرئيسي":places.places!.first.displayName!.text;
           update();
         },
       );
