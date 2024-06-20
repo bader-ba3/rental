@@ -59,10 +59,10 @@ class _MapWidgetState extends State<MapWidget> {
             String mapStyle = await rootBundle.loadString('assets/map_style.json');
             PlaceViewModel placeViewModel = Get.find<PlaceViewModel>();
             PlaceModel places = await placeViewModel.getLocationName(LatLng(controller.userPosition!.latitude, controller.userPosition!.longitude));
-print("------------------object");
+              print("------------------object");
             if(places.places?.length!=0) {
               for(var a in places.places!){
-print(a.displayName!.text!);
+                print(a.displayName!.text!);
               }
               HiveDataBase.setUserLocationData(places.places![0].displayName!.text!);
             }

@@ -9,11 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rental/controller/place_view_model.dart';
 import 'package:rental/model/reservation_model.dart';
 import 'package:rental/model/small_car_model.dart';
 import 'package:rental/utils/hive.dart';
 
 import '../model/Car_Model.dart';
+import '../model/PlaceModel.dart';
 import '../utils/const.dart';
 import '../utils/data.dart';
 import '../utils/get_bytes_from_asset.dart';
@@ -82,7 +84,13 @@ class HomePageViewModel extends GetxController{
         icon: BitmapDescriptor.fromBytes(value),
         position: location,
         rotation: double.parse(bearing),
-        onTap: () {},
+        onTap: () async {
+          PlaceViewModel placeViewModel = Get.find<PlaceViewModel>();
+          PlaceModel places = await placeViewModel.getLocationName(location);
+          markers.removeWhere((key, value) => value.markerId.value == uID);
+          address = places.places == null ?"المركز الرئيسي":places.places!.first.displayName!.text;
+          update();
+        },
       );
       markers[MarkerId(uID)]= newMarker;
       update();
