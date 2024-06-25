@@ -454,12 +454,10 @@ class _CarPageState extends State<CarPage> with TickerProviderStateMixin {
       right: carRight,
       child: Listener(
         onPointerDown: (_) => fingersCount++,
-        onPointerUp: (_) => fingersCount-=2,
+        onPointerUp: (_) => fingersCount--,
         // onPointerCancel: (_)=>fingersCount--,
         onPointerMove: (event) {
-          print(fingersCount);
           if (enableRotation && fingersCount < 2 && !carIsBig ) {
-            fingersCount+=0.25;
             setState(() {
               if (event.delta.dx > 0) {
                 indexOf360Image = (indexOf360Image + 1) % 24;

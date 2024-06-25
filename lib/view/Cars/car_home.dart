@@ -38,8 +38,8 @@ class _CarHomeState extends State<CarHome> {
             children: [
               Row(
                 children: [
-                  BackButton(color: Colors.white,),
-                  Spacer(),
+                  const BackButton(color: Colors.white,),
+                  const Spacer(),
                   ButtonWidget(
                     borderRadius: 15,
                     isSelected: isPriceFiltered,
@@ -49,7 +49,7 @@ class _CarHomeState extends State<CarHome> {
                       isPriceFiltered = !isPriceFiltered;
                       setState(() {});
                     },
-                    child: Center(child: Row(
+                    child: const Center(child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text("Price", style: TextStyle(color: Colors.white, fontSize: 16),),
@@ -67,7 +67,7 @@ class _CarHomeState extends State<CarHome> {
                       isDateFiltered = !isDateFiltered;
                       setState(() {});
                     },
-                    child: Center(child: Row(
+                    child: const Center(child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text("relese date", style: TextStyle(color: Colors.white, fontSize: 16),),
