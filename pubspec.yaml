@@ -65,7 +65,7 @@ dependencies:
   firebase_storage: 11.6.0
   image_picker:
   fast_ui_kit: ^1.0.10
-
+  animated_rating_stars:
 
 
 dev_dependencies:

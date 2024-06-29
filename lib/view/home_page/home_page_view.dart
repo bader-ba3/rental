@@ -26,6 +26,7 @@ class _HomePageViewState extends State<HomePageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xff3d0312),
       appBar: AppBar(toolbarHeight: 0,),
       body: SafeArea(

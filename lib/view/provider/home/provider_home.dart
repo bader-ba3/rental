@@ -23,12 +23,12 @@ class _ProviderHomeViewState extends State<ProviderHomeView> with SingleTickerPr
   late TabController tabController;
   @override
   void initState() {
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 5, vsync: this);
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    List text = ["pending", "Active","Available", "Maintenance",];
+    List text = ["pending", "Active","Available","Offline", "Maintenance",];
     return GetBuilder<HomePageViewModel>(builder: (controller) {
       return Container(
         clipBehavior: Clip.hardEdge,
@@ -57,7 +57,7 @@ class _ProviderHomeViewState extends State<ProviderHomeView> with SingleTickerPr
                   labelPadding: EdgeInsets.zero,
                   tabAlignment: TabAlignment.start,
                   indicatorSize: TabBarIndicatorSize.tab,
-                  tabs:List.generate(4, (index) =>
+                  tabs:List.generate(5, (index) =>
                       ButtonWidget(
                         borderRadius: 15,
                         isSelected: tabController.index == index,
@@ -112,6 +112,9 @@ class _ProviderHomeViewState extends State<ProviderHomeView> with SingleTickerPr
                     ),
                     Center(
                       child: CarTapWidget(dataType:Const.carStatusIdle ),
+                    ),
+                    Center(
+                      child: CarTapWidget(dataType:Const.carStatusOffline ),
                     ),
                     Center(
                       child: CarTapWidget(dataType:  Const.carStatusMaintenance),

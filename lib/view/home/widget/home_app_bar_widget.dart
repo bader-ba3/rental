@@ -290,61 +290,99 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                 ),
               )
             else if (controller.isSearchOpened)
-              Container(
-                height: placeSearchList.isEmpty
-                    ? 0
-                    : placeSearchList.length * 50 < 350
-                        ? placeSearchList.length * 80
-                        : 350,
-                width: MediaQuery.sizeOf(context).width,
-                decoration: const BoxDecoration(
-                    color: Const.mainColor,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                        topRight: Radius.circular(15))),
-                child: Padding(
-                  padding: const EdgeInsets.all(0.0),
-                  child: ListView.builder(
-                    itemCount: placeSearchList.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () {
-                            controller.isSearchOpened = false;
-                            controller.address = placeSearchList[index];
-                            controller.markers.removeWhere((key, value) =>
-                                value.markerId.value == 'marker_from');
-                            controller.update();
-                            setState(() {});
-                          },
-                          child: Container(
-                              height: 50,
-                              color: Colors.white12,
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  SizedBox(
-                                      width:
-                                          MediaQuery.sizeOf(context).width - 50,
-                                      child: Text(
-                                        placeSearchList[index],
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      )),
-                                ],
-                              )),
-                        ),
-                      );
+              Column(
+                children: [
+                  if(homePageViewModel.userAddress!=null)
+                  InkWell(
+                    onTap: (){
+                      controller.isSearchOpened = false;
+                      controller.address = homePageViewModel.userAddress.toString();
+                      controller.markers.removeWhere((key, value) =>
+                      value.markerId.value == 'marker_from');
+                      controller.update();
+                      setState(() {});
                     },
+                    child: Container(
+                      height:50,
+                      width: MediaQuery.sizeOf(context).width,
+                      decoration:  BoxDecoration(
+                          color: Const.mainColor,
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(15),
+                              bottomLeft: Radius.circular(placeSearchList!.isEmpty?15:0),
+                              bottomRight: Radius.circular(placeSearchList!.isEmpty?15:0),
+                          )),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Row(
+                              children: [
+                                Text("use my Location",style: TextStyle(color: Const.paigeColor,fontSize: 20),),
+                                SizedBox(width: 10,),
+                                Icon(Icons.pin_drop,color: Const.paigeColor),
+                              ],
+                            ),
+                          )),
+                    ),
                   ),
-                ),
+                  Container(
+                    height: placeSearchList.isEmpty
+                        ? 0
+                        : placeSearchList.length * 50 < 350
+                            ? placeSearchList.length * 80
+                            : 350,
+                    width: MediaQuery.sizeOf(context).width,
+                    decoration: const BoxDecoration(
+                        color: Const.mainColor,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
+                           )),
+                    child: Padding(
+                      padding: const EdgeInsets.all(0.0),
+                      child: ListView.builder(
+                        itemCount: placeSearchList.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                controller.isSearchOpened = false;
+                                controller.address = placeSearchList[index];
+                                controller.markers.removeWhere((key, value) =>
+                                    value.markerId.value == 'marker_from');
+                                controller.update();
+                                setState(() {});
+                              },
+                              child: Container(
+                                  height: 50,
+                                  color: Colors.white12,
+                                  child: Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      SizedBox(
+                                          width:
+                                              MediaQuery.sizeOf(context).width - 50,
+                                          child: Text(
+                                            placeSearchList[index],
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          )),
+                                    ],
+                                  )),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               )
             else
               SizedBox(

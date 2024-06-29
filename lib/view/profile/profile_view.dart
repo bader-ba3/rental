@@ -1,3 +1,4 @@
+import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,7 +25,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  List bankCard=[];
+  List bankCard = [];
 
   @override
   void initState() {
@@ -33,354 +34,414 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   GlobalKey key = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Const.mainColor,
-      body:Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(40),color: Colors.white),
-        child: Stack(
-          children: [
-            ClipPath(
-              clipper: CustomClipPath(),
-              child: Container(
-                color: Const.mainColor,
-                child: Center(child: Text("aaaaa"),),
-                height: 200,
-              ),
-            ),
-            Column(
+        backgroundColor: Const.mainColor,
+        body: GetBuilder<HomePageViewModel>(builder: (controller) {
+          return Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(40), color: Colors.white),
+            child: Stack(
               children: [
-                SizedBox(height: 200,),
-                Expanded(
-                  child: ListView(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("Name:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            Text(HiveDataBase.getUserData().name,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
-                            const SizedBox(height: 25,),
-                            const Text("Number:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            Text(HiveDataBase.getUserData().mobile,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
-                            const SizedBox(height: 25,),
-                            const Text("Id Number:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            const Text("88624256756",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
-                            const SizedBox(height: 25,),
-                            const Text("Driving License:",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                            const Text("94761891849245",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
-                            const SizedBox(height: 15,),
-                            ImageOverlay(imageUrl: HiveDataBase.getUserData().licenseImage),
-                            const SizedBox(height: 25,),
-                            Row(
+                ClipPath(
+                  clipper: CustomClipPath(),
+                  child: Container(
+                    color: Const.mainColor,
+                    child: Center(child: Text("aaaaa"),),
+                    height: 200,
+                  ),
+                ),
+                Column(
+                  children: [
+                    SizedBox(height: 200,),
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Address",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),
-                                Spacer(),
-                                InkWell(
-                                    onTap: (){},
-                                    child: CircleAvatar(radius: 20,backgroundColor: Const.mainColor,child: Icon(Icons.edit,color: Colors.white,),)),
-                                SizedBox(width: 10,),
-                              ],
-                            ),
-                            Text(HiveDataBase.getUserData().location,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w300),),
-                            SizedBox(height: 25,),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
+                                const SizedBox(height: 25,),
                                 Row(
                                   children: [
-                                    Text("My Card",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                                    Spacer(),
+                                    Text("My Rate: ", style: TextStyle(fontSize: 22),),
+                                    if(controller.userRate!=null)
+                                    AnimatedRatingStars(
+                                      key: controller.ratingKey,
+                                      initialRating: double.parse(controller.userRate!),
+                                      minRating: 0.0,
+                                      maxRating: 5.0,
+                                      filledColor: Colors.amber,
+                                      emptyColor: Colors.grey,
+                                      filledIcon: Icons.star,
+                                      halfFilledIcon: Icons.star_half,
+                                      emptyIcon: Icons.star_border,
+                                      onChanged: (double rating) {
+                                        // Handle the rating change here
+                                        print('Rating: $rating');
+                                      },
+                                      displayRatingValue: true,
+                                      interactiveTooltips: true,
+                                      customFilledIcon: Icons.star,
+                                      customHalfFilledIcon: Icons.star_half,
+                                      customEmptyIcon: Icons.star_border,
+                                      starSize: 30.0,
+                                      animationDuration: Duration(milliseconds: 300),
+                                      animationCurve: Curves.easeInOut,
+                                      readOnly: true,
+                                    ),
+                                    Spacer(),
+                                  ],
+                                ),
+                                const SizedBox(height: 10,),
+                                const Text("Name:", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+                                Text(HiveDataBase
+                                    .getUserData()
+                                    .name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+                                const SizedBox(height: 25,),
+                                const Text("Number:", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+                                Text(HiveDataBase
+                                    .getUserData()
+                                    .mobile, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+                                const SizedBox(height: 25,),
+                                const Text("Id Number:", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+                                const Text("88624256756", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+                                const SizedBox(height: 25,),
+                                const Text("Driving License:", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+                                const Text("94761891849245", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+                                const SizedBox(height: 15,),
+                                ImageOverlay(imageUrl: HiveDataBase.getUserData().licenseImage),
+                                const SizedBox(height: 25,),
+                                Row(
+                                  children: [
+                                    Text("Address", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
                                     Spacer(),
                                     InkWell(
-                                        onTap: () async {
-                                          BankCardModel model = BankCardModel(bankName: "Almaria Bank", number: "", type: "", cvc: "", exp: "");
-                                          BankCardModel? data = await showModalBottomSheet(
-                                            context: context,
-                                            builder: (context) {
-                                              return Container(
-                                                height: 350 + (MediaQuery.of(context).viewInsets.bottom),
-                                                color: Const.mainColor,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(20.0),
-                                                  child: ListView(
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            "Add New Card",
-                                                            style: TextStyle(color: Colors.white, fontSize: 25),
-                                                          ),
-                                                          Spacer(),
-                                                          IconButton(
-                                                              onPressed: () {
-                                                                Get.back();
-                                                              },
-                                                              icon: Icon(
-                                                                Icons.close,
-                                                                color: Colors.white,
-                                                              ))
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      Text(
-                                                        "Card Number: ",
-                                                        style: TextStyle(color: Colors.white),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      Container(
-                                                        height: 50,
-                                                        width: double.infinity,
-                                                        decoration: BoxDecoration(
-                                                          // color: Const.boxColor,
-                                                          borderRadius: BorderRadius.circular(15),
-                                                        ),
-                                                        child: TextFormField(
-                                                          style: TextStyle(color: Colors.white),
-                                                          keyboardType: TextInputType.number,
-                                                          inputFormatters: [
-                                                            MaskedTextInputFormatter(
-                                                              mask: 'xxxx-xxxx-xxxx-xxxx',
-                                                              separator: '-',
-                                                            ),
-                                                          ],
-                                                          decoration: InputDecoration(border: InputBorder.none, hintText: "  Enter your card number", hintStyle: TextStyle(color: Colors.white54)),
-                                                          onChanged: (_) {
-                                                            if (_.length == 19) {
-                                                              model.number = _.split("-")[3];
-                                                            }
-                                                            if (_.startsWith("5") || _.startsWith("2")) {
-                                                              model.type = "master_card";
-                                                            } else {
-                                                              model.type = "visa";
-                                                            }
-                                                          },
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                Text(
-                                                                  "Expiry Date",
-                                                                  style: TextStyle(color: Colors.white),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 5,
-                                                                ),
-                                                                Container(
-                                                                  height: 50,
-                                                                  width: double.infinity,
-                                                                  decoration: BoxDecoration(
-                                                                    // color: Const.boxColor,
-                                                                    borderRadius: BorderRadius.circular(15),
-                                                                  ),
-                                                                  child: TextFormField(
-                                                                    style: TextStyle(color: Colors.white),
-                                                                    inputFormatters: [
-                                                                      MaskedTextInputFormatter(
-                                                                        mask: 'xx/xx',
-                                                                        separator: '/',
-                                                                      ),
-                                                                    ],
-                                                                    keyboardType: TextInputType.datetime,
-                                                                    decoration: InputDecoration(border: InputBorder.none, hintText: "  MM/YY", hintStyle: TextStyle(color: Colors.white54)),
-                                                                    onChanged: (_) {
-                                                                      model.exp = _;
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 20,
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                Text(
-                                                                  "Security Code",
-                                                                  style: TextStyle(color: Colors.white),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 5,
-                                                                ),
-                                                                Container(
-                                                                  height: 50,
-                                                                  width: double.infinity,
-                                                                  decoration: BoxDecoration(
-                                                                    //  color: Const.boxColor,
-                                                                    borderRadius: BorderRadius.circular(15),
-                                                                  ),
-                                                                  child: TextFormField(
-                                                                    style: TextStyle(color: Colors.white),
-                                                                    inputFormatters: [
-                                                                      MaskedTextInputFormatter(
-                                                                        mask: 'xxx',
-                                                                        separator: '',
-                                                                      ),
-                                                                    ],
-                                                                    keyboardType: TextInputType.number,
-                                                                    decoration: InputDecoration(border: InputBorder.none, hintText: "  CCV", hintStyle: TextStyle(color: Colors.white54)),
-                                                                    onChanged: (_) {
-                                                                      model.cvc = _;
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      SizedBox(
-                                                        height: 25,
-                                                      ),
-                                                      TextButton(
-                                                          style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(Const.paigeColor)),
-                                                          onPressed: () {
-                                                            Get.back(result: model);
-                                                          },
-                                                          child:Text( "Add Card")),
-                                                      SizedBox(
-                                                        height: (MediaQuery.of(context).viewInsets.bottom),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                          if (data != null) {
-                                            if(data.number.isNotEmpty&&data.type.isNotEmpty&&data.bankName.isNotEmpty&&data.cvc.isNotEmpty&&data.exp.isNotEmpty){
-                                              HiveDataBase.bankCardModelBox.put(data.number+data.cvc, data);
-                                              bankCard.add(data);
-                                              key = GlobalKey();
-                                              setState(() {});
-                                            }else{
-                                              CherryToast.error(title: const Text("Invalid Card"),animationType: AnimationType.fromTop,animationDuration: const Duration(milliseconds: 300),);
-                                            }
-                                          }
-                                        },
-                                        child: CircleAvatar(radius: 20,backgroundColor: Const.mainColor,child: Icon(Icons.add,color: Colors.white,),)),
+                                        onTap: () {},
+                                        child: CircleAvatar(radius: 20, backgroundColor: Const.mainColor, child: Icon(Icons.edit, color: Colors.white,),)),
                                     SizedBox(width: 10,),
                                   ],
                                 ),
-                                SizedBox(height: 10,),
-                                if (bankCard.isNotEmpty)
-                                  SizedBox(
-                                    height: 250,
-                                    child: bankCard.length == 1
-                                        ? cardWidget(bankCard.first)
-                                        : CoolSwiper(
-                                      key: key,
-                                      children: bankCard.map((e) => cardWidget(e)).toList(),
+                                Text(HiveDataBase
+                                    .getUserData()
+                                    .location, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+                                SizedBox(height: 25,),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text("My Card", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),),
+                                        Spacer(),
+                                        InkWell(
+                                            onTap: () async {
+                                              BankCardModel model = BankCardModel(bankName: "Almaria Bank",
+                                                  number: "",
+                                                  type: "",
+                                                  cvc: "",
+                                                  exp: "");
+                                              BankCardModel? data = await showModalBottomSheet(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Container(
+                                                    height: 350 + (MediaQuery
+                                                        .of(context)
+                                                        .viewInsets
+                                                        .bottom),
+                                                    color: Const.mainColor,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(20.0),
+                                                      child: ListView(
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                "Add New Card",
+                                                                style: TextStyle(color: Colors.white, fontSize: 25),
+                                                              ),
+                                                              Spacer(),
+                                                              IconButton(
+                                                                  onPressed: () {
+                                                                    Get.back();
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons.close,
+                                                                    color: Colors.white,
+                                                                  ))
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Card Number: ",
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Container(
+                                                            height: 50,
+                                                            width: double.infinity,
+                                                            decoration: BoxDecoration(
+                                                              // color: Const.boxColor,
+                                                              borderRadius: BorderRadius.circular(15),
+                                                            ),
+                                                            child: TextFormField(
+                                                              style: TextStyle(color: Colors.white),
+                                                              keyboardType: TextInputType.number,
+                                                              inputFormatters: [
+                                                                MaskedTextInputFormatter(
+                                                                  mask: 'xxxx-xxxx-xxxx-xxxx',
+                                                                  separator: '-',
+                                                                ),
+                                                              ],
+                                                              decoration: InputDecoration(border: InputBorder.none, hintText: "  Enter your card number", hintStyle: TextStyle(color: Colors.white54)),
+                                                              onChanged: (_) {
+                                                                if (_.length == 19) {
+                                                                  model.number = _.split("-")[3];
+                                                                }
+                                                                if (_.startsWith("5") || _.startsWith("2")) {
+                                                                  model.type = "master_card";
+                                                                } else {
+                                                                  model.type = "visa";
+                                                                }
+                                                              },
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: Column(
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Expiry Date",
+                                                                      style: TextStyle(color: Colors.white),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 5,
+                                                                    ),
+                                                                    Container(
+                                                                      height: 50,
+                                                                      width: double.infinity,
+                                                                      decoration: BoxDecoration(
+                                                                        // color: Const.boxColor,
+                                                                        borderRadius: BorderRadius.circular(15),
+                                                                      ),
+                                                                      child: TextFormField(
+                                                                        style: TextStyle(color: Colors.white),
+                                                                        inputFormatters: [
+                                                                          MaskedTextInputFormatter(
+                                                                            mask: 'xx/xx',
+                                                                            separator: '/',
+                                                                          ),
+                                                                        ],
+                                                                        keyboardType: TextInputType.datetime,
+                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "  MM/YY", hintStyle: TextStyle(color: Colors.white54)),
+                                                                        onChanged: (_) {
+                                                                          model.exp = _;
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 20,
+                                                              ),
+                                                              Expanded(
+                                                                child: Column(
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Security Code",
+                                                                      style: TextStyle(color: Colors.white),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height: 5,
+                                                                    ),
+                                                                    Container(
+                                                                      height: 50,
+                                                                      width: double.infinity,
+                                                                      decoration: BoxDecoration(
+                                                                        //  color: Const.boxColor,
+                                                                        borderRadius: BorderRadius.circular(15),
+                                                                      ),
+                                                                      child: TextFormField(
+                                                                        style: TextStyle(color: Colors.white),
+                                                                        inputFormatters: [
+                                                                          MaskedTextInputFormatter(
+                                                                            mask: 'xxx',
+                                                                            separator: '',
+                                                                          ),
+                                                                        ],
+                                                                        keyboardType: TextInputType.number,
+                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "  CCV", hintStyle: TextStyle(color: Colors.white54)),
+                                                                        onChanged: (_) {
+                                                                          model.cvc = _;
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 25,
+                                                          ),
+                                                          TextButton(
+                                                              style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(Const.paigeColor)),
+                                                              onPressed: () {
+                                                                Get.back(result: model);
+                                                              },
+                                                              child: Text("Add Card")),
+                                                          SizedBox(
+                                                            height: (MediaQuery
+                                                                .of(context)
+                                                                .viewInsets
+                                                                .bottom),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                              if (data != null) {
+                                                if (data.number.isNotEmpty && data.type.isNotEmpty && data.bankName.isNotEmpty && data.cvc.isNotEmpty && data.exp.isNotEmpty) {
+                                                  HiveDataBase.bankCardModelBox.put(data.number + data.cvc, data);
+                                                  bankCard.add(data);
+                                                  key = GlobalKey();
+                                                  setState(() {});
+                                                } else {
+                                                  CherryToast.error(title: const Text("Invalid Card"), animationType: AnimationType.fromTop, animationDuration: const Duration(milliseconds: 300),);
+                                                }
+                                              }
+                                            },
+                                            child: CircleAvatar(radius: 20, backgroundColor: Const.mainColor, child: Icon(Icons.add, color: Colors.white,),)),
+                                        SizedBox(width: 10,),
+                                      ],
                                     ),
-                                  )
-                                else
-                                  const SizedBox(
-                                    height: 250,
-                                    child: Center(
-                                      child: Text("You have not added a bank card yet",style: TextStyle(color: Colors.red,fontSize: 20),),
+                                    SizedBox(height: 10,),
+                                    if (bankCard.isNotEmpty)
+                                      SizedBox(
+                                        height: 250,
+                                        child: bankCard.length == 1
+                                            ? cardWidget(bankCard.first)
+                                            : CoolSwiper(
+                                          key: key,
+                                          children: bankCard.map((e) => cardWidget(e)).toList(),
+                                        ),
+                                      )
+                                    else
+                                      const SizedBox(
+                                        height: 250,
+                                        child: Center(
+                                          child: Text("You have not added a bank card yet", style: TextStyle(color: Colors.red, fontSize: 20),),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                SizedBox(height: 25,),
+                                Center(
+                                  child: InkWell(
+                                    onTap: () {
+                                      HomePageViewModel homeViewModel = Get.find<HomePageViewModel>();
+                                      homeViewModel.currentIndex = 2;
+                                      Get.offAll(() => HomePageView(isUser: false));
+                                    },
+                                    child: Container(
+                                      height: 60,
+                                      width: MediaQuery
+                                          .sizeOf(context)
+                                          .width / 1.1,
+                                      decoration: BoxDecoration(color: Const.paigeColor, borderRadius: BorderRadius.circular(15)),
+                                      child: Center(
+                                        child: Text("Provider Mode", style: TextStyle(color: Colors.white, fontSize: 22),),
+                                      ),
                                     ),
                                   ),
+                                ),
+                                SizedBox(height: 25,),
+                                Center(
+                                  child: InkWell(
+                                    onTap: () {
+                                      HiveDataBase.deleteUserData();
+                                      Get.offAll(() => OnboardingView());
+                                    },
+                                    child: Container(
+                                      height: 60,
+                                      width: MediaQuery
+                                          .sizeOf(context)
+                                          .width / 1.1,
+                                      decoration: BoxDecoration(color: Const.paigeColor, borderRadius: BorderRadius.circular(15)),
+                                      child: Center(
+                                        child: Text("Sign Out", style: TextStyle(color: Colors.white, fontSize: 22),),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 25,),
+                                Center(
+                                  child: InkWell(
+                                    onTap: () {
+                                      HiveDataBase.deleteUserData();
+                                      Get.offAll(() => OnboardingView());
+                                    },
+                                    child: Container(
+                                      height: 60,
+                                      width: MediaQuery
+                                          .sizeOf(context)
+                                          .width / 1.1,
+                                      decoration: BoxDecoration(color: Const.secColor, borderRadius: BorderRadius.circular(15)),
+                                      child: Center(
+                                        child: Text("Delete Account", style: TextStyle(color: Colors.white, fontSize: 22),),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
-                            SizedBox(height: 25,),
-                            Center(
-                              child: InkWell(
-                                onTap: (){
-                                  HomePageViewModel homeViewModel = Get.find<HomePageViewModel>();
-                                  homeViewModel.currentIndex = 2;
-                                  Get.offAll(()=>HomePageView(isUser:false));
-                                },
-                                child: Container(
-                                  height: 60,
-                                  width:MediaQuery.sizeOf(context).width/1.1,
-                                  decoration: BoxDecoration(color: Const.paigeColor,borderRadius: BorderRadius.circular(15)),
-                                  child: Center(
-                                    child: Text("Provider Mode",style: TextStyle(color: Colors.white,fontSize: 22),),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 25,),
-                            Center(
-                              child: InkWell(
-                                onTap: (){
-                                  HiveDataBase.deleteUserData();
-                                  Get.offAll(()=>OnboardingView());
-                                },
-                                child: Container(
-                                  height: 60,
-                                  width:MediaQuery.sizeOf(context).width/1.1,
-                                  decoration: BoxDecoration(color: Const.paigeColor,borderRadius: BorderRadius.circular(15)),
-                                  child: Center(
-                                    child: Text("Sign Out",style: TextStyle(color: Colors.white,fontSize: 22),),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 25,),
-                            Center(
-                              child: InkWell(
-                                onTap: (){
-                                  HiveDataBase.deleteUserData();
-                                  Get.offAll(()=>OnboardingView());
-                                },
-                                child: Container(
-                                  height: 60,
-                                  width:MediaQuery.sizeOf(context).width/1.1,
-                                  decoration: BoxDecoration(color: Const.secColor,borderRadius: BorderRadius.circular(15)),
-                                  child: Center(
-                                    child: Text("Delete Account",style: TextStyle(color: Colors.white,fontSize: 22),),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+                Positioned(
+                    top: 75,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: CircleAvatar(radius: 75,
+                        backgroundColor: Const.paigeColor,
+                        child: Icon(Icons.person, color: Colors.white, size: 100,),),
+                    )),
               ],
             ),
-            Positioned(
-                top: 75,
-                left: 0,
-                right: 0,
-                child:  Center(
-                  child: CircleAvatar(radius: 75,
-                    backgroundColor: Const.paigeColor,
-                    child: Icon(Icons.person,color: Colors.white,size: 100,),),
-                )),
-          ],
-        ),
-      )
+          );
+        })
     );
   }
+
   Widget cardWidget(BankCardModel model) {
     return SizedBox(
       height: 250,
-      child:  Padding(
+      child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: AspectRatio(
           aspectRatio: 16 / 9,
           child: Container(
-            decoration: BoxDecoration( color: model.type =="visa"?Colors.blue.shade900:Colors.black,borderRadius: BorderRadius.circular(15)),
+            decoration: BoxDecoration(color: model.type == "visa" ? Colors.blue.shade900 : Colors.black, borderRadius: BorderRadius.circular(15)),
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(30.0),
@@ -469,17 +530,17 @@ class _ProfileViewState extends State<ProfileView> {
 
 
 }
-class CustomClipPath extends CustomClipper<Path>{
+
+class CustomClipPath extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     double w = size.width;
     double h = size.height;
     final path = Path();
     path.lineTo(0, h);
-    path.quadraticBezierTo(w*0.5, h-100, w, h );
+    path.quadraticBezierTo(w * 0.5, h - 100, w, h);
     path.lineTo(w, 0);
     path.close();
-
 
 
     return path;

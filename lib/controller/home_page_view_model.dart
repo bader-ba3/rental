@@ -6,6 +6,7 @@ import 'package:cherry_toast/resources/arrays.dart' hide Position;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -34,10 +35,17 @@ class HomePageViewModel extends GetxController{
 
   ({DateTime end, DateTime start})? startAndEndDate;
   String? address;
-
+  String? userAddress;
+  String? userRate;
+  GlobalKey? ratingKey;
 
   HomePageViewModel(){
     getImages();
+    FirebaseFirestore.instance.collection("users").doc("0").snapshots().listen((event) {
+      userRate = event.data()!['userRate'];
+      ratingKey = GlobalKey();
+      WidgetsFlutterBinding.ensureInitialized().waitUntilFirstFrameRasterized.then((value) => update());
+    });
     FirebaseFirestore.instance.collection("Reservation").snapshots().listen((event) {
       print("listend");
       allReservation.clear();
@@ -67,10 +75,11 @@ class HomePageViewModel extends GetxController{
       Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((value) {
         userPosition = value;
         update();
-        // getLocationName(LatLng(value.latitude, value.longitude)).then((value) {
-        //   fromAddress = value.places!.first.displayName!.text!;
-        //   update();
-        // });
+        PlaceViewModel placeViewModel = Get.find<PlaceViewModel>();
+        placeViewModel.getLocationName(LatLng(value.latitude, value.longitude)).then((value) {
+          userAddress = value.places!.first.displayName!.text!;
+          update();
+        });
       });
     });
   }
@@ -183,9 +192,10 @@ class HomePageViewModel extends GetxController{
       "reservationStatus":status
     });
   }
-  void changeCarStatus({required String id, required String status}) {
+  void changeCarStatus({required String id, required String status , String? reason}) {
     FirebaseFirestore.instance.collection("Cars").doc(id).update({
-      "status":status
+      "status":status,
+      if(reason!=null)  "reason":reason,
     });
   }
 

@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:animated_rating_stars/animated_rating_stars.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rental/controller/home_page_view_model.dart';
@@ -260,17 +262,22 @@ class _TapWidgetState extends State<TapWidget> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                   TextIconWidget(
-                                    icon: Icons.location_on_outlined,
-                                    text: model.address.toString(),
-                                  ),
-                                  const Spacer(),
+                                  SizedBox(
+
+                                       child: TextIconWidget(
+                                         width: Get.width/3.6,
+                                        icon: Icons.location_on_outlined,
+                                        text: model.address.toString(),
+                                                                         ),
+                                   ),
+                                  SizedBox(width: 10,),
                                   TextIconWidget(
+                                    width: 60,
                                     icon: Icons.access_time_outlined,
                                     text: "${model.time} day",
                                   ),
-                                  const Spacer(),
                                   TextIconWidget(
+                                    width: 70,
                                     icon: Icons.credit_card_outlined,
                                     text: "${model.price} AED",
                                   ),
@@ -376,7 +383,6 @@ class _TapWidgetState extends State<TapWidget> {
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
                                         color: Const.paigeColor,
-
                                         border:
                                         Border.all(color: Const.paigeColor),
                                         borderRadius: BorderRadius.circular(4),
@@ -405,8 +411,101 @@ class _TapWidgetState extends State<TapWidget> {
                               else
                                 InkWell(
                                   onTap:(){
-                                    controller.changeReservationStatus(id:model.id! , status:Const.reservationEnded);
-                                    controller.changeCarStatus(id:model.carId! , status:Const.carStatusIdle);
+                                    double totalRate = 0;
+                                    // controller.changeReservationStatus(id:model.id! , status:Const.reservationEnded);
+                                    // controller.changeCarStatus(id:model.carId! , status:Const.carStatusIdle);
+                                    showModalBottomSheet(context: context, builder: (context) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15),)
+                                        ),
+                                        height: 500,
+                                        width: MediaQuery.sizeOf(context).width,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                height: 5,
+                                                width: 150,
+                                                decoration: BoxDecoration(color: Colors.grey,borderRadius: BorderRadius.circular(15)),
+                                              ),
+                                              Spacer(),
+                                              Row(
+                                                children: [
+                                                  Text("Rate The Customer: ",style: TextStyle(fontSize: 22),),
+                                                  AnimatedRatingStars(
+                                                    initialRating: totalRate,
+                                                    minRating: 0.0,
+                                                    maxRating: 5.0,
+                                                    filledColor: Colors.amber,
+                                                    emptyColor: Colors.grey,
+                                                    filledIcon: Icons.star,
+                                                    halfFilledIcon: Icons.star_half,
+                                                    emptyIcon: Icons.star_border,
+                                                    onChanged: (double rating) {
+                                                      // Handle the rating change here
+                                                      totalRate = rating;
+                                                    },
+                                                    displayRatingValue: true,
+                                                    interactiveTooltips: true,
+                                                    customFilledIcon: Icons.star,
+                                                    customHalfFilledIcon: Icons.star_half,
+                                                    customEmptyIcon: Icons.star_border,
+                                                    starSize: 30.0,
+                                                    animationDuration: Duration(milliseconds: 300),
+                                                    animationCurve: Curves.easeInOut,
+                                                    readOnly: false,
+                                                  ),
+                                                ],
+                                              ),
+                                              Spacer(),
+                                              Row(
+                                                children: [
+                                                  Text("How you find the car:",style: TextStyle(fontSize: 22),),
+                                                ],
+                                              ),
+                                              Container(
+                                                decoration: BoxDecoration(color: Colors.grey.withOpacity(0.2),borderRadius: BorderRadius.circular(15)),
+                                                height: 250,
+                                                width: MediaQuery.sizeOf(context).width,
+                                                child: TextFormField(
+                                                  keyboardType: TextInputType.multiline,
+                                                  maxLines: null,
+                                                  textInputAction: TextInputAction.newline,
+                                                  decoration: InputDecoration(border: InputBorder.none),
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              InkWell(
+                                                onTap: (){
+                                                  controller.changeReservationStatus(id:model.id! , status:Const.reservationEnded);
+                                                  controller.changeCarStatus(id:model.carId! , status:Const.carStatusIdle);
+                                                  FirebaseFirestore.instance.collection("users").doc("0").update({
+                                                    "userRate":totalRate.toString()
+                                                  });
+                                                  Get.back();
+                                                },
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color: Const.paigeColor,
+                                                    border:
+                                                    Border.all(color: Const.paigeColor),
+                                                    borderRadius: BorderRadius.circular(4),
+                                                  ),
+                                                  child: Text(
+                                                  "Confirm Ended",
+                                                  style: Styles.headLineStyle2.copyWith(color: Colors.white),
+                                                ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 25,),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },);
                                   },
                                   child: Container(
                                     alignment: Alignment.center,
@@ -465,10 +564,11 @@ class _TapWidgetState extends State<TapWidget> {
 }
 
 class TextIconWidget extends StatelessWidget {
-  const TextIconWidget({super.key, required this.text, required this.icon});
+  const TextIconWidget({super.key, required this.text, required this.icon,required this.width});
 
   final String text;
   final IconData icon;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -481,10 +581,14 @@ class TextIconWidget extends StatelessWidget {
         const SizedBox(
           width: 5,
         ),
-        Text(
-          text,
-          style:
-          Styles.headLineStyle3.copyWith(fontSize: 14, color: Colors.black),
+        SizedBox(
+          width: width,
+          child: Text(
+            text,
+            overflow: TextOverflow.ellipsis,
+            style:
+            Styles.headLineStyle3.copyWith(fontSize: 14, color: Colors.black),
+          ),
         )
       ],
     );

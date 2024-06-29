@@ -15,6 +15,7 @@ abstract class Const{
   static const bool isUser = false;
 
   static const carStatusIdle = "carStatusIdle";
+  static const carStatusOffline = "carStatusOffline";
   static const carStatusMaintenance = "carStatusMaintenance";
   static const carStatusRented = "carStatusRented";
 }

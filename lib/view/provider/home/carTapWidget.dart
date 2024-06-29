@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rental/controller/home_page_view_model.dart';
@@ -31,26 +32,18 @@ class _CarTapWidgetState extends State<CarTapWidget> {
     (index) => false,
   );
 
-
+  List reasonList = [
+    "rent on an annual contract",
+    "rent on a monthly contract",
+    "personal use",
+    "another reason",
+  ];
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomePageViewModel>(builder: (controller) {
       List<SmallCarModel> dataList = [];
       dataList = controller.allCars.where((element) => element.status == widget.dataType).toList();
-      // if(widget.dataType == "all"){
-      //   dataList= controller.allReservation.where((element) => element.reservationStatus == Const.reservationEnded ||element.reservationStatus == Const.reservationCanceled &&element.carStatus == Const.carStatusIdle).toList();
-      //   _type="available";
-      // }else if(widget.dataType == Const.carStatusMaintenance){
-      //   dataList= controller.allReservation.where((element) => element.carStatus == Const.carStatusMaintenance ).toList();
-      //   _type="maintenance";
-      // }else if(widget.dataType == Const.reservationPending){
-      //   dataList= controller.allReservation.where((element) => element.reservationStatus == Const.reservationPending ).toList();
-      //   _type="pending";
-      // }else{
-      //   dataList= controller.allReservation.where((element) => element.reservationStatus == widget.dataType ).toList();
-      //   _type="active";
-      // }
       return dataList.isEmpty
           ? Center(child: Column(
         children: [
@@ -150,6 +143,8 @@ class _CarTapWidgetState extends State<CarTapWidget> {
                               ],
                             ),
                           ),
+                          if(widget.dataType == Const.carStatusOffline&&smallModel.reason!=null)
+                          Text(smallModel.reason.toString()),
                           AnimatedCrossFade(
                             firstChild:  widget.dataType == Const.carStatusMaintenance
                                 ? Column(
@@ -244,37 +239,251 @@ class _CarTapWidgetState extends State<CarTapWidget> {
                                         const SizedBox(
                                           height: 10,
                                         ),
-                                        InkWell(
-                                          onTap: () {
-                                            controller.changeCarStatus(id: carModel.carId.toString(), status: Const.carStatusMaintenance);
-                                          },
-                                          child: Container(
-                                            width: 180,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: Const.paigeColor,
-                                              border: Border.all(color: Const.paigeColor),
-                                              borderRadius: BorderRadius.circular(4),
-                                            ),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.center,
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                const Icon(
-                                                  Icons.car_repair_outlined,
-                                                  color: Colors.white,
-                                                ),
-                                                const SizedBox(
-                                                  width: 5,
-                                                ),
-                                                Text(
-                                                  "Maintenance",
-                                                  style: Styles.headLineStyle2.copyWith(color: Colors.white),
-                                                )
-                                              ],
-                                            ),
-                                          ),
+                                        Row(
+                                          children: [
+                                            Text("the periodic maintenance is after 2 day",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16),),
+                                            Spacer(),
+                                            InkWell(
+                                                onTap: (){
+                                                  List allType= ['Day','Week',"month","Year"];
+                                                  showModalBottomSheet(context: context, builder: (context) {
+                                                    return  Container(
+                                                      height: 200,
+                                                      width: Get.width,
+                                                      child: Center(
+                                                        child: Column(
+                                                          children: [
+                                                            SizedBox(height: 20,),
+                                                            Row(
+                                                              children: [
+                                                                SizedBox(width: 20,),
+                                                                InkWell(
+                                                                    onTap: (){
+                                                                      Get.back();
+                                                                    },
+                                                                    child: Text("Cancel",style: TextStyle(color: Colors.red,fontWeight: FontWeight.w500),)),
+                                                                Spacer(),
+                                                                InkWell(
+                                                                    onTap: (){
+                                                                      Get.back();
+                                                                    },
+                                                                    child: Icon(Icons.check,color: Colors.green,)),
+                                                                SizedBox(width: 20,),
+                                                              ],
+                                                            ),
+                                                            Container(
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                children: [
+                                                                  Text("periodic maintenance every: ",style: TextStyle(fontSize: 18),),
+                                                                  SizedBox(
+                                                                    height: 150,
+                                                                    width: 75,
+                                                                    child: CupertinoPicker(
+                                                                      magnification: 1.22,
+                                                                      squeeze: 1,
+                                                                      useMagnifier: true,
+                                                                      itemExtent: 32.0,
+                                                                      scrollController: FixedExtentScrollController(
+                                                                        // initialItem: _selectedFruit,
+                                                                      ),
+                                                                      // This is called when selected item is changed.
+                                                                      onSelectedItemChanged: (int selectedItem) {
+                                                                        setState(() {
+                                                                          //_selectedFruit = selectedItem;
+                                                                        });
+                                                                      },
+                                                                      children:
+                                                                      List<Widget>.generate(100, (int index) {
+                                                                        return Center(child: Text(index.toString()));
+                                                                      }),
+                                                                    ),
+                                                                  ),
+                                                                  // Container(
+                                                                  //   decoration: BoxDecoration(color: Colors.grey.shade300,borderRadius: BorderRadius.circular(8)),
+                                                                  //   height: 50,
+                                                                  // width: 50,
+                                                                  // child: TextFormField(
+                                                                  //   textAlign: TextAlign.center,
+                                                                  //   decoration: InputDecoration(border: InputBorder.none),
+                                                                  // ),),
+                                                                SizedBox(
+                                                                  height: 150,
+                                                                  width: 100,
+                                                                  child: CupertinoPicker(
+                                                                  magnification: 1.22,
+                                                                  squeeze: 1,
+                                                                  useMagnifier: true,
+                                                                  itemExtent: 32.0,
+                                                                  scrollController: FixedExtentScrollController(
+                                                                   // initialItem: _selectedFruit,
+                                                                  ),
+                                                                  // This is called when selected item is changed.
+                                                                  onSelectedItemChanged: (int selectedItem) {
+                                                                    setState(() {
+                                                                      //_selectedFruit = selectedItem;
+                                                                    });
+                                                                  },
+                                                                  children:
+                                                                  List<Widget>.generate(allType.length, (int index) {
+                                                                    return Center(child: Text(allType[index]));
+                                                                  }),
+                                                                                                                        ),
+                                                                )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },);
+                                                },
+                                                child: Icon(Icons.edit,color: Const.paigeColor,))
+                                          ],
                                         ),
+                                        SizedBox(height: 10,),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                if(widget.dataType==Const.carStatusOffline){
+                                                  controller.changeCarStatus(id: carModel.carId.toString(), status:Const.carStatusIdle);
+                                                }else{
+                                                  showModalBottomSheet(context: context, builder: (context) {
+                                                    String? selectedReason ;
+                                                  return  Container(
+                                                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.only(topLeft: Radius.circular(8),topRight: Radius.circular(8))),
+                                                    padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 0),
+                                                    child: StatefulBuilder(
+                                                      builder: (context,setstate) {
+                                                        return Wrap(
+                                                          children: [
+                                                            SizedBox(height: 20,width: Get.width,),
+                                                            SizedBox(width: Get.width,child: Padding(
+                                                              padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 20),
+                                                              child: Text("Choose The Reson:",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 20),),
+                                                            ),),
+                                                            for(var i in reasonList)
+                                                              Padding(
+                                                                padding: const EdgeInsets.all(8.0),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Checkbox(value: i == selectedReason, onChanged: (_){
+                                                                      if(_!){
+                                                                        selectedReason = i;
+                                                                      }else{
+                                                                        selectedReason = null;
+                                                                      }
+                                                                      setstate((){});
+                                                                    }),
+                                                                    Text(i)
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            SizedBox(height: 10,width: Get.width,),
+                                                            Padding(
+                                                              padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 20),
+                                                              child: InkWell(
+                                                                onTap:(){
+                                                                  controller.changeCarStatus(id: carModel.carId.toString(), status: Const.carStatusOffline,reason:selectedReason);
+                                                                  Get.back();
+                                                                },
+                                                                child: Container(
+                                                                  alignment: Alignment.center,
+                                                                  padding: EdgeInsets.symmetric(horizontal: 8),
+                                                                  decoration: BoxDecoration(
+                                                                    color: Const.paigeColor,
+                                                                    border: Border.all(color: Const.paigeColor),
+                                                                    borderRadius: BorderRadius.circular(4),
+                                                                  ),
+                                                                  child: Row(
+                                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                    children: [
+                                                                      Text(
+                                                                       "Confirm",
+                                                                        style: Styles.headLineStyle2.copyWith(color: Colors.white),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 30,width: Get.width,),
+                                                          ],
+                                                        );
+                                                      }
+                                                    ),
+                                                    );
+                                                  },);
+                                                }
+                                              },
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                                decoration: BoxDecoration(
+                                                  color: Const.paigeColor,
+                                                  border: Border.all(color: Const.paigeColor),
+                                                  borderRadius: BorderRadius.circular(4),
+                                                ),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.car_crash,
+                                                      color: Colors.white,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      widget.dataType==Const.carStatusOffline?"Go Online": "Go Offline",
+                                                      style: Styles.headLineStyle2.copyWith(color: Colors.white),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                controller.changeCarStatus(id: carModel.carId.toString(), status: Const.carStatusMaintenance);
+                                              },
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                                decoration: BoxDecoration(
+                                                  color: Const.paigeColor,
+                                                  border: Border.all(color: Const.paigeColor),
+                                                  borderRadius: BorderRadius.circular(4),
+                                                ),
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.car_repair_outlined,
+                                                      color: Colors.white,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      "Maintenance",
+                                                      style: Styles.headLineStyle2.copyWith(color: Colors.white),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+
+                                          ],
+                                        ),
+
+
+
                                       ],
                                     ),
                                   ),
